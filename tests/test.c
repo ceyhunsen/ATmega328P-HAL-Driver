@@ -5,15 +5,18 @@
  * */
 
 #include "atmega328p_hal.h"
+
+#define F_CPU 16000000UL
+#include <util/delay.h>
+
 #include <stdio.h>
 #include <string.h>
 
-/**
- * @brief Main function for Arduirone.
- * @returns 0 on success, 1 otherwise.
- * */
 int main(void)
 {
+	// Set PD5 as output.
+	io_set_pin_mode(io_port_b, 5, io_mode_output);
+
 	// Enable usart.
 	usart_t usart = {
 		.baud_rate = 9600,
@@ -26,12 +29,15 @@ int main(void)
 
 	usart_init(&usart);
 
-	uint16_t xx = 0;
+	uint16_t packet_count = 0;
+	char msg[20];
 
 	while (1) {
-		char text[10];
-		sprintf(text, "%u, %u\n", xx++, DDRB);
-		usart_transmit(&usart, (uint8_t *)text, strlen(text));
+		io_toggle_pin(io_port_b, 5);
+
+		sprintf(msg, "%u\n", packet_count++);
+		usart_transmit(&usart, (uint8_t *)msg, strlen(msg));
+		_delay_ms(100);
 	}
 
 	return 0;

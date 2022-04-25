@@ -9,6 +9,6 @@
 
 #define F_CPU 16000000UL
 
-#define _CLEAR_BIT(port, bit) (port &= ~(1 << bit))
+#define _CLEAR_BIT(var, bit) (var &= ~(1 << bit))
 
 #endif // __HAL_INTERNALS_H

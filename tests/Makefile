@@ -13,18 +13,24 @@ PROGRAMMER = arduino
 BAUD = 115200
 PORT = /dev/ttyUSB0
 
-# Debug build?
-DEBUG = 0
-
 # Compiler stuff.
 CC = avr-gcc
 COMPILE = $(CC) $(CFLAGS)
 
+# Optimization flag.
+OPTIMIZATION = speed
+
 # Flags.
-ifeq ($(DEBUG), 1)
+ifeq ($(OPTIMIZATION), size)
 	OPT_FLAG = -Os
-else
+else ifeq ($(OPTIMIZATION), speed)
 	OPT_FLAG = -O2
+else ifeq ($(OPTIMIZATION), debug)
+	OPT_FLAG = -Og
+else ifeq ($(OPTIMIZATION), nothing)
+	OPT_FLAG = -O0
+else
+	OPT_FLAG = -O0
 endif
 CFLAGS = -Wall $(OPT_FLAG) -mmcu=$(MCU) $(C_INCLUDES)
 
@@ -56,7 +62,7 @@ $(BUILD_DIR)/$(TARGET).elf: $(OBJECTS) Makefile
 # Compile .elf file to .hex file.
 $(BUILD_DIR)/$(TARGET).hex: $(BUILD_DIR)/$(TARGET).elf Makefile
 	avr-objcopy -j .text -j .data -O ihex $< $@
-	avr-size $@
+	avr-size --mcu=$(MCU) $@
 
 # Compile source files to object file.
 $(BUILD_DIR)/%.o: %.c Makefile
@@ -72,4 +78,4 @@ clean:
 	rm -rf $(BUILD_DIR)
 
 # PHONY rules.
-.PHONY: all upload upload
+.PHONY: all upload upload build
