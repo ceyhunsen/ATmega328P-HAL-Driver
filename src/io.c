@@ -44,19 +44,42 @@ static volatile uint8_t *get_pin_pointer(io_ports port);
  * */
 void io_set_pin_mode(io_ports port, uint8_t pin, io_pin_modes mode)
 {
+	// Get port pointers.
 	volatile uint8_t *ddr_pointer, *port_pointer;
 	ddr_pointer = get_ddr_pointer(port);
 	port_pointer = get_port_pointer(port);
 
+	// Read register values.
+	uint8_t ddr_value = *ddr_pointer;
+	uint8_t port_value = *port_pointer;
+
+	// Set mode.
 	switch (mode) {
 		case io_mode_output:
+			// Tri-state intermediate step.
+			if (!(ddr_value & _PIN_TO_BIT(pin)) && !(port_value & _PIN_TO_BIT(pin))) {
+				_CLEAR_BIT(*port_pointer, pin);
+			}
+			// Input pull up intermediate step.
+			if (!(ddr_value & _PIN_TO_BIT(pin)) && (port_value & _PIN_TO_BIT(pin))) {
+				_CLEAR_BIT(*port_pointer, pin);
+			}
 			*ddr_pointer |= _BV(pin);
 			break;
 		case io_mode_input_pull_up_on:
+			// Output low intermediate step.
+			if ((ddr_value & _PIN_TO_BIT(pin)) && !(port_value & _PIN_TO_BIT(pin))) {
+				*port_pointer |= _BV(pin);
+			}
 			_CLEAR_BIT(*ddr_pointer, pin);
 			*port_pointer |= _BV(pin);
 			break;
 		case io_mode_input_pull_up_off:
+			// Output high intermediate step.
+			if ((ddr_value & _PIN_TO_BIT(pin)) && (port_value & _PIN_TO_BIT(pin))) {
+				*ddr_pointer |= _BV(pin);
+				_CLEAR_BIT(*port_pointer, pin);
+			}
 			_CLEAR_BIT(*ddr_pointer, pin);
 			_CLEAR_BIT(*port_pointer, pin);
 			break;
@@ -110,7 +133,7 @@ uint8_t io_read_pin(io_ports port, uint8_t pin)
 
 	uint8_t pin_value = *pin_pointer;
 
-	return (pin_value & pin)? 1: 0;
+	return (pin_value & _PIN_TO_BIT(pin))? 1: 0;
 }
 
 /**
