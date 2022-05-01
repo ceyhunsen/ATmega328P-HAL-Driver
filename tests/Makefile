@@ -18,7 +18,7 @@ CC = avr-gcc
 COMPILE = $(CC) $(CFLAGS)
 
 # Optimization flag.
-OPTIMIZATION = speed
+OPTIMIZATION = debug
 
 # Flags.
 ifeq ($(OPTIMIZATION), size)
