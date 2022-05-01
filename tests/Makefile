@@ -41,6 +41,7 @@ C_INCLUDES = \
 # Source files.
 C_SOURCES = \
 test.c \
+../src/eeprom.c \
 ../src/io.c \
 ../src/usart.c \
 

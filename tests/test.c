@@ -19,6 +19,13 @@ int main(void)
 	io_set_pin_mode(io_port_b, 5, io_mode_output);
 	io_set_pin_mode(io_port_b, 0, io_mode_input_pull_up_off);
 
+	// Read EEPROM data.
+	//~ uint8_t eeprom_data[4] = {0, 127, 128, 0};
+	//~ uint16_t eeprom_write_data = 0x01FF, eeprom_write_read_data = 0;
+	//~ eeprom_write(1, (uint8_t *)&eeprom_write_data, sizeof(eeprom_write_data));
+	//~ eeprom_read(0, eeprom_data, 4);
+	//~ eeprom_read(1, (uint8_t *)&eeprom_write_read_data, sizeof(eeprom_write_read_data));
+
 	// Enable usart.
 	usart_t usart = {
 		.baud_rate = 9600,
@@ -32,7 +39,7 @@ int main(void)
 	usart_init(&usart);
 
 	uint16_t packet_count = 0;
-	char msg[20];
+	char msg[30];
 
 	while (1) {
 		io_toggle_pin(io_port_b, 5);
@@ -40,6 +47,10 @@ int main(void)
 
 		sprintf(msg, "%u, %u, %u\n", packet_count++, read_value, PINB);
 		usart_transmit(&usart, (uint8_t *)msg, strlen(msg));
+
+		//~ sprintf(msg, ":%u, %u, %u, %u, %u\n", eeprom_data[0], eeprom_data[1], eeprom_data[2], eeprom_data[3], eeprom_write_read_data);
+		//~ usart_transmit(&usart, (uint8_t *)msg, strlen(msg));
+
 		_delay_ms(100);
 	}
 
