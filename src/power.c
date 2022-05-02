@@ -77,6 +77,9 @@ void power_set_sleep_mode(power_sleep_modes mode)
 	// Set sleep enable bit and call sleep instruction.
 	_SET_BIT(SMCR, SE);
 	sleep_cpu();
+
+	// Clear sleep flag after sleep.
+	_CLEAR_BIT(SMCR, SE);
 }
 
 /**
