@@ -46,43 +46,43 @@ void power_set_module_power(power_module_power_modes module_mod)
 {
 	switch (module_mod) {
 		case twi_off:
-			PRR |= _BV(PRTWI);
+			_SET_BIT(PRR, PRTWI);
 			break;
 		case twi_on:
 			_CLEAR_BIT(PRR, PRTWI);
 			break;
 		case timer_0_off:
-			PRR |= _BV(PRTIM0);
+			_SET_BIT(PRR, PRTIM0);
 			break;
 		case timer_0_on:
 			_CLEAR_BIT(PRR, PRTIM0);
 			break;
 		case timer_1_off:
-			PRR |= _BV(PRTIM1);
+			_SET_BIT(PRR, PRTIM1);
 			break;
 		case timer_1_on:
 			_CLEAR_BIT(PRR, PRTIM1);
 			break;
 		case timer_2_off:
-			PRR |= _BV(PRTIM2);
+			_SET_BIT(PRR, PRTIM2);
 			break;
 		case timer_2_on:
 			_CLEAR_BIT(PRR, PRTIM2);
 			break;
 		case spi_off:
-			PRR |= _BV(PRSPI);
+			_SET_BIT(PRR, PRSPI);
 			break;
 		case spi_on:
 			_CLEAR_BIT(PRR, PRSPI);
 			break;
 		case usart0_off:
-			PRR |= _BV(PRUSART0);
+			_SET_BIT(PRR, PRUSART0);
 			break;
 		case usart0_on:
 			_CLEAR_BIT(PRR, PRUSART0);
 			break;
 		case adc_off:
-			PRR |= _BV(PRADC);
+			_SET_BIT(PRR, PRADC);
 			break;
 		case adc_on:
 			_CLEAR_BIT(PRR, PRADC);

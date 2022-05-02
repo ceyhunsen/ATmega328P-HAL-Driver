@@ -64,20 +64,20 @@ void io_set_pin_mode(io_ports port, uint8_t pin, io_pin_modes mode)
 			if (!(ddr_value & _PIN_TO_BIT(pin)) && (port_value & _PIN_TO_BIT(pin))) {
 				_CLEAR_BIT(*port_pointer, pin);
 			}
-			*ddr_pointer |= _BV(pin);
+			_SET_BIT(*ddr_pointer, pin);
 			break;
 		case io_mode_input_pull_up_on:
 			// Output low intermediate step.
 			if ((ddr_value & _PIN_TO_BIT(pin)) && !(port_value & _PIN_TO_BIT(pin))) {
-				*port_pointer |= _BV(pin);
+				_SET_BIT(*port_pointer, pin);
 			}
 			_CLEAR_BIT(*ddr_pointer, pin);
-			*port_pointer |= _BV(pin);
+			_SET_BIT(*port_pointer, pin);
 			break;
 		case io_mode_input_pull_up_off:
 			// Output high intermediate step.
 			if ((ddr_value & _PIN_TO_BIT(pin)) && (port_value & _PIN_TO_BIT(pin))) {
-				*ddr_pointer |= _BV(pin);
+				_SET_BIT(*ddr_pointer, pin);
 				_CLEAR_BIT(*port_pointer, pin);
 			}
 			_CLEAR_BIT(*ddr_pointer, pin);
@@ -99,7 +99,7 @@ void io_write_pin(io_ports port, uint8_t pin, io_pin_states state)
 
 	switch (state) {
 		case io_state_high:
-			*port_pointer |= _BV(pin);
+			_SET_BIT(*port_pointer, pin);
 			break;
 		case io_state_low:
 			_CLEAR_BIT(*port_pointer, pin);
@@ -117,7 +117,7 @@ void io_toggle_pin(io_ports port, uint8_t pin)
 	volatile uint8_t *pin_pointer;
 	pin_pointer = get_pin_pointer(port);
 
-	*pin_pointer |= _BV(pin);
+	_SET_BIT(*pin_pointer, pin);
 }
 
 /**

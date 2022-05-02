@@ -45,16 +45,20 @@ void eeprom_set_mode(eeprom_modes mode)
 	// Set mode.
 	switch (mode) {
 		case atomic:
-			EECR |= 0b00 << EEPM0;
+			_CLEAR_BIT(EECR, EEPM0);
+			_CLEAR_BIT(EECR, EEPM1);
 			break;
 		case erase_only:
-			EECR |= 0b01 << EEPM0;
+			_SET_BIT(EECR, EEPM0);
+			_CLEAR_BIT(EECR, EEPM1);
 			break;
 		case write_only:
-			EECR |= 0b10 << EEPM0;
+			_CLEAR_BIT(EECR, EEPM0);
+			_SET_BIT(EECR, EEPM1);
 			break;
 		default:
-			EECR |= 0b00 << EEPM0;
+			_CLEAR_BIT(EECR, EEPM0);
+			_CLEAR_BIT(EECR, EEPM1);
 			break;
 	}
 }
@@ -80,7 +84,7 @@ void eeprom_read(uint16_t address, uint8_t *data, uint16_t len)
 		EEAR = address + i;
 
 		// Start reading and set it to data[i].
-		EECR |= _BV(EERE);
+		_SET_BIT(EECR, EERE);
 		data[i] = EEDR;
 	}
 }
@@ -107,7 +111,7 @@ void eeprom_write(uint16_t address, uint8_t *data, uint16_t len)
 		EEDR = data[i];
 
 		// Enable writing.
-		EECR |= _BV(EEMPE);
-		EECR |= _BV(EEPE);
+		_SET_BIT(EECR, EEMPE);
+		_SET_BIT(EECR, EEPE);
 	}
 }
