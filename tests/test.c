@@ -46,6 +46,7 @@ int main(void)
 
 		//~ if (packet_count >= 50) {
 			//~ power_set_module_power(usart0_off);
+			//~ power_set_sleep_mode(idle);
 		//~ }
 		//~ if (packet_count >= 60) {
 			//~ power_set_module_power(usart0_on);

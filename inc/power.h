@@ -32,17 +32,17 @@
 #define __POWER_H
 
 /**
- * @enum power_modes
- * @brief Power modes.
+ * @enum power_sleep_modes
+ * @brief Sleep modes for ATmega328P.
  * */
-typedef enum power_modes {
+typedef enum power_sleep_modes {
 	idle,
 	adc_noise_reduction,
 	power_down,
 	power_save,
 	standby,
 	external_standby
-} power_modes;
+} power_sleep_modes;
 
 /**
  * @enum power_module_power_modes
@@ -65,7 +65,7 @@ typedef enum power_module_power_modes {
 	adc_on
 } power_module_power_modes;
 
-void power_set_mode(power_modes mode);
+void power_set_sleep_mode(power_sleep_modes mode);
 void power_set_module_power(power_module_power_modes module_mod);
 
 #endif // __POWER_H

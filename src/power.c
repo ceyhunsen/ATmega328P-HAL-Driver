@@ -31,10 +31,52 @@
 #include "power.h"
 #include "atmega328p_hal_internals.h"
 #include <avr/io.h>
+#include <avr/sleep.h>
 
-void power_set_mode(power_modes mode)
+/**
+ * @brief Set sleep mode for ATmega328P.
+ * @param mode Sleep mode.
+ * @see power_sleep_modes
+ * */
+void power_set_sleep_mode(power_sleep_modes mode)
 {
-	
+	// Set sleep mode.
+	switch (mode) {
+		case idle:
+			_CLEAR_BIT(SMCR, SM0);
+			_CLEAR_BIT(SMCR, SM1);
+			_CLEAR_BIT(SMCR, SM2);
+			break;
+		case adc_noise_reduction:
+			_CLEAR_BIT(SMCR, SM0);
+			_CLEAR_BIT(SMCR, SM1);
+			_SET_BIT(SMCR, SM2);
+			break;
+		case power_down:
+			_CLEAR_BIT(SMCR, SM0);
+			_SET_BIT(SMCR, SM1);
+			_CLEAR_BIT(SMCR, SM2);
+			break;
+		case power_save:
+			_CLEAR_BIT(SMCR, SM0);
+			_SET_BIT(SMCR, SM1);
+			_SET_BIT(SMCR, SM2);
+			break;
+		case standby:
+			_SET_BIT(SMCR, SM0);
+			_SET_BIT(SMCR, SM1);
+			_CLEAR_BIT(SMCR, SM2);
+			break;
+		case external_standby:
+			_SET_BIT(SMCR, SM0);
+			_SET_BIT(SMCR, SM1);
+			_SET_BIT(SMCR, SM2);
+			break;
+	}
+
+	// Set sleep enable bit and call sleep instruction.
+	_SET_BIT(SMCR, SE);
+	sleep_cpu();
 }
 
 /**
