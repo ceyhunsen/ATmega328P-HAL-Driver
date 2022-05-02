@@ -7,6 +7,7 @@
 #ifndef __ATMEGA328P_HAL_H
 #define __ATMEGA328P_HAL_H
 
+#include "power.h"
 #include "eeprom.h"
 #include "io.h"
 #include "usart.h"

@@ -6,7 +6,6 @@
 
 #include "atmega328p_hal.h"
 
-#define F_CPU 16000000UL
 #include <util/delay.h>
 #include <avr/io.h>
 
@@ -45,13 +44,21 @@ int main(void)
 		io_toggle_pin(io_port_b, 5);
 		uint8_t read_value = io_read_pin(io_port_b, 0);
 
-		sprintf(msg, "%u, %u, %u\n", packet_count++, read_value, PINB);
+		//~ if (packet_count >= 50) {
+			//~ power_set_module_power(usart0_off);
+		//~ }
+		//~ if (packet_count >= 60) {
+			//~ power_set_module_power(usart0_on);
+		//~ }
+
+		sprintf(msg, "%u, %u, %u\n", packet_count, read_value, PINB);
 		usart_transmit(&usart, (uint8_t *)msg, strlen(msg));
 
 		//~ sprintf(msg, ":%u, %u, %u, %u, %u\n", eeprom_data[0], eeprom_data[1], eeprom_data[2], eeprom_data[3], eeprom_write_read_data);
 		//~ usart_transmit(&usart, (uint8_t *)msg, strlen(msg));
 
 		_delay_ms(100);
+		packet_count++;
 	}
 
 	return 0;

@@ -32,7 +32,7 @@ else ifeq ($(OPTIMIZATION), nothing)
 else
 	OPT_FLAG = -O0
 endif
-CFLAGS = -Wall $(OPT_FLAG) -mmcu=$(MCU) $(C_INCLUDES)
+CFLAGS = -Wall $(OPT_FLAG) -mmcu=$(MCU) $(C_INCLUDES) -D F_CPU=16000000UL
 
 # Include directories.
 C_INCLUDES = \
@@ -41,6 +41,7 @@ C_INCLUDES = \
 # Source files.
 C_SOURCES = \
 test.c \
+../src/power.c \
 ../src/eeprom.c \
 ../src/io.c \
 ../src/usart.c \

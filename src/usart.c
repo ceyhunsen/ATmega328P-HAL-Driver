@@ -31,6 +31,11 @@
 #include "usart.h"
 #include "atmega328p_hal_internals.h"
 
+#ifndef F_CPU
+# define F_CPU 16000000UL
+# warning "CPU frequency (F_CPU) is not defined! Defaulting to 16 MHz..."
+#endif // F_CPU
+
 /**
  * @brief Initialize USART.
  * @param usart USART struct.
