@@ -28,8 +28,8 @@
  * SOFTWARE.
  * */
 
-#ifndef __HAL_INTERNALS_H
-#define __HAL_INTERNALS_H
+#ifndef __ATMEGA328P_HAL_INTERNALS_H
+#define __ATMEGA328P_HAL_INTERNALS_H
 
 /**
  * @addtogroup bit_manipulation
@@ -56,4 +56,4 @@
  * @}
  * */
 
-#endif // __HAL_INTERNALS_H
+#endif // __ATMEGA328P_HAL_INTERNALS_H

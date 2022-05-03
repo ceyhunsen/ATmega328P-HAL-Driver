@@ -31,9 +31,9 @@
 #ifndef __ATMEGA328P_HAL_H
 #define __ATMEGA328P_HAL_H
 
-#include "power.h"
-#include "eeprom.h"
-#include "io.h"
-#include "usart.h"
+#include "atmega328p_hal_power.h"
+#include "atmega328p_hal_eeprom.h"
+#include "atmega328p_hal_io.h"
+#include "atmega328p_hal_usart.h"
 
 #endif // __ATMEGA328P_HAL_H

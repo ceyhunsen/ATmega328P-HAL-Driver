@@ -41,10 +41,10 @@ C_INCLUDES = \
 # Source files.
 C_SOURCES = \
 test.c \
-../src/power.c \
-../src/eeprom.c \
-../src/io.c \
-../src/usart.c \
+../src/atmega328p_hal_power.c \
+../src/atmega328p_hal_eeprom.c \
+../src/atmega328p_hal_io.c \
+../src/atmega328p_hal_usart.c \
 
 # Binary files.
 BUILD_DIR = build

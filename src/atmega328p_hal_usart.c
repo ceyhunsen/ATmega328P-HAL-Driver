@@ -1,5 +1,5 @@
 /**
- * @file usart.c
+ * @file atmega328p_hal_usart.c
  * @author Ceyhun Şen
  * @brief USART HAL functions for ATmega328p.
  * */
@@ -28,7 +28,7 @@
  * SOFTWARE.
  * */
 
-#include "usart.h"
+#include "atmega328p_hal_usart.h"
 #include "atmega328p_hal_internals.h"
 
 #ifndef F_CPU
@@ -40,7 +40,7 @@
  * @brief Initialize USART.
  * @param usart USART struct.
  * */
-void usart_init(usart_t *usart)
+void hal_usart_init(hal_usart_t *usart)
 {
 	// Get operating mode prescaler and set USART control and status register.
 	uint8_t operating_mode_prescaler = 16;
@@ -140,7 +140,7 @@ void usart_init(usart_t *usart)
 /**
  * @brief Transmit data over USART.
  * */
-void usart_transmit(usart_t *usart, uint8_t *data, uint16_t len)
+void hal_usart_transmit(hal_usart_t *usart, uint8_t *data, uint16_t len)
 {
 	uint16_t i = 0;
 	while (i < (uint32_t)len) {
@@ -153,7 +153,7 @@ void usart_transmit(usart_t *usart, uint8_t *data, uint16_t len)
 /**
  * @brief Receive data over USART.
  * */
-void usart_receive(usart_t *usart, uint8_t *data, uint16_t len)
+void hal_usart_receive(hal_usart_t *usart, uint8_t *data, uint16_t len)
 {
 	
 }

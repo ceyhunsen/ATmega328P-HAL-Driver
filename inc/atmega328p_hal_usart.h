@@ -1,7 +1,7 @@
 /**
- * @file eeprom.h
+ * @file atmega328p_hal_usart.h
  * @author Ceyhun Şen
- * @brief EEPROM header for ATmega328P.
+ * @brief USART header file for ATmega328P HAL driver.
  * */
 
 /*
@@ -28,26 +28,57 @@
  * SOFTWARE.
  * */
 
-#ifndef __EEPROM_H
-#define __EEPROM_H
+#ifndef __ATMEGA328P_HAL_USART_H
+#define __ATMEGA328P_HAL_USART_H
 
+#include <avr/io.h>
 #include <stdint.h>
 
 /**
- * @enum eeprom_modes
- * @brief EEPROM modes.
- * Atomic operation will take 3.4 ms and will perform write and erase operation,
- * write only will take 1.8 ms and will perform only write operation,
- * erase only will take 1.8 ms and will perform only erase operation
+ * @enum hal_usart_operating_mode
+ * @brief Operating modes for USART.
  * */
-typedef enum eeprom_modes {
-	atomic,
-	write_only,
-	erase_only
-} eeprom_modes;
+typedef enum hal_usart_operating_mode {
+	asynchronous_normal_mode,
+	asynchronous_double_speed_mode,
+	synchronous_master_mode
+} hal_usart_operating_mode;
 
-void eeprom_set_mode(eeprom_modes mode);
-void eeprom_read(uint16_t address, uint8_t *data, uint16_t len);
-void eeprom_write(uint16_t address, uint8_t *data, uint16_t len);
+/**
+ * @enum hal_usart_parity
+ * @brief Parity settings for USART.
+ * */
+typedef enum hal_usart_parity {
+	disabled,
+	even_parity,
+	odd_parity
+} hal_usart_parity;
 
-#endif // __EEPROM_H
+/**
+ * @enum hal_usart_mode
+ * @brief Modes for USART.
+ * */
+typedef enum hal_usart_mode {
+	transmit,
+	receive,
+	transmit_receive
+} hal_usart_mode;
+
+/**
+ * @struct hal_usart_t
+ * @brief USART definitions.
+ * */
+typedef struct hal_usart_t {
+	uint16_t baud_rate;
+	uint8_t stop_bits;
+	uint8_t data_bits;
+	hal_usart_parity parity;
+	hal_usart_operating_mode operating_mode;
+	hal_usart_mode mode;
+} hal_usart_t;
+
+void hal_usart_init(hal_usart_t *usart);
+void hal_usart_transmit(hal_usart_t *usart, uint8_t *data, uint16_t len);
+void hal_usart_receive(hal_usart_t *usart, uint8_t *data, uint16_t len);
+
+#endif // __ATMEGA328P_HAL_USART_H

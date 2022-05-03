@@ -1,7 +1,7 @@
 /**
- * @file power.h
+ * @file atmega328p_hal_power.h
  * @author Ceyhun Şen
- * @brief Power management header file for ATmega328P HAL driver.
+ * @brief Power management and sleeo modes header file for ATmega328P HAL driver.
  * */
 
 /*
@@ -28,27 +28,27 @@
  * SOFTWARE.
  * */
 
-#ifndef __POWER_H
-#define __POWER_H
+#ifndef __ATMEGA328P_HAL_POWER_H
+#define __ATMEGA328P_HAL_POWER_H
 
 /**
- * @enum power_sleep_modes
+ * @enum hal_power_sleep_modes
  * @brief Sleep modes for ATmega328P.
  * */
-typedef enum power_sleep_modes {
+typedef enum hal_power_sleep_modes {
 	idle,
 	adc_noise_reduction,
 	power_down,
 	power_save,
 	standby,
 	external_standby
-} power_sleep_modes;
+} hal_power_sleep_modes;
 
 /**
- * @enum power_module_power_modes
+ * @enum hal_power_module_power_modes
  * @brief Module power modes.
  * */
-typedef enum power_module_power_modes {
+typedef enum hal_power_module_power_modes {
 	twi_off,
 	twi_on,
 	timer_0_off,
@@ -63,9 +63,9 @@ typedef enum power_module_power_modes {
 	usart0_on,
 	adc_off,
 	adc_on
-} power_module_power_modes;
+} hal_power_module_power_modes;
 
-void power_set_sleep_mode(power_sleep_modes mode);
-void power_set_module_power(power_module_power_modes module_mod);
+void hal_power_set_sleep_mode(hal_power_sleep_modes mode);
+void hal_power_set_module_power(hal_power_module_power_modes module_mod);
 
-#endif // __POWER_H
+#endif // __ATMEGA328P_HAL_POWER_H

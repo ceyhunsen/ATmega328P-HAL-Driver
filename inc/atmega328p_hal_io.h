@@ -1,7 +1,7 @@
 /**
- * @file usart.h
+ * @file atmega328p_hal_io.h
  * @author Ceyhun Şen
- * @brief USART header file for ATmega328P HAL driver.
+ * @brief I/O header file for ATmega328P HAL driver.
  * */
 
 /*
@@ -28,57 +28,43 @@
  * SOFTWARE.
  * */
 
-#ifndef __ATMEGA328P_USART_H
-#define __ATMEGA328P_USART_H
+#ifndef __ATMEGA328P_HAL_IO_H
+#define __ATMEGA328P_HAL_IO_H
 
-#include <avr/io.h>
 #include <stdint.h>
 
 /**
- * @enum usart_operating_mode
- * @brief Operating modes for USART.
+ * @enum hal_io_pin_states
+ * @brief Pin states for I/O.
  * */
-typedef enum usart_operating_mode {
-	asynchronous_normal_mode,
-	asynchronous_double_speed_mode,
-	synchronous_master_mode
-} usart_operating_mode;
+typedef enum hal_io_pin_states {
+	io_state_high,
+	io_state_low
+} hal_io_pin_states;
 
 /**
- * @enum usart_parity
- * @brief Parity settings for USART.
+ * @enum hal_io_pin_modes
+ * @brief Pin modes for I/O.
  * */
-typedef enum usart_parity {
-	disabled,
-	even_parity,
-	odd_parity
-} usart_parity;
+typedef enum hal_io_pin_modes {
+	io_mode_output,
+	io_mode_input_pull_up_on,
+	io_mode_input_pull_up_off
+} hal_io_pin_modes;
 
 /**
- * @enum usart_mode
- * @brief Modes for USART.
+ * @enum hal_io_ports
+ * @brief Ports for I/O.
  * */
-typedef enum usart_mode {
-	transmit,
-	receive,
-	transmit_receive
-} usart_mode;
+typedef enum hal_io_ports {
+	io_port_b,
+	io_port_c,
+	io_port_d
+} hal_io_ports;
 
-/**
- * @struct usart_t
- * @brief USART definitions.
- * */
-typedef struct usart_t {
-	uint16_t baud_rate;
-	uint8_t stop_bits;
-	uint8_t data_bits;
-	usart_parity parity;
-	usart_operating_mode operating_mode;
-	usart_mode mode;
-} usart_t;
+void hal_io_set_pin_mode(hal_io_ports port, uint8_t pin, hal_io_pin_modes mode);
+void hal_io_write_pin(hal_io_ports port, uint8_t pin, hal_io_pin_states state);
+void hal_io_toggle_pin(hal_io_ports port, uint8_t pin);
+uint8_t hal_io_read_pin(hal_io_ports port, uint8_t pin);
 
-void usart_init(usart_t *usart);
-void usart_transmit(usart_t *usart, uint8_t *data, uint16_t len);
-void usart_receive(usart_t *usart, uint8_t *data, uint16_t len);
-
-#endif // __ATMEGA328P_USART_H
+#endif // __ATMEGA328P_HAL_IO_H

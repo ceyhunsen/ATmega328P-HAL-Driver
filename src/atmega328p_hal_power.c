@@ -1,7 +1,7 @@
 /**
- * @file power.c
+ * @file atmega328p_hal_power.c
  * @author Ceyhun Şen
- * @brief Power management HAL functions for ATmega328P HAL driver.
+ * @brief Power management and sleep modes HAL functions for ATmega328P HAL driver.
  * */
 
 /*
@@ -28,7 +28,7 @@
  * SOFTWARE.
  * */
 
-#include "power.h"
+#include "atmega328p_hal_power.h"
 #include "atmega328p_hal_internals.h"
 #include <avr/io.h>
 #include <avr/sleep.h>
@@ -36,9 +36,9 @@
 /**
  * @brief Set sleep mode for ATmega328P.
  * @param mode Sleep mode.
- * @see power_sleep_modes
+ * @see hal_power_sleep_modes
  * */
-void power_set_sleep_mode(power_sleep_modes mode)
+void hal_power_set_sleep_mode(hal_power_sleep_modes mode)
 {
 	// Set sleep mode.
 	switch (mode) {
@@ -85,9 +85,9 @@ void power_set_sleep_mode(power_sleep_modes mode)
 /**
  * @brief Set specified modules power on or off.
  * @param module_mod Module and it's power state.
- * @see power_module_power_modes
+ * @see hal_power_module_power_modes
  * */
-void power_set_module_power(power_module_power_modes module_mod)
+void hal_power_set_module_power(hal_power_module_power_modes module_mod)
 {
 	switch (module_mod) {
 		case twi_off:

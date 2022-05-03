@@ -1,7 +1,7 @@
 /**
- * @file io.c
+ * @file atmega328p_hal_io.c
  * @author Ceyhun Şen
- * @brief I/O HAL functions for ATmega328P.
+ * @brief I/O HAL functions for ATmega328P HAL driver.
  * */
 
 /*
@@ -28,13 +28,13 @@
  * SOFTWARE.
  * */
 
-#include "io.h"
+#include "atmega328p_hal_io.h"
 #include "atmega328p_hal_internals.h"
 #include <avr/io.h>
 
-static volatile uint8_t *get_ddr_pointer(io_ports port);
-static volatile uint8_t *get_port_pointer(io_ports port);
-static volatile uint8_t *get_pin_pointer(io_ports port);
+static volatile uint8_t *get_ddr_pointer(hal_io_ports port);
+static volatile uint8_t *get_port_pointer(hal_io_ports port);
+static volatile uint8_t *get_pin_pointer(hal_io_ports port);
 
 /**
  * @brief Set pin mode of given port/pin.
@@ -42,7 +42,7 @@ static volatile uint8_t *get_pin_pointer(io_ports port);
  * @param pin Pin of specified I/O port.
  * @param mode Pin mode to be set.
  * */
-void io_set_pin_mode(io_ports port, uint8_t pin, io_pin_modes mode)
+void hal_io_set_pin_mode(hal_io_ports port, uint8_t pin, hal_io_pin_modes mode)
 {
 	// Get port pointers.
 	volatile uint8_t *ddr_pointer, *port_pointer;
@@ -92,7 +92,7 @@ void io_set_pin_mode(io_ports port, uint8_t pin, io_pin_modes mode)
  * @param pin Pin of specified I/O port.
  * @param state Pin state to be set.
  * */
-void io_write_pin(io_ports port, uint8_t pin, io_pin_states state)
+void hal_io_write_pin(hal_io_ports port, uint8_t pin, hal_io_pin_states state)
 {
 	volatile uint8_t *port_pointer;
 	port_pointer = get_port_pointer(port);
@@ -112,7 +112,7 @@ void io_write_pin(io_ports port, uint8_t pin, io_pin_states state)
  * @param port I/O port.
  * @param pin Pin of specified I/O port.
  * */
-void io_toggle_pin(io_ports port, uint8_t pin)
+void hal_io_toggle_pin(hal_io_ports port, uint8_t pin)
 {
 	volatile uint8_t *pin_pointer;
 	pin_pointer = get_pin_pointer(port);
@@ -126,7 +126,7 @@ void io_toggle_pin(io_ports port, uint8_t pin)
  * @param pin Pin of specified I/O port.
  * @returns 1 if pin is high, 0 otherwise.
  * */
-uint8_t io_read_pin(io_ports port, uint8_t pin)
+uint8_t hal_io_read_pin(hal_io_ports port, uint8_t pin)
 {
 	volatile uint8_t *pin_pointer;
 	pin_pointer = get_pin_pointer(port);
@@ -141,7 +141,7 @@ uint8_t io_read_pin(io_ports port, uint8_t pin)
  * @param port I/O port.
  * @returns DDRx pointer.
  * */
-static volatile uint8_t *get_ddr_pointer(io_ports port)
+static volatile uint8_t *get_ddr_pointer(hal_io_ports port)
 {
 	volatile uint8_t *p;
 
@@ -168,7 +168,7 @@ static volatile uint8_t *get_ddr_pointer(io_ports port)
  * @param port I/O port.
  * @returns PORTx pointer.
  * */
-static volatile uint8_t *get_port_pointer(io_ports port)
+static volatile uint8_t *get_port_pointer(hal_io_ports port)
 {
 	volatile uint8_t *p;
 
@@ -195,7 +195,7 @@ static volatile uint8_t *get_port_pointer(io_ports port)
  * @param port I/O port.
  * @returns PINx pointer.
  * */
-static volatile uint8_t *get_pin_pointer(io_ports port)
+static volatile uint8_t *get_pin_pointer(hal_io_ports port)
 {
 	volatile uint8_t *p;
 

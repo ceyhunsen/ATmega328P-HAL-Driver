@@ -1,7 +1,7 @@
 /**
- * @file eeprom.c
+ * @file atmega328p_hal_eeprom.c
  * @author Ceyhun Şen
- * @brief EEPROM HAL functions for ATmega328P.
+ * @brief EEPROM HAL functions for ATmega328P HAL driver.
  * */
 
 /*
@@ -28,16 +28,16 @@
  * SOFTWARE.
  * */
 
-#include "eeprom.h"
+#include "atmega328p_hal_eeprom.h"
 #include "atmega328p_hal_internals.h"
 #include <avr/io.h>
 
 /**
  * @brief Set EEPROM mode.
  * @param mode EEPROM mode to be set.
- * @see eeprom_modes
+ * @see hal_eeprom_modes
  * */
-void eeprom_set_mode(eeprom_modes mode)
+void hal_eeprom_set_mode(hal_eeprom_modes mode)
 {
 	// Wait for ongoing write operations.
 	while (EECR & _PIN_TO_BIT(EEPE));
@@ -68,13 +68,14 @@ void eeprom_set_mode(eeprom_modes mode)
  * @param address Start address of the read operation.
  * @param data Data buffer that will hold read data.
  * @param len Length of the data that will be read.
+ * @returns Length of the readed data.
  * */
-void eeprom_read(uint16_t address, uint8_t *data, uint16_t len)
+uint16_t hal_eeprom_read(uint16_t address, uint8_t *data, uint16_t len)
 {
 	for (uint16_t i = 0; i < len; i++) {
 		// Check address overflow.
 		if (address + i > (1 << 9) - 1) {
-			return;
+			return i;
 		}
 
 		// Wait for ongoing write operations.
@@ -87,6 +88,8 @@ void eeprom_read(uint16_t address, uint8_t *data, uint16_t len)
 		_SET_BIT(EECR, EERE);
 		data[i] = EEDR;
 	}
+
+	return len;
 }
 
 /**
@@ -94,13 +97,14 @@ void eeprom_read(uint16_t address, uint8_t *data, uint16_t len)
  * @param address Start address of the write operation.
  * @param data Data buffer that holds write data.
  * @param len Length of the data that will be written.
+ * @returns Length of the written data.
  * */
-void eeprom_write(uint16_t address, uint8_t *data, uint16_t len)
+uint16_t hal_eeprom_write(uint16_t address, uint8_t *data, uint16_t len)
 {
 	for (uint16_t i = 0; i < len; i++) {
 		// Check address overflow.
 		if (address + i > (1 << 9) - 1) {
-			return;
+			return i;
 		}
 
 		// Wait for ongoing write operations.
@@ -114,4 +118,6 @@ void eeprom_write(uint16_t address, uint8_t *data, uint16_t len)
 		_SET_BIT(EECR, EEMPE);
 		_SET_BIT(EECR, EEPE);
 	}
+
+	return len;
 }

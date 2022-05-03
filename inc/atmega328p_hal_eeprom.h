@@ -1,7 +1,7 @@
 /**
- * @file io.h
+ * @file atmega328p_hal_eeprom.h
  * @author Ceyhun Şen
- * @brief I/O header file for ATmega328P HAL driver.
+ * @brief EEPROM header file for ATmega328P HAL driver.
  * */
 
 /*
@@ -28,43 +28,26 @@
  * SOFTWARE.
  * */
 
-#ifndef __IO_H
-#define __IO_H
+#ifndef __ATMEGA328P_HAL_EEPROM_H
+#define __ATMEGA328P_HAL_EEPROM_H
 
 #include <stdint.h>
 
 /**
- * @enum io_pin_states
- * @brief Pin states for I/O.
+ * @enum hal_eeprom_modes
+ * @brief EEPROM modes.
+ * Atomic operation will take 3.4 ms and will perform write and erase operation,
+ * write only will take 1.8 ms and will perform only write operation,
+ * erase only will take 1.8 ms and will perform only erase operation
  * */
-typedef enum io_pin_states {
-	io_state_high,
-	io_state_low
-} io_pin_states;
+typedef enum hal_eeprom_modes {
+	atomic,
+	write_only,
+	erase_only
+} hal_eeprom_modes;
 
-/**
- * @enum io_pin_modes
- * @brief Pin modes for I/O.
- * */
-typedef enum io_pin_modes {
-	io_mode_output,
-	io_mode_input_pull_up_on,
-	io_mode_input_pull_up_off
-} io_pin_modes;
+void hal_eeprom_set_mode(hal_eeprom_modes mode);
+uint16_t hal_eeprom_read(uint16_t address, uint8_t *data, uint16_t len);
+uint16_t hal_eeprom_write(uint16_t address, uint8_t *data, uint16_t len);
 
-/**
- * @enum io_ports
- * @brief Ports for I/O.
- * */
-typedef enum io_ports {
-	io_port_b,
-	io_port_c,
-	io_port_d
-} io_ports;
-
-void io_set_pin_mode(io_ports port, uint8_t pin, io_pin_modes mode);
-void io_write_pin(io_ports port, uint8_t pin, io_pin_states state);
-void io_toggle_pin(io_ports port, uint8_t pin);
-uint8_t io_read_pin(io_ports port, uint8_t pin);
-
-#endif // __IO_H
+#endif // __ATMEGA328P_HAL_EEPROM_H
