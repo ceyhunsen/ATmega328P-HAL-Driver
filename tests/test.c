@@ -8,15 +8,18 @@
 
 #include <util/delay.h>
 #include <avr/io.h>
+#include <avr/interrupt.h>
 
 #include <stdio.h>
 #include <string.h>
 
 int main(void)
 {
+	//~ uint8_t reset_status = hal_system_get_reset_status();
+
 	// Set PB5 as output, PB0 as input.
 	hal_io_set_pin_mode(io_port_b, 5, io_mode_output);
-	hal_io_set_pin_mode(io_port_b, 0, io_mode_input_pull_up_off);
+	//~ hal_io_set_pin_mode(io_port_b, 0, io_mode_input_pull_up_off);
 
 	// Read EEPROM data.
 	//~ uint8_t eeprom_data[4] = {0, 127, 128, 0};
@@ -40,9 +43,11 @@ int main(void)
 	uint16_t packet_count = 0;
 	char msg[30];
 
+	//~ hal_system_enable_watchdog(_256k_cycles, interrupt_and_reset);
+
 	while (1) {
 		hal_io_toggle_pin(io_port_b, 5);
-		uint8_t read_value = hal_io_read_pin(io_port_b, 0);
+		//~ uint8_t read_value = hal_io_read_pin(io_port_b, 0);
 
 		//~ if (packet_count >= 50) {
 			//~ power_set_module_power(usart0_off);
@@ -52,7 +57,7 @@ int main(void)
 			//~ hal_power_set_module_power(usart0_on);
 		//~ }
 
-		sprintf(msg, "%u, %u, %u\n", packet_count, read_value, MCUSR);
+		sprintf(msg, "%u\n", packet_count);
 		hal_usart_transmit(&usart, (uint8_t *)msg, strlen(msg));
 
 		//~ sprintf(msg, ":%u, %u, %u, %u, %u\n", eeprom_data[0], eeprom_data[1], eeprom_data[2], eeprom_data[3], eeprom_write_read_data);

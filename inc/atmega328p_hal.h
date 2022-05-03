@@ -32,6 +32,7 @@
 #define __ATMEGA328P_HAL_H
 
 #include "atmega328p_hal_power.h"
+#include "atmega328p_hal_system.h"
 #include "atmega328p_hal_eeprom.h"
 #include "atmega328p_hal_io.h"
 #include "atmega328p_hal_usart.h"

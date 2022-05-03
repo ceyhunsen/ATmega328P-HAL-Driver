@@ -1,7 +1,7 @@
 /**
- * @file atmega328p_hal_eeprom.h
+ * @file atmega328p_hal_system.h
  * @author Ceyhun Şen
- * @brief EEPROM header file for ATmega328P HAL driver.
+ * @brief System control and reset header file for ATmega328P HAL driver.
  * */
 
 /*
@@ -28,27 +28,46 @@
  * SOFTWARE.
  * */
 
-#ifndef __ATMEGA328P_HAL_EEPROM_H
-#define __ATMEGA328P_HAL_EEPROM_H
+#ifndef __ATMEGA328P_HAL_SYSTEM_H
+#define __ATMEGA328P_HAL_SYSTEM_H
 
 #include <stdint.h>
 
+#define hal_watchdog_reset 3
+#define hal_brownout_reset 2
+#define hal_external_reset 1
+#define hal_power_on_reset 0
+
 /**
- * @enum hal_eeprom_modes
- * @brief EEPROM modes.
- * 
- * Atomic operation will take 3.4 ms and will perform write and erase operation,
- * write only will take 1.8 ms and will perform only write operation and
- * erase only will take 1.8 ms and will perform only erase operation
+ * @enum hal_system_watchdog_cycles
+ * @brief Watchdog wait cycles options before a trigger.
  * */
-typedef enum hal_eeprom_modes {
-	atomic,
-	write_only,
-	erase_only
-} hal_eeprom_modes;
+typedef enum hal_system_watchdog_cycles {
+	_2k_cycles = 0,
+	_4k_cycles = 1,
+	_8k_cycles = 2,
+	_16k_cycles = 3,
+	_32k_cycles = 4,
+	_64k_cycles = 5,
+	_128k_cycles = 6,
+	_256k_cycles = 7,
+	_512k_cycles = 8,
+	_1024k_cycles = 9
+} hal_system_watchdog_cycles;
 
-void hal_eeprom_set_mode(hal_eeprom_modes mode);
-uint16_t hal_eeprom_read(uint16_t address, uint8_t *data, uint16_t len);
-uint16_t hal_eeprom_write(uint16_t address, uint8_t *data, uint16_t len);
+/**
+ * @enum hal_system_watchdog_modes
+ * @brief Wathcdog trigger modes.
+ * */
+typedef enum hal_system_watchdog_modes {
+	interrupt,
+	reset,
+	interrupt_and_reset
+} hal_system_watchdog_modes;
 
-#endif // __ATMEGA328P_HAL_EEPROM_H
+uint8_t hal_system_get_reset_status();
+void hal_system_enable_watchdog(hal_system_watchdog_cycles cycles, hal_system_watchdog_modes mode);
+void hal_system_disable_watchdog();
+void hal_system_reset_watchdog();
+
+#endif // __ATMEGA328P_HAL_SYSTEM_H

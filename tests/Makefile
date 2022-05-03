@@ -42,6 +42,7 @@ C_INCLUDES = \
 C_SOURCES = \
 test.c \
 ../src/atmega328p_hal_power.c \
+../src/atmega328p_hal_system.c \
 ../src/atmega328p_hal_eeprom.c \
 ../src/atmega328p_hal_io.c \
 ../src/atmega328p_hal_usart.c \
