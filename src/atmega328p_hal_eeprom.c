@@ -65,24 +65,24 @@ void hal_eeprom_set_mode(hal_eeprom_modes mode)
 
 /**
  * @brief Read data from EEPROM.
- * @param address Start address of the read operation.
+ * @param start_address Start address of the read operation.
  * @param data Data buffer that will hold read data.
  * @param len Length of the data that will be read.
  * @returns Length of the readed data.
  * */
-uint16_t hal_eeprom_read(uint16_t address, uint8_t *data, uint16_t len)
+uint16_t hal_eeprom_read(uint16_t start_address, uint8_t *data, uint16_t len)
 {
 	for (uint16_t i = 0; i < len; i++) {
-		// Check address overflow.
-		if (address + i > (1 << 9) - 1) {
+		// Check start_address overflow.
+		if (start_address + i > (1 << 9) - 1) {
 			return i;
 		}
 
 		// Wait for ongoing write operations.
 		while (EECR & _PIN_TO_BIT(EEPE));
 
-		// Set address.
-		EEAR = address + i;
+		// Set start_address.
+		EEAR = start_address + i;
 
 		// Start reading and set it to data[i].
 		_SET_BIT(EECR, EERE);
@@ -94,24 +94,24 @@ uint16_t hal_eeprom_read(uint16_t address, uint8_t *data, uint16_t len)
 
 /**
  * @brief Write data to EEPROM.
- * @param address Start address of the write operation.
+ * @param start_address Start address of the write operation.
  * @param data Data buffer that holds write data.
  * @param len Length of the data that will be written.
  * @returns Length of the written data.
  * */
-uint16_t hal_eeprom_write(uint16_t address, uint8_t *data, uint16_t len)
+uint16_t hal_eeprom_write(uint16_t start_address, uint8_t *data, uint16_t len)
 {
 	for (uint16_t i = 0; i < len; i++) {
-		// Check address overflow.
-		if (address + i > (1 << 9) - 1) {
+		// Check start_address overflow.
+		if (start_address + i > (1 << 10) - 1) {
 			return i;
 		}
 
 		// Wait for ongoing write operations.
 		while (EECR & _PIN_TO_BIT(EEPE));
 
-		// Set address and data.
-		EEAR = address + i;
+		// Set start_address and data.
+		EEAR = start_address + i;
 		EEDR = data[i];
 
 		// Enable writing.

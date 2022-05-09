@@ -37,9 +37,10 @@
  * @enum hal_eeprom_modes
  * @brief EEPROM modes.
  * 
- * Atomic operation will take 3.4 ms and will perform write and erase operation,
- * write only will take 1.8 ms and will perform only write operation and
- * erase only will take 1.8 ms and will perform only erase operation
+ * Atomic operation will take 3.4 ms and perform write and erase operation,
+ * write_only will take 1.8 ms and only perform write operation and
+ * erase_only will take 1.8 ms and only perform erase operation on writing to
+ * EEPROM.
  * */
 typedef enum hal_eeprom_modes {
 	atomic,
@@ -48,7 +49,7 @@ typedef enum hal_eeprom_modes {
 } hal_eeprom_modes;
 
 void hal_eeprom_set_mode(hal_eeprom_modes mode);
-uint16_t hal_eeprom_read(uint16_t address, uint8_t *data, uint16_t len);
-uint16_t hal_eeprom_write(uint16_t address, uint8_t *data, uint16_t len);
+uint16_t hal_eeprom_read(uint16_t start_address, uint8_t *data, uint16_t len);
+uint16_t hal_eeprom_write(uint16_t start_address, uint8_t *data, uint16_t len);
 
 #endif // __ATMEGA328P_HAL_EEPROM_H
