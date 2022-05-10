@@ -41,6 +41,8 @@ static volatile uint8_t *get_pin_pointer(hal_io_ports port);
  * @param port I/O port.
  * @param pin Pin of specified I/O port.
  * @param mode Pin mode to be set.
+ * @see hal_io_ports
+ * @see hal_io_pin_modes
  * */
 void hal_io_set_pin_mode(hal_io_ports port, uint8_t pin, hal_io_pin_modes mode)
 {
@@ -91,6 +93,8 @@ void hal_io_set_pin_mode(hal_io_ports port, uint8_t pin, hal_io_pin_modes mode)
  * @param port I/O port.
  * @param pin Pin of specified I/O port.
  * @param state Pin state to be set.
+ * @see hal_io_ports
+ * @see hal_io_pin_states
  * */
 void hal_io_write_pin(hal_io_ports port, uint8_t pin, hal_io_pin_states state)
 {
@@ -111,6 +115,7 @@ void hal_io_write_pin(hal_io_ports port, uint8_t pin, hal_io_pin_states state)
  * @brief Toggle given pin.
  * @param port I/O port.
  * @param pin Pin of specified I/O port.
+ * @see hal_io_ports
  * */
 void hal_io_toggle_pin(hal_io_ports port, uint8_t pin)
 {
@@ -125,6 +130,7 @@ void hal_io_toggle_pin(hal_io_ports port, uint8_t pin)
  * @param port I/O port.
  * @param pin Pin of specified I/O port.
  * @returns 1 if pin is high, 0 otherwise.
+ * @see hal_io_ports
  * */
 uint8_t hal_io_read_pin(hal_io_ports port, uint8_t pin)
 {
@@ -139,7 +145,8 @@ uint8_t hal_io_read_pin(hal_io_ports port, uint8_t pin)
 /**
  * @brief Get DDRx pointer.
  * @param port I/O port.
- * @returns DDRx pointer.
+ * @returns DDRx pointer
+ * @see hal_io_ports
  * */
 static volatile uint8_t *get_ddr_pointer(hal_io_ports port)
 {
@@ -167,6 +174,7 @@ static volatile uint8_t *get_ddr_pointer(hal_io_ports port)
  * @brief Get PORTx pointer.
  * @param port I/O port.
  * @returns PORTx pointer.
+ * @see hal_io_ports
  * */
 static volatile uint8_t *get_port_pointer(hal_io_ports port)
 {
@@ -194,6 +202,7 @@ static volatile uint8_t *get_port_pointer(hal_io_ports port)
  * @brief Get PINx pointer.
  * @param port I/O port.
  * @returns PINx pointer.
+ * @see hal_io_ports
  * */
 static volatile uint8_t *get_pin_pointer(hal_io_ports port)
 {
