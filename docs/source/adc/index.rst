@@ -1,7 +1,7 @@
-.. _power:
+.. _adc:
 
-Power Management And Sleep Modes
-================================
+Analog To Digital Converter
+===========================
 
 Still in development.
 

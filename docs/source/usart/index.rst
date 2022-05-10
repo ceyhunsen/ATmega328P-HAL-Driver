@@ -1,13 +1,13 @@
 .. _usart:
 
-USART
-=====
+Universal Synchronous And Asynchronous Serial Receiver And Transmitter
+======================================================================
 
-Blank.
+Still in development.
 
 .. toctree::
     :maxdepth: 3
     :caption: Contents:
 
-    self
+    info
     api-reference

@@ -1,7 +1,7 @@
-.. _power:
+.. _spi:
 
-Power Management And Sleep Modes
-================================
+Serial Peripheral Interface
+===========================
 
 Still in development.
 

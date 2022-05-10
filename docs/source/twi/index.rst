@@ -1,7 +1,7 @@
-.. _power:
+.. _twi:
 
-Power Management And Sleep Modes
-================================
+Two Wire Interface (I2C)
+========================
 
 Still in development.
 

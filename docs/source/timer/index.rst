@@ -1,7 +1,7 @@
-.. _power:
+.. _timer:
 
-Power Management And Sleep Modes
-================================
+Timer
+=====
 
 Still in development.
 

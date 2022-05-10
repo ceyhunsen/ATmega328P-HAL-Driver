@@ -14,11 +14,16 @@ Welcome to the documentation of ATmega328P HAL Driver. Source code is available 
     :caption: Contents:
 
     self
+    getting-started/index
     power/index
     system/index
     eeprom/index
     io/index
+    timer/index
+    spi/index
     usart/index
+    twi/index
+    adc/index
 
 License
 ^^^^^^^

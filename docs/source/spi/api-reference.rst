@@ -1,7 +1,7 @@
-.. _io-api-reference:
+.. _spi-api-reference:
 
 API Reference
 =============
 
-.. doxygenfile:: atmega328p_hal_io.h
+.. doxygenfile:: atmega328p_hal_spi.h
 	:project: ATmega328P HAL Driver

@@ -17,7 +17,7 @@
 
 # -- Project information -----------------------------------------------------
 
-project = 'atmega328p-hal-driver'
+project = 'ATmega328P HAL Driver'
 copyright = '2022, Ceyhun Şen'
 author = 'Ceyhun Şen'
 
@@ -57,7 +57,7 @@ import subprocess
 
 subprocess.call('doxygen Doxyfile', shell=True)
 
-# Breath stuff
+# Breathe stuff
 from sphinx.builders.html import StandaloneHTMLBuilder
 
 breathe_projects = {
