@@ -3,11 +3,11 @@
 System Control And Reset
 ========================
 
-Blank.
+This directory includes system reset source and watchdog timer documentation.
 
 .. toctree::
     :maxdepth: 3
     :caption: Contents:
 
-    self
+    info
     api-reference

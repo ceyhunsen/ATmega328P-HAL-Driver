@@ -50,6 +50,7 @@ uint8_t hal_system_get_reset_status()
  * @param cycles Oscillator cycles before a watchdog trigger.
  * @param mode Watchdog trigger mode.
  * @see hal_system_watchdog_cycles
+ * @see hal_system_watchdog_modes
  * */
 void hal_system_enable_watchdog(hal_system_watchdog_cycles cycles, hal_system_watchdog_modes mode)
 {
