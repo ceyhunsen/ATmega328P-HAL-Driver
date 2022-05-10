@@ -36,6 +36,14 @@
 # warning "CPU frequency (F_CPU) is not defined! Defaulting to 16 MHz..."
 #endif // F_CPU
 
+// Stdio functionalities.
+#ifndef HAL_NO_STDIO
+
+#include <stdio.h>
+static void hal_usart_stdio_init();
+
+#endif // HAL_NO_STDIO
+
 /**
  * @brief Initialize USART.
  * @param usart USART struct.
@@ -135,6 +143,11 @@ void hal_usart_init(hal_usart_t *usart)
 			UCSR0B |= _BV(4);
 			break;
 	}
+
+	// Stdio functionalities.
+	#ifndef HAL_NO_STDIO
+	hal_usart_stdio_init();
+	#endif // HAL_NO_STDIO
 }
 
 /**
@@ -157,3 +170,27 @@ void hal_usart_receive(hal_usart_t *usart, uint8_t *data, uint16_t len)
 {
 	
 }
+
+/*******************************************************************************
+ * Stdio Functionalities
+ * Define HAL_NO_STDIO to disable these functionalities.
+ ******************************************************************************/
+#ifndef HAL_NO_STDIO
+
+static int uart_putchar(char c, FILE *stream)
+{
+	if (c == '\n')
+		uart_putchar('\r', stream);
+	loop_until_bit_is_set(UCSR0A, UDRE0);
+	UDR0 = c;
+	return 0;
+}
+
+static FILE hal_stdout = FDEV_SETUP_STREAM(uart_putchar, NULL, _FDEV_SETUP_WRITE);
+
+static void hal_usart_stdio_init()
+{
+	stdout = &hal_stdout;
+}
+
+#endif // HAL_NO_STDIO
