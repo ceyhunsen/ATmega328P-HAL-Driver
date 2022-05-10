@@ -3,7 +3,7 @@
 Power Management And Sleep Modes
 ================================
 
-Still in development.
+This module includes documentation for various sleep and module power reduction modes.
 
 .. toctree::
     :maxdepth: 3
