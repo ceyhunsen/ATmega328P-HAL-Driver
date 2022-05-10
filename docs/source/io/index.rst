@@ -3,7 +3,7 @@
 Input/Output Ports
 ==================
 
-Still in development.
+This module includes documentation for I/O ports.
 
 .. toctree::
     :maxdepth: 3

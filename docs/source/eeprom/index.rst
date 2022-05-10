@@ -3,7 +3,7 @@
 EEPROM
 ======
 
-ATmega328P contains 1 KB of EEPROM memory. This driver supports both read and write operations.
+This module includes documentation for EEPROM.
 
 .. toctree::
     :maxdepth: 3

@@ -3,7 +3,7 @@
 System Control And Reset
 ========================
 
-This directory includes system reset source and watchdog timer documentation.
+This module includes documentation for system reset source and watchdog timer.
 
 .. toctree::
     :maxdepth: 3

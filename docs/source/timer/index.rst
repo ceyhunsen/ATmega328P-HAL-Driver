@@ -3,7 +3,7 @@
 Timer
 =====
 
-Still in development.
+This module includes documentation for timer modules.
 
 .. toctree::
     :maxdepth: 3

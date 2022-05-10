@@ -3,7 +3,7 @@
 Two Wire Interface (I2C)
 ========================
 
-Still in development.
+This module includes documentation for TWI (I2C).
 
 .. toctree::
     :maxdepth: 3

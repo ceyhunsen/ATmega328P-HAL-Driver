@@ -3,7 +3,7 @@
 Serial Peripheral Interface
 ===========================
 
-Still in development.
+This module includes documentation for SPI.
 
 .. toctree::
     :maxdepth: 3

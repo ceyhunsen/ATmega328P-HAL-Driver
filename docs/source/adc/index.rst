@@ -3,7 +3,7 @@
 Analog To Digital Converter
 ===========================
 
-Still in development.
+This module includes documentation for ADC.
 
 .. toctree::
     :maxdepth: 3

@@ -3,7 +3,7 @@
 Universal Synchronous And Asynchronous Serial Receiver And Transmitter
 ======================================================================
 
-Still in development.
+This module includes documentation for USART.
 
 .. toctree::
     :maxdepth: 3
