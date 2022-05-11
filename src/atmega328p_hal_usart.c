@@ -1,7 +1,7 @@
 /**
  * @file atmega328p_hal_usart.c
  * @author Ceyhun Şen
- * @brief USART HAL functions for ATmega328p.
+ * @brief USART HAL functions for ATmega328P HAL driver.
  * */
 
 /*
@@ -32,17 +32,46 @@
 #include "atmega328p_hal_internals.h"
 
 #ifndef F_CPU
-# define F_CPU 16000000UL
 # warning "CPU frequency (F_CPU) is not defined! Defaulting to 16 MHz..."
+# define F_CPU 16000000UL
 #endif // F_CPU
 
-// Stdio functionalities.
+/*******************************************************************************
+ * Standart I/O Support.
+ ******************************************************************************/
 #ifndef HAL_NO_STDIO
 
 #include <stdio.h>
-static void hal_usart_stdio_init();
+
+/**
+ * @brief Transmit a char on USART.
+ * @param c Char to transmit.
+ * @param stream I/O stream (only here cause it's necessary).
+ * @retval 0
+ * */
+static int usart_putchar(char c, FILE *stream)
+{
+	if (c == '\n')
+		usart_putchar('\r', stream);
+	loop_until_bit_is_set(UCSR0A, UDRE0);
+	UDR0 = c;
+	return 0;
+}
+
+static FILE hal_stdout = FDEV_SETUP_STREAM(usart_putchar, NULL, _FDEV_SETUP_WRITE);
+
+/**
+ * @brief Initialize stdout.
+ * */
+static void hal_usart_stdio_init()
+{
+	stdout = &hal_stdout;
+}
 
 #endif // HAL_NO_STDIO
+/*******************************************************************************
+ * End of standart I/O Support.
+ ******************************************************************************/
 
 /**
  * @brief Initialize USART.
@@ -50,71 +79,88 @@ static void hal_usart_stdio_init();
  * */
 void hal_usart_init(hal_usart_t *usart)
 {
+	// Wait until any ongoing operation is complete.
+	loop_until_bit_is_set(UCSR0A, UDRE0);
+
 	// Get operating mode prescaler and set USART control and status register.
 	uint8_t operating_mode_prescaler = 16;
 	switch (usart->operating_mode) {
 		case asynchronous_normal_mode:
 			operating_mode_prescaler = 16;
-			UCSR0C = 0b00 << 6;
+			_CLEAR_BIT(UCSR0C, UMSEL00);
+			_CLEAR_BIT(UCSR0C, UMSEL01);
 			break;
 		case asynchronous_double_speed_mode:
 			operating_mode_prescaler = 8;
-			UCSR0C = 0b00 << 6;
+			_CLEAR_BIT(UCSR0C, UMSEL00);
+			_CLEAR_BIT(UCSR0C, UMSEL01);
 			break;
 		case synchronous_master_mode:
 			operating_mode_prescaler = 2;
-			UCSR0C = 0b01 << 6;
+			_CLEAR_BIT(UCSR0C, UMSEL00);
+			_SET_BIT(UCSR0C, UMSEL01);
 			break;
 		default:
 			operating_mode_prescaler = 16;
-			UCSR0C = 0b00 << 6;
+			_CLEAR_BIT(UCSR0C, UMSEL00);
+			_CLEAR_BIT(UCSR0C, UMSEL01);
 			break;
 	}
 
 	// Set parity bit setting.
 	switch (usart->parity) {
 		case disabled:
-			UCSR0C |= (0b00 << 4);
+			_CLEAR_BIT(UCSR0C, UPM00);
+			_CLEAR_BIT(UCSR0C, UPM01);
 			break;
 		case even_parity:
-			UCSR0C |= 0b10 << 4;
+			_CLEAR_BIT(UCSR0C, UPM00);
+			_SET_BIT(UCSR0C, UPM01);
 			break;
 		case odd_parity:
-			UCSR0C |= 0b11 << 4;
+			_SET_BIT(UCSR0C, UPM00);
+			_SET_BIT(UCSR0C, UPM01);
 			break;
 		default:
-			UCSR0C |= 0b00 << 4;
+			_CLEAR_BIT(UCSR0C, UPM00);
+			_CLEAR_BIT(UCSR0C, UPM01);
 			break;
 	}
 
 	// Set stop bit setting.
 	if (usart->stop_bits == 1) {
-		UCSR0C |= 0b0 << 3;
+		_CLEAR_BIT(UCSR0C, USBS0);
 	}
 	else {
-		UCSR0C |= 0b1 << 3;
+		_SET_BIT(UCSR0C, USBS0);
 	}
 
 	// Set data bit setting.
 	switch (usart->data_bits) {
 		case 5:
-			UCSR0C |= 0b00 << 1;
+			_CLEAR_BIT(UCSR0C, UCSZ00);
+			_CLEAR_BIT(UCSR0C, UCSZ01);
 			break;
 		case 6:
-			UCSR0C |= 0b01 << 1;
+			_SET_BIT(UCSR0C, UCSZ00);
+			_CLEAR_BIT(UCSR0C, UCSZ01);
 			break;
 		case 7:
-			UCSR0C |= 0b10 << 1;
+			_CLEAR_BIT(UCSR0C, UCSZ00);
+			_SET_BIT(UCSR0C, UCSZ01);
 			break;
 		case 8:
-			UCSR0C |= 0b11 << 1;
+			_SET_BIT(UCSR0C, UCSZ00);
+			_SET_BIT(UCSR0C, UCSZ01);
 			break;
 		case 9:
-			UCSR0C |= 0b11 << 1;
-			UCSR0B |= _BV(2);
+			_SET_BIT(UCSR0C, UCSZ00);
+			_SET_BIT(UCSR0C, UCSZ01);
+			_SET_BIT(UCSR0B, UCSZ02);
 			break;
 		default:
-			UCSR0C |= 0b11 << 1;
+			_SET_BIT(UCSR0C, UCSZ00);
+			_SET_BIT(UCSR0C, UCSZ01);
 			break;
 	}
 
@@ -123,28 +169,27 @@ void hal_usart_init(hal_usart_t *usart)
 	UBRR0H = (baud_rate & 0xFF00) >> 8;
 	UBRR0L = baud_rate & 0xFF;
 
-	//! TO-DO: check ongoing operations.
 	// Set mode.
 	switch (usart->mode) {
 		case transmit:
-			UCSR0B |= _BV(3);
-			_CLEAR_BIT(UCSR0B, 4);
+			_SET_BIT(UCSR0B, TXEN0);
+			_CLEAR_BIT(UCSR0B, RXEN0);
 			break;
 		case receive:
-			UCSR0B |= _BV(4);
-			_CLEAR_BIT(UCSR0B, 3);
+			_CLEAR_BIT(UCSR0B, TXEN0);
+			_SET_BIT(UCSR0B, RXEN0);
 			break;
-		case transmit_receive:
-			UCSR0B |= _BV(3);
-			UCSR0B |= _BV(4);
+		case transmit_and_receive:
+			_SET_BIT(UCSR0B, TXEN0);
+			_SET_BIT(UCSR0B, RXEN0);
 			break;
 		default:
-			UCSR0B |= _BV(3);
-			UCSR0B |= _BV(4);
+			_SET_BIT(UCSR0B, TXEN0);
+			_SET_BIT(UCSR0B, RXEN0);
 			break;
 	}
 
-	// Stdio functionalities.
+	// Standart I/O support.
 	#ifndef HAL_NO_STDIO
 	hal_usart_stdio_init();
 	#endif // HAL_NO_STDIO
@@ -152,14 +197,15 @@ void hal_usart_init(hal_usart_t *usart)
 
 /**
  * @brief Transmit data over USART.
+ * @param usart USART struct.
+ * @param data Data buffer that will be written to USART buffer.
+ * @param len Data buffer length.
  * */
 void hal_usart_transmit(hal_usart_t *usart, uint8_t *data, uint16_t len)
 {
-	uint16_t i = 0;
-	while (i < (uint32_t)len) {
-		if (UCSR0A & (1 << 5)) {
-			UDR0 = data[i++];
-		}
+	for (uint16_t i = 0; i < len; i++) {
+		loop_until_bit_is_set(UCSR0A, UDRE0);
+		UDR0 = data[i];
 	}
 }
 
@@ -170,27 +216,3 @@ void hal_usart_receive(hal_usart_t *usart, uint8_t *data, uint16_t len)
 {
 	
 }
-
-/*******************************************************************************
- * Stdio Functionalities
- * Define HAL_NO_STDIO to disable these functionalities.
- ******************************************************************************/
-#ifndef HAL_NO_STDIO
-
-static int uart_putchar(char c, FILE *stream)
-{
-	if (c == '\n')
-		uart_putchar('\r', stream);
-	loop_until_bit_is_set(UCSR0A, UDRE0);
-	UDR0 = c;
-	return 0;
-}
-
-static FILE hal_stdout = FDEV_SETUP_STREAM(uart_putchar, NULL, _FDEV_SETUP_WRITE);
-
-static void hal_usart_stdio_init()
-{
-	stdout = &hal_stdout;
-}
-
-#endif // HAL_NO_STDIO

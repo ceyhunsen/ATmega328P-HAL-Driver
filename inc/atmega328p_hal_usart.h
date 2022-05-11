@@ -61,15 +61,18 @@ typedef enum hal_usart_parity {
 typedef enum hal_usart_mode {
 	transmit,
 	receive,
-	transmit_receive
+	transmit_and_receive
 } hal_usart_mode;
 
 /**
  * @struct hal_usart_t
- * @brief USART definitions.
+ * @brief USART data struct.
+ * @see hal_usart_parity
+ * @see hal_usart_operating_mode
+ * @see hal_usart_mode
  * */
 typedef struct hal_usart_t {
-	uint16_t baud_rate;
+	uint32_t baud_rate;
 	uint8_t stop_bits;
 	uint8_t data_bits;
 	hal_usart_parity parity;

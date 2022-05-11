@@ -30,7 +30,7 @@ int main(void)
 
 	// Enable usart.
 	hal_usart_t usart = {
-		.baud_rate = 9600,
+		.baud_rate = 57600,
 		.stop_bits = 1,
 		.parity = disabled,
 		.data_bits = 8,
@@ -41,7 +41,7 @@ int main(void)
 	hal_usart_init(&usart);
 
 	uint16_t packet_count = 0;
-	//~ char msg[30];
+	char msg[30];
 
 	//~ hal_system_enable_watchdog(_256k_cycles, interrupt_and_reset);
 
@@ -57,15 +57,15 @@ int main(void)
 			//~ hal_power_set_module_power(usart0_on);
 		//~ }
 
-		//~ sprintf(msg, "%u\n", packet_count);
-		//~ hal_usart_transmit(&usart, (uint8_t *)msg, strlen(msg));
-		printf("%u\n", packet_count);
+		sprintf(msg, "%u\n", packet_count);
+		hal_usart_transmit(&usart, (uint8_t *)msg, strlen(msg));
+		//~ printf("%u\n", packet_count);
 
 		//~ sprintf(msg, ":%u, %u, %u, %u, %u\n", eeprom_data[0], eeprom_data[1], eeprom_data[2], eeprom_data[3], eeprom_write_read_data);
 		//~ hal_usart_transmit(&usart, (uint8_t *)msg, strlen(msg));
 
-		_delay_ms(100);
 		packet_count++;
+		_delay_ms(100);
 	}
 
 	return 0;
