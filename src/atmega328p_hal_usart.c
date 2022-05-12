@@ -89,21 +89,25 @@ void hal_usart_init(hal_usart_t *usart)
 			operating_mode_prescaler = 16;
 			_CLEAR_BIT(UCSR0C, UMSEL00);
 			_CLEAR_BIT(UCSR0C, UMSEL01);
+			_CLEAR_BIT(UCSR0A, U2X0);
 			break;
 		case asynchronous_double_speed_mode:
 			operating_mode_prescaler = 8;
 			_CLEAR_BIT(UCSR0C, UMSEL00);
 			_CLEAR_BIT(UCSR0C, UMSEL01);
+			_SET_BIT(UCSR0A, U2X0);
 			break;
 		case synchronous_master_mode:
 			operating_mode_prescaler = 2;
 			_CLEAR_BIT(UCSR0C, UMSEL00);
 			_SET_BIT(UCSR0C, UMSEL01);
+			_CLEAR_BIT(UCSR0A, U2X0);
 			break;
 		default:
 			operating_mode_prescaler = 16;
 			_CLEAR_BIT(UCSR0C, UMSEL00);
 			_CLEAR_BIT(UCSR0C, UMSEL01);
+			_CLEAR_BIT(UCSR0A, U2X0);
 			break;
 	}
 
@@ -204,7 +208,10 @@ void hal_usart_init(hal_usart_t *usart)
 void hal_usart_transmit(hal_usart_t *usart, uint8_t *data, uint16_t len)
 {
 	for (uint16_t i = 0; i < len; i++) {
+		// Wait till' any ongoing transfer is complete.
 		loop_until_bit_is_set(UCSR0A, UDRE0);
+
+		// Write data to trasnmit register.
 		UDR0 = data[i];
 	}
 }

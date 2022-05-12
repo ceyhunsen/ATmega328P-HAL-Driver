@@ -34,7 +34,7 @@ USART must be initialized before using. Initialization takes 2 steps:
 	// Initialize USART.
 	hal_usart_init(&usart);
 
-See :ref:`usart-api-reference` for more information on ``hal_usart_t`` struct.
+See :ref:`usart-api-reference` for ``hal_usart_t`` struct to available options.
 
 Transmitting Data
 =================

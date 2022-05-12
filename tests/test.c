@@ -30,11 +30,11 @@ int main(void)
 
 	// Enable usart.
 	hal_usart_t usart = {
-		.baud_rate = 57600,
+		.baud_rate = 115200,
 		.stop_bits = 1,
 		.parity = disabled,
 		.data_bits = 8,
-		.operating_mode = asynchronous_normal_mode,
+		.operating_mode = asynchronous_double_speed_mode,
 		.mode = transmit,
 	};
 

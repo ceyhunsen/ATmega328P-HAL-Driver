@@ -45,16 +45,6 @@ typedef enum hal_usart_operating_mode {
 } hal_usart_operating_mode;
 
 /**
- * @enum hal_usart_parity
- * @brief Parity settings for USART.
- * */
-typedef enum hal_usart_parity {
-	disabled,
-	even_parity,
-	odd_parity
-} hal_usart_parity;
-
-/**
  * @enum hal_usart_mode
  * @brief Modes for USART.
  * */
@@ -65,19 +55,55 @@ typedef enum hal_usart_mode {
 } hal_usart_mode;
 
 /**
+ * @enum hal_usart_parity
+ * @brief Parity settings for USART.
+ * */
+typedef enum hal_usart_parity {
+	disabled,
+	even_parity,
+	odd_parity
+} hal_usart_parity;
+
+/**
  * @struct hal_usart_t
  * @brief USART data struct.
+ *
+ * @param baud_rate
+ * * 2400
+ * * 4800
+ * * 9600
+ * * 14400
+ * * 19200
+ * * 28800
+ * * 38400
+ * * 57600
+ * * 76800
+ * * 115200
+ * * 230400
+ * * 250000
+ *
+ * @param data_bits
+ * * 5
+ * * 6
+ * * 7
+ * * 8
+ * * 9 (currently not supported with this driver.)
+ *
+ * @param stop_bits
+ * * 1
+ * * 2
+ *
  * @see hal_usart_parity
  * @see hal_usart_operating_mode
  * @see hal_usart_mode
  * */
 typedef struct hal_usart_t {
 	uint32_t baud_rate;
-	uint8_t stop_bits;
 	uint8_t data_bits;
-	hal_usart_parity parity;
+	uint8_t stop_bits;
 	hal_usart_operating_mode operating_mode;
 	hal_usart_mode mode;
+	hal_usart_parity parity;
 } hal_usart_t;
 
 void hal_usart_init(hal_usart_t *usart);
