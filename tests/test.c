@@ -35,7 +35,7 @@ int main(void)
 		.parity = disabled,
 		.data_bits = 8,
 		.operating_mode = asynchronous_double_speed_mode,
-		.mode = transmit,
+		.mode = transmit_and_receive,
 	};
 
 	hal_usart_init(&usart);
@@ -59,6 +59,8 @@ int main(void)
 
 		sprintf(msg, "%u\n", packet_count);
 		hal_usart_transmit(&usart, (uint8_t *)msg, strlen(msg));
+		hal_usart_receive(&usart, (uint8_t *)msg, sizeof(msg));
+		hal_usart_transmit(&usart, (uint8_t *)msg, sizeof(msg));
 		//~ printf("%u\n", packet_count);
 
 		//~ sprintf(msg, ":%u, %u, %u, %u, %u\n", eeprom_data[0], eeprom_data[1], eeprom_data[2], eeprom_data[3], eeprom_write_read_data);

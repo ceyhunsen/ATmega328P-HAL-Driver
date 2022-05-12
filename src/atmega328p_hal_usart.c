@@ -37,7 +37,7 @@
 #endif // F_CPU
 
 /*******************************************************************************
- * Standart I/O Support.
+ * Standart I/O support.
  ******************************************************************************/
 #ifndef HAL_NO_STDIO
 
@@ -70,7 +70,7 @@ static void hal_usart_stdio_init()
 
 #endif // HAL_NO_STDIO
 /*******************************************************************************
- * End of standart I/O Support.
+ * End of standart I/O support.
  ******************************************************************************/
 
 /**
@@ -218,8 +218,20 @@ void hal_usart_transmit(hal_usart_t *usart, uint8_t *data, uint16_t len)
 
 /**
  * @brief Receive data over USART.
+ * @param usart USART struct.
+ * @param data Data buffer that will hold read data from USART buffer.
+ * @param len Data buffer length.
  * */
 void hal_usart_receive(hal_usart_t *usart, uint8_t *data, uint16_t len)
 {
-	
+	for (uint16_t i = 0; i < len; i++) {
+		// Wait till' any ongoing transfer is complete.
+		loop_until_bit_is_set(UCSR0A, UDRE0);
+
+		// Wait till' data is received.
+		loop_until_bit_is_set(UCSR0A, RXC0);
+
+		// Read data for receive register.
+		data[i] = UDR0;
+	}
 }
