@@ -53,11 +53,6 @@ Data can be transmitted over USART via ``hal_usart_transmit()`` function. This f
 Receiving Data
 ==============
 
-Data can be received over USART in 2 ways:
-
-Polling
-"""""""
-
 Polling method uses ``hal_usart_receive()`` function to receive data. This function will wait till' at least ``len`` (function parameter) byte of data is received over USART.
 
 .. code-block:: c
@@ -69,9 +64,6 @@ Polling method uses ``hal_usart_receive()`` function to receive data. This funct
 	hal_usart_receive(&usart, (uint8_t *)data, sizeof(data));
 
 	printf("Received data: %s\n", (char *)data);
-
-Interrupt
-"""""""""
 
 Standart I/O Functionalities
 ============================
