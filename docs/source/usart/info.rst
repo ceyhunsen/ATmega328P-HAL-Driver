@@ -11,8 +11,13 @@ If instructions in :ref:`getting-started` applied, this part can be skipped.
 4. For extras, add ``atmega328p_hal_driver/src/atmega328p_hal_usart_extra.c`` to target project's build toolchain as a source file.
 5. Include ``atmega328p_hal_usart.h`` header to desired source file(s).
 
+Core Functionalities
+====================
+
+Add ``atmega328p_hal_usart.c`` as a source file to use core funtions. Include ``atmega328p_hal_usart.h`` to use core functions.
+
 Initialization
-==============
+""""""""""""""
 
 USART must be initialized before using. Initialization takes 2 steps:
 
@@ -37,8 +42,8 @@ USART must be initialized before using. Initialization takes 2 steps:
 
 See :ref:`usart-api-reference` for ``hal_usart_t`` struct to available options.
 
-Transmitting Data
-=================
+Transmitting Data In Blocking Mode
+""""""""""""""""""""""""""""""""""
 
 Data can be transmitted in blocking mode over USART via ``hal_usart_transmit()`` function.
 
@@ -51,8 +56,8 @@ Data can be transmitted in blocking mode over USART via ``hal_usart_transmit()``
 	// Transmit buffered data.
 	hal_usart_transmit(&usart, data, strlen((char *)data));
 
-Receiving Data
-==============
+Receiving Data In Blocking Mode
+"""""""""""""""""""""""""""""""
 
 Data can be received in blocking mode over USART via ``hal_usart_receive()`` function. This function will wait till' at least ``len`` (function parameter) byte of data is received over USART.
 
@@ -69,7 +74,9 @@ Data can be received in blocking mode over USART via ``hal_usart_receive()`` fun
 Extra Functionalities
 =====================
 
-To use the extra functionalities, ``atmega328p_hal_usart_extra.c`` must be added to the source files. Extra functionalities are:
+Add ``atmega328p_hal_usart.c`` and ``atmega328p_hal_usart_extra.c`` as source files to use extra funtions. Include ``atmega328p_hal_usart.h`` to use extra functions.
+
+Extra functions are:
 
 * Standart I/O support
 
