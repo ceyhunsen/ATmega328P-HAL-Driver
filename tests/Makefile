@@ -81,5 +81,8 @@ upload:
 clean:
 	rm -rf $(BUILD_DIR)
 
+# Clear objects and build again.
+again: clean all
+
 # PHONY rules.
-.PHONY: all upload upload build
+.PHONY: all upload upload again
