@@ -106,8 +106,12 @@ typedef struct hal_usart_t {
 	hal_usart_parity parity;
 } hal_usart_t;
 
+// Core functions.
 void hal_usart_init(hal_usart_t *usart);
 void hal_usart_transmit(hal_usart_t *usart, uint8_t *data, uint16_t len);
 void hal_usart_receive(hal_usart_t *usart, uint8_t *data, uint16_t len);
+
+// Extras.
+void hal_usart_stdio_init();
 
 #endif // __ATMEGA328P_HAL_USART_H

@@ -8,7 +8,8 @@ If instructions in :ref:`getting-started` applied, this part can be skipped.
 1. Copy ``atmega328p_hal_driver`` directory to target project's driver directory.
 2. Add ``atmega328p_hal_driver/inc/`` directory to target project's include path.
 3. Add ``atmega328p_hal_driver/src/atmega328p_hal_usart.c`` to target project's build toolchain as a source file.
-4. Include ``atmega328p_hal_usart.h`` header to desired source file(s).
+4. For extras, add ``atmega328p_hal_driver/src/atmega328p_hal_usart_extra.c`` to target project's build toolchain as a source file.
+5. Include ``atmega328p_hal_usart.h`` header to desired source file(s).
 
 Initialization
 ==============
@@ -39,7 +40,7 @@ See :ref:`usart-api-reference` for ``hal_usart_t`` struct to available options.
 Transmitting Data
 =================
 
-Data can be transmitted over USART via ``hal_usart_transmit()`` function. This function needs usart data struct, data buffer and data buffer length as parameters.
+Data can be transmitted in blocking mode over USART via ``hal_usart_transmit()`` function.
 
 .. code-block:: c
 	:caption: Example code
@@ -53,7 +54,7 @@ Data can be transmitted over USART via ``hal_usart_transmit()`` function. This f
 Receiving Data
 ==============
 
-Polling method uses ``hal_usart_receive()`` function to receive data. This function will wait till' at least ``len`` (function parameter) byte of data is received over USART.
+Data can be received in blocking mode over USART via ``hal_usart_receive()`` function. This function will wait till' at least ``len`` (function parameter) byte of data is received over USART.
 
 .. code-block:: c
 	:caption: Example code
@@ -65,7 +66,40 @@ Polling method uses ``hal_usart_receive()`` function to receive data. This funct
 
 	printf("Received data: %s\n", (char *)data);
 
-Standart I/O Functionalities
-============================
+Extra Functionalities
+=====================
 
-Standart I/O support is enabled by default. Because of that, funtions like ``printf()`` are available to use. To disable standart I/O support, add ``HAL_NO_STDIO`` definition to your program. Recommended way to do is adding this definition as a compilation flag (e.g. ``-D HAL_NO_STDIO``).
+To use the extra functionalities, ``atmega328p_hal_usart_extra.c`` must be added to the source files. Extra functionalities are:
+
+* Standart I/O support
+
+Standart I/O Support
+""""""""""""""""""""
+
+Standart I/O is supported over USART. To initialize standart I/O, ``hal_usart_stdio_init()`` function must be called after initilization of USART.
+
+.. warning::
+
+	9 data bit mode is not supported.
+
+.. code-block:: c
+	:caption: Example code
+
+	// Create USART struct.
+	hal_usart_t usart = {
+		.baud_rate = 9600,
+		.stop_bits = 1,
+		.parity = disabled,
+		.data_bits = 8,
+		.operating_mode = asynchronous_normal_mode,
+		.mode = transmit_and_receive,
+	};
+
+	// Initialize USART.
+	hal_usart_init(&usart);
+
+	// Initialize standart I/O
+	hal_usart_stdio_init();
+
+	// Use standart I/O.
+	printf("Hello, world!\n");

@@ -59,6 +59,7 @@ int main(void)
 
 		sprintf(msg, "%u\n", packet_count);
 		hal_usart_transmit(&usart, (uint8_t *)msg, strlen(msg));
+		printf("Hello, stdio!\n");
 		//~ hal_usart_receive(&usart, (uint8_t *)msg, sizeof(msg));
 		//~ hal_usart_transmit(&usart, (uint8_t *)msg, sizeof(msg));
 		//~ printf("%u\n", packet_count);

@@ -36,43 +36,6 @@
 # define F_CPU 16000000UL
 #endif // F_CPU
 
-/*******************************************************************************
- * Standart I/O support.
- ******************************************************************************/
-#ifndef HAL_NO_STDIO
-
-#include <stdio.h>
-
-/**
- * @brief Transmit a char on USART.
- * @param c Char to transmit.
- * @param stream I/O stream (only here cause it's necessary).
- * @retval 0
- * */
-static int usart_putchar(char c, FILE *stream)
-{
-	if (c == '\n')
-		usart_putchar('\r', stream);
-	loop_until_bit_is_set(UCSR0A, UDRE0);
-	UDR0 = c;
-	return 0;
-}
-
-static FILE hal_stdout = FDEV_SETUP_STREAM(usart_putchar, NULL, _FDEV_SETUP_WRITE);
-
-/**
- * @brief Initialize stdout.
- * */
-static void hal_usart_stdio_init()
-{
-	stdout = &hal_stdout;
-}
-
-#endif // HAL_NO_STDIO
-/*******************************************************************************
- * End of standart I/O support.
- ******************************************************************************/
-
 /**
  * @brief Initialize USART.
  * @param usart USART struct.
@@ -193,10 +156,7 @@ void hal_usart_init(hal_usart_t *usart)
 			break;
 	}
 
-	// Standart I/O support.
-	#ifndef HAL_NO_STDIO
 	hal_usart_stdio_init();
-	#endif // HAL_NO_STDIO
 }
 
 /**
