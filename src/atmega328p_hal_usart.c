@@ -156,8 +156,6 @@ void hal_usart_init(hal_usart_t *usart)
 			_SET_BIT(UCSR0B, RXEN0);
 			break;
 	}
-
-	hal_usart_stdio_init();
 }
 
 /**
