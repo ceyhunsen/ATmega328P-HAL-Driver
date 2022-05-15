@@ -31,7 +31,6 @@
 #ifndef __ATMEGA328P_HAL_USART_H
 #define __ATMEGA328P_HAL_USART_H
 
-#include <avr/io.h>
 #include <stdint.h>
 
 /**

@@ -4,3 +4,4 @@
 *.exe
 tests/build
 docs/build
+*.geany

@@ -29,7 +29,7 @@ USART must be initialized before using. Initialization takes 2 steps:
 		.parity = disabled,
 		.data_bits = 8,
 		.operating_mode = asynchronous_normal_mode,
-		.mode = transmit,
+		.mode = transmit_and_receive,
 	};
 
 	// Initialize USART.
@@ -80,7 +80,7 @@ Standart I/O is supported over USART. To initialize standart I/O, ``hal_usart_st
 
 .. warning::
 
-	9 data bit mode is not supported.
+	USART 9 data bit mode is not supported.
 
 .. code-block:: c
 	:caption: Example code
@@ -102,4 +102,6 @@ Standart I/O is supported over USART. To initialize standart I/O, ``hal_usart_st
 	hal_usart_stdio_init();
 
 	// Use standart I/O.
-	printf("Hello, world!\n");
+	int incoming_data = 0;
+	scanf("%d", &incoming_data);
+	printf("Received data: %d\n", incoming_data);

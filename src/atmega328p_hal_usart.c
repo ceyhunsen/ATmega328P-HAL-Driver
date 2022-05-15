@@ -30,6 +30,7 @@
 
 #include "atmega328p_hal_usart.h"
 #include "atmega328p_hal_internals.h"
+#include <avr/io.h>
 
 #ifndef F_CPU
 # warning "CPU frequency (F_CPU) is not defined! Defaulting to 16 MHz..."
