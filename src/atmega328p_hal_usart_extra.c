@@ -31,11 +31,11 @@
 #include "atmega328p_hal_usart.h"
 #include "atmega328p_hal_internals.h"
 #include <avr/io.h>
+#include <stdio.h>
 
 /*******************************************************************************
  * Standart I/O support.
  ******************************************************************************/
-#include <stdio.h>
 
 /**
  * @brief Transmit a char on USART for stdio.
@@ -90,6 +90,3 @@ void hal_usart_stdio_init()
 	static FILE hal_stdin = FDEV_SETUP_STREAM(NULL, hal_usart_stdio_receive_char, _FDEV_SETUP_READ);
 	stdin = &hal_stdin;
 }
-/*******************************************************************************
- * End of standart I/O support.
- ******************************************************************************/
