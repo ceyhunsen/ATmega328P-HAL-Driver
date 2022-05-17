@@ -57,14 +57,14 @@ void hal_system_enable_watchdog(hal_system_watchdog_cycles cycles, hal_system_wa
 	// Get watchdog register value with cycle and mode information.
 	uint8_t watchdog_register_value = (cycles << WDP0);
 	switch (mode) {
-		case interrupt:
+		case hal_system_watchdog_interrupt_mode:
 			_CLEAR_BIT(MCUSR, WDRF);
 			watchdog_register_value |= (1 << WDIE);
 			break;
-		case reset:
+		case hal_system_watchdog_reset_mode:
 			watchdog_register_value |= (1 << WDE);
 			break;
-		case interrupt_and_reset:
+		case hal_system_watchdog_interrupt_and_reset_mode:
 			watchdog_register_value |= (1 << WDIE);
 			watchdog_register_value |= (1 << WDE);
 			break;

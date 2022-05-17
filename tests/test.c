@@ -16,16 +16,16 @@
 int main(void)
 {
 	// Set PB5 as output.
-	hal_io_set_pin_mode(io_port_b, 5, io_mode_output);
+	hal_io_set_pin_mode(hal_io_port_b, 5, hal_io_output_mode);
 
 	// Enable usart.
 	hal_usart_t usart = {
 		.baud_rate = 115200,
 		.stop_bits = 1,
-		.parity = disabled,
+		.parity = hal_usart_parity_disabled,
 		.data_bits = 8,
-		.operating_mode = asynchronous_double_speed_mode,
-		.mode = transmit_and_receive,
+		.operating_mode = hal_usart_asynchronous_double_speed_mode,
+		.mode = hal_usart_transmit_and_receive_mode,
 	};
 
 	hal_usart_init(&usart);
@@ -34,7 +34,7 @@ int main(void)
 	uint16_t packet_count = 0;
 
 	while (1) {
-		hal_io_toggle_pin(io_port_b, 5);
+		hal_io_toggle_pin(hal_io_port_b, 5);
 
 		printf("%u\n", packet_count);
 

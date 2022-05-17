@@ -23,7 +23,7 @@ Code example:
 .. code-block:: c
 
 	// Set PB5 pin as output.
-	hal_io_set_pin_mode(io_port_b, 5, io_mode_output);
+	hal_io_set_pin_mode(hal_io_port_b, 5, hal_io_output_mode);
 
 Changing Pin State
 ==================
@@ -38,7 +38,7 @@ Code example:
 .. code-block:: c
 
 	// Write high to PB5 pin.
-	hal_io_write_pin(io_port_b, 5, io_state_high);
+	hal_io_write_pin(hal_io_port_b, 5, hal_io_high_state);
 
 Toggling Pin State
 ==================
@@ -53,7 +53,7 @@ Code example:
 .. code-block:: c
 
 	// Toggle PB5 pin state.
-	hal_io_toggle_pin(io_port_b, 5);
+	hal_io_toggle_pin(hal_io_port_b, 5);
 
 Reading Pin State
 =================
@@ -68,7 +68,7 @@ Code example:
 .. code-block:: c
 
 	// Read PB0 pin state.
-	uint8_t pb0_state = hal_io_read_pin(io_port_b, 0);
+	uint8_t pb0_state = hal_io_read_pin(hal_io_port_b, 0);
 	if (pb0_state == 1) {
 		printf("PB0 is in high state.\n");
 	}

@@ -37,7 +37,7 @@ Example code:
 
 	// Use defined constants in system header to get system reset source.
 	// Check API reference for other reset sources.
-	if (reset_status & hal_watchdog_reset) {
+	if (reset_status & HAL_SYSTEM_WATCHDOG_RESET) {
 		printf("Reset caused by a watchdog reset!\n");
 	}
 
@@ -104,7 +104,7 @@ Example code:
 .. code-block:: c
 
 	// Enable watchdog with 2 s timeout and reset mode.
-	hal_system_enable_watchdog(_256k_cycles, reset);
+	hal_system_enable_watchdog(hal_system_watchdog_256k_cycles, hal_system_watchdog_reset_mode);
 
 Resetting Watchdog Timer
 """"""""""""""""""""""""

@@ -42,32 +42,32 @@ void hal_power_set_sleep_mode(hal_power_sleep_modes mode)
 {
 	// Set sleep mode.
 	switch (mode) {
-		case idle:
+		case hal_power_idle_mode:
 			_CLEAR_BIT(SMCR, SM0);
 			_CLEAR_BIT(SMCR, SM1);
 			_CLEAR_BIT(SMCR, SM2);
 			break;
-		case adc_noise_reduction:
+		case hal_power_adc_noise_reduction_mode:
 			_CLEAR_BIT(SMCR, SM0);
 			_CLEAR_BIT(SMCR, SM1);
 			_SET_BIT(SMCR, SM2);
 			break;
-		case power_down:
+		case hal_power_power_down_mode:
 			_CLEAR_BIT(SMCR, SM0);
 			_SET_BIT(SMCR, SM1);
 			_CLEAR_BIT(SMCR, SM2);
 			break;
-		case power_save:
+		case hal_power_power_save_mode:
 			_CLEAR_BIT(SMCR, SM0);
 			_SET_BIT(SMCR, SM1);
 			_SET_BIT(SMCR, SM2);
 			break;
-		case standby:
+		case hal_power_standby_mode:
 			_SET_BIT(SMCR, SM0);
 			_SET_BIT(SMCR, SM1);
 			_CLEAR_BIT(SMCR, SM2);
 			break;
-		case external_standby:
+		case hal_power_external_standby_mode:
 			_SET_BIT(SMCR, SM0);
 			_SET_BIT(SMCR, SM1);
 			_SET_BIT(SMCR, SM2);
@@ -90,46 +90,46 @@ void hal_power_set_sleep_mode(hal_power_sleep_modes mode)
 void hal_power_set_module_power(hal_power_module_power_modes module_mod)
 {
 	switch (module_mod) {
-		case twi_off:
+		case hal_power_twi_off:
 			_SET_BIT(PRR, PRTWI);
 			break;
-		case twi_on:
+		case hal_power_twi_on:
 			_CLEAR_BIT(PRR, PRTWI);
 			break;
-		case timer_0_off:
+		case hal_power_timer_0_off:
 			_SET_BIT(PRR, PRTIM0);
 			break;
-		case timer_0_on:
+		case hal_power_timer_0_on:
 			_CLEAR_BIT(PRR, PRTIM0);
 			break;
-		case timer_1_off:
+		case hal_power_timer_1_off:
 			_SET_BIT(PRR, PRTIM1);
 			break;
-		case timer_1_on:
+		case hal_power_timer_1_on:
 			_CLEAR_BIT(PRR, PRTIM1);
 			break;
-		case timer_2_off:
+		case hal_power_timer_2_off:
 			_SET_BIT(PRR, PRTIM2);
 			break;
-		case timer_2_on:
+		case hal_power_timer_2_on:
 			_CLEAR_BIT(PRR, PRTIM2);
 			break;
-		case spi_off:
+		case hal_power_spi_off:
 			_SET_BIT(PRR, PRSPI);
 			break;
-		case spi_on:
+		case hal_power_spi_on:
 			_CLEAR_BIT(PRR, PRSPI);
 			break;
-		case usart0_off:
+		case hal_power_usart0_off:
 			_SET_BIT(PRR, PRUSART0);
 			break;
-		case usart0_on:
+		case hal_power_usart0_on:
 			_CLEAR_BIT(PRR, PRUSART0);
 			break;
-		case adc_off:
+		case hal_power_adc_off:
 			_SET_BIT(PRR, PRADC);
 			break;
-		case adc_on:
+		case hal_power_adc_on:
 			_CLEAR_BIT(PRR, PRADC);
 			break;
 		default:

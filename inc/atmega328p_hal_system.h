@@ -33,26 +33,26 @@
 
 #include <stdint.h>
 
-#define hal_watchdog_reset 3
-#define hal_brownout_reset 2
-#define hal_external_reset 1
-#define hal_power_on_reset 0
+#define HAL_SYSTEM_WATCHDOG_RESET 3
+#define HAL_SYSTEM_BROWNOUT_RESET 2
+#define HAL_SYSTEM_EXTERNAL_RESET 1
+#define HAL_SYSTEM_POWER_ON_RESET 0
 
 /**
  * @enum hal_system_watchdog_cycles
  * @brief Watchdog wait cycles options before a trigger.
  * */
 typedef enum hal_system_watchdog_cycles {
-	_2k_cycles = 0,
-	_4k_cycles = 1,
-	_8k_cycles = 2,
-	_16k_cycles = 3,
-	_32k_cycles = 4,
-	_64k_cycles = 5,
-	_128k_cycles = 6,
-	_256k_cycles = 7,
-	_512k_cycles = 8,
-	_1024k_cycles = 9
+	hal_system_watchdog_2k_cycles = 0,
+	hal_system_watchdog_4k_cycles = 1,
+	hal_system_watchdog_8k_cycles = 2,
+	hal_system_watchdog_16k_cycles = 3,
+	hal_system_watchdog_32k_cycles = 4,
+	hal_system_watchdog_64k_cycles = 5,
+	hal_system_watchdog_128k_cycles = 6,
+	hal_system_watchdog_256k_cycles = 7,
+	hal_system_watchdog_512k_cycles = 8,
+	hal_system_watchdog_1024k_cycles = 9
 } hal_system_watchdog_cycles;
 
 /**
@@ -60,9 +60,9 @@ typedef enum hal_system_watchdog_cycles {
  * @brief Wathcdog trigger modes.
  * */
 typedef enum hal_system_watchdog_modes {
-	interrupt,
-	reset,
-	interrupt_and_reset
+	hal_system_watchdog_interrupt_mode,
+	hal_system_watchdog_reset_mode,
+	hal_system_watchdog_interrupt_and_reset_mode
 } hal_system_watchdog_modes;
 
 uint8_t hal_system_get_reset_status();

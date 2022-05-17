@@ -31,10 +31,10 @@ USART must be initialized before using. Initialization takes 2 steps:
 	hal_usart_t usart = {
 		.baud_rate = 9600,
 		.stop_bits = 1,
-		.parity = disabled,
+		.parity = hal_usart_parity_disabled,
 		.data_bits = 8,
-		.operating_mode = asynchronous_normal_mode,
-		.mode = transmit_and_receive,
+		.operating_mode = hal_usart_asynchronous_normal_mode,
+		.mode = hal_usart_transmit_and_receive_mode,
 	};
 
 	// Initialize USART.
@@ -96,10 +96,10 @@ Standart I/O is supported over USART. To initialize standart I/O, ``hal_usart_st
 	hal_usart_t usart = {
 		.baud_rate = 9600,
 		.stop_bits = 1,
-		.parity = disabled,
+		.parity = hal_usart_parity_disabled,
 		.data_bits = 8,
-		.operating_mode = asynchronous_normal_mode,
-		.mode = transmit_and_receive,
+		.operating_mode = hal_usart_asynchronous_normal_mode,
+		.mode = hal_usart_transmit_and_receive_mode,
 	};
 
 	// Initialize USART.

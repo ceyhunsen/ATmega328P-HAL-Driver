@@ -8,14 +8,16 @@ ATmega328P HAL driver supports various hardware peripherals. Each module can be 
 Naming Conventions
 """"""""""""""""""
 
-* All the namings in snake case except for the constants.
+* All of the namings are in ``snake_case``, except for the constants: they are in ``SCREAMING_SNAKE_CASE``.
 * All file names includes ``atmega328p_hal`` prefix. E.g.: ``atmega328p_hal_usart.c``.
-* All function, struct and enum names includes ``hal`` prefix. E.g.: ``hal_usart_transmit()`` or ``hal_usart_t``.
+* All function, struct, enum and enum member names includes ``hal`` prefix. E.g.: ``hal_usart_transmit()`` or ``hal_usart_t``.
+
+With that information, needed members of this driver can be found easily.
 
 Extra Modules
 """""""""""""
 
-Some modules includes support for extra functionalities. For example: USART have transmit and receive in blocking mode as core functions. And in extra module of USART: Transmit and receive in non-blocking mode, stdio support is present. If any module has an extras module, it's source file must be compiled too (no new header is needed, only core header file is enough).
+Some modules includes support for extra functionalities. For example: USART module have transmit and receive in blocking mode as core functions, transmit and receive in non-blocking mode as extra functions. If any module has an extra module, it's source file must be compiled too (no new header is needed, only core header file is enough). Extra modules have suffix of ``extra`` in their names.
 
 How To Add To Project
 """""""""""""""""""""

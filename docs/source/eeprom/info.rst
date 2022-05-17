@@ -40,10 +40,10 @@ Example code:
 Changing EEPROM Programming Mode
 ================================
 
-EEPROM write mode is changable. See :ref:`eeprom-api-reference` for more information. Defaults to ``atomic``.
+EEPROM write mode is changable. See :ref:`eeprom-api-reference` for more information. Defaults to ``hal_eeprom_atomic_mode``.
 
 Example code:
 
 .. code-block:: c
 
-	hal_eeprom_set_mode(atomic);
+	hal_eeprom_set_mode(hal_eeprom_atomic_mode);

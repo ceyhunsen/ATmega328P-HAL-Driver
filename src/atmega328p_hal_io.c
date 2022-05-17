@@ -57,7 +57,7 @@ void hal_io_set_pin_mode(hal_io_ports port, uint8_t pin, hal_io_pin_modes mode)
 
 	// Set mode.
 	switch (mode) {
-		case io_mode_output:
+		case hal_io_output_mode:
 			// Tri-state intermediate step.
 			if (!(ddr_value & _PIN_TO_BIT(pin)) && !(port_value & _PIN_TO_BIT(pin))) {
 				_CLEAR_BIT(*port_pointer, pin);
@@ -68,7 +68,7 @@ void hal_io_set_pin_mode(hal_io_ports port, uint8_t pin, hal_io_pin_modes mode)
 			}
 			_SET_BIT(*ddr_pointer, pin);
 			break;
-		case io_mode_input_pull_up_on:
+		case hal_io_input_pull_up_on_mode:
 			// Output low intermediate step.
 			if ((ddr_value & _PIN_TO_BIT(pin)) && !(port_value & _PIN_TO_BIT(pin))) {
 				_SET_BIT(*port_pointer, pin);
@@ -76,7 +76,7 @@ void hal_io_set_pin_mode(hal_io_ports port, uint8_t pin, hal_io_pin_modes mode)
 			_CLEAR_BIT(*ddr_pointer, pin);
 			_SET_BIT(*port_pointer, pin);
 			break;
-		case io_mode_input_pull_up_off:
+		case hal_io_input_pull_up_off_mode:
 			// Output high intermediate step.
 			if ((ddr_value & _PIN_TO_BIT(pin)) && (port_value & _PIN_TO_BIT(pin))) {
 				_SET_BIT(*ddr_pointer, pin);
@@ -102,10 +102,10 @@ void hal_io_write_pin(hal_io_ports port, uint8_t pin, hal_io_pin_states state)
 	port_pointer = get_port_pointer(port);
 
 	switch (state) {
-		case io_state_high:
+		case hal_io_high_state:
 			_SET_BIT(*port_pointer, pin);
 			break;
-		case io_state_low:
+		case hal_io_low_state:
 			_CLEAR_BIT(*port_pointer, pin);
 			break;
 	}
@@ -153,13 +153,13 @@ static volatile uint8_t *get_ddr_pointer(hal_io_ports port)
 	volatile uint8_t *p;
 
 	switch (port) {
-		case io_port_b:
+		case hal_io_port_b:
 			p = &DDRB;
 			break;
-		case io_port_c:
+		case hal_io_port_c:
 			p = &DDRC;
 			break;
-		case io_port_d:
+		case hal_io_port_d:
 			p = &DDRD;
 			break;
 		default:
@@ -181,13 +181,13 @@ static volatile uint8_t *get_port_pointer(hal_io_ports port)
 	volatile uint8_t *p;
 
 	switch (port) {
-		case io_port_b:
+		case hal_io_port_b:
 			p = &PORTB;
 			break;
-		case io_port_c:
+		case hal_io_port_c:
 			p = &PORTC;
 			break;
-		case io_port_d:
+		case hal_io_port_d:
 			p = &PORTD;
 			break;
 		default:
@@ -209,13 +209,13 @@ static volatile uint8_t *get_pin_pointer(hal_io_ports port)
 	volatile uint8_t *p;
 
 	switch (port) {
-		case io_port_b:
+		case hal_io_port_b:
 			p = &PINB;
 			break;
-		case io_port_c:
+		case hal_io_port_c:
 			p = &PINC;
 			break;
-		case io_port_d:
+		case hal_io_port_d:
 			p = &PIND;
 			break;
 		default:

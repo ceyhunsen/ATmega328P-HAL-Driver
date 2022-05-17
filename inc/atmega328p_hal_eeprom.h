@@ -38,14 +38,14 @@
  * @brief EEPROM modes.
  * 
  * Atomic operation will take 3.4 ms and perform write and erase operation,
- * write_only will take 1.8 ms and only perform write operation and
- * erase_only will take 1.8 ms and only perform erase operation on writing to
+ * hal_eeprom_write_only_mode will take 1.8 ms and only perform write operation and
+ * hal_eeprom_erase_only_mode will take 1.8 ms and only perform erase operation on writing to
  * EEPROM.
  * */
 typedef enum hal_eeprom_modes {
-	atomic,
-	write_only,
-	erase_only
+	hal_eeprom_atomic_mode,
+	hal_eeprom_write_only_mode,
+	hal_eeprom_erase_only_mode
 } hal_eeprom_modes;
 
 void hal_eeprom_set_mode(hal_eeprom_modes mode);

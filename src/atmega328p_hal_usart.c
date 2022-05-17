@@ -49,19 +49,19 @@ void hal_usart_init(hal_usart_t *usart)
 	// Get operating mode prescaler and set USART control and status register.
 	uint8_t operating_mode_prescaler = 16;
 	switch (usart->operating_mode) {
-		case asynchronous_normal_mode:
+		case hal_usart_asynchronous_normal_mode:
 			operating_mode_prescaler = 16;
 			_CLEAR_BIT(UCSR0C, UMSEL00);
 			_CLEAR_BIT(UCSR0C, UMSEL01);
 			_CLEAR_BIT(UCSR0A, U2X0);
 			break;
-		case asynchronous_double_speed_mode:
+		case hal_usart_asynchronous_double_speed_mode:
 			operating_mode_prescaler = 8;
 			_CLEAR_BIT(UCSR0C, UMSEL00);
 			_CLEAR_BIT(UCSR0C, UMSEL01);
 			_SET_BIT(UCSR0A, U2X0);
 			break;
-		case synchronous_master_mode:
+		case hal_usart_synchronous_master_mode:
 			operating_mode_prescaler = 2;
 			_CLEAR_BIT(UCSR0C, UMSEL00);
 			_SET_BIT(UCSR0C, UMSEL01);
@@ -77,15 +77,15 @@ void hal_usart_init(hal_usart_t *usart)
 
 	// Set parity bit setting.
 	switch (usart->parity) {
-		case disabled:
+		case hal_usart_parity_disabled:
 			_CLEAR_BIT(UCSR0C, UPM00);
 			_CLEAR_BIT(UCSR0C, UPM01);
 			break;
-		case even_parity:
+		case hal_usart_even_parity:
 			_CLEAR_BIT(UCSR0C, UPM00);
 			_SET_BIT(UCSR0C, UPM01);
 			break;
-		case odd_parity:
+		case hal_usart_odd_parity:
 			_SET_BIT(UCSR0C, UPM00);
 			_SET_BIT(UCSR0C, UPM01);
 			break;
@@ -139,15 +139,15 @@ void hal_usart_init(hal_usart_t *usart)
 
 	// Set mode.
 	switch (usart->mode) {
-		case transmit:
+		case hal_usart_transmit_mode:
 			_SET_BIT(UCSR0B, TXEN0);
 			_CLEAR_BIT(UCSR0B, RXEN0);
 			break;
-		case receive:
+		case hal_usart_receive_mode:
 			_CLEAR_BIT(UCSR0B, TXEN0);
 			_SET_BIT(UCSR0B, RXEN0);
 			break;
-		case transmit_and_receive:
+		case hal_usart_transmit_and_receive_mode:
 			_SET_BIT(UCSR0B, TXEN0);
 			_SET_BIT(UCSR0B, RXEN0);
 			break;
@@ -170,7 +170,7 @@ void hal_usart_transmit(hal_usart_t *usart, uint8_t *data, uint16_t len)
 		// Wait till' any ongoing transfer is complete.
 		loop_until_bit_is_set(UCSR0A, UDRE0);
 
-		// Write data to trasnmit register.
+		// Write data to the USART data register.
 		UDR0 = data[i];
 	}
 }
@@ -190,7 +190,7 @@ void hal_usart_receive(hal_usart_t *usart, uint8_t *data, uint16_t len)
 		// Wait till' data is received.
 		loop_until_bit_is_set(UCSR0A, RXC0);
 
-		// Read data for receive register.
+		// Read data from USART data register.
 		data[i] = UDR0;
 	}
 }

@@ -22,7 +22,7 @@ Code example:
 .. code-block:: c
 
 	// Set idle sleep mode.
-	hal_power_set_sleep_mode(idle);
+	hal_power_set_sleep_mode(hal_power_idle_mode);
 
 Module Power Modes
 ==================
@@ -34,4 +34,4 @@ Code example:
 .. code-block:: c
 
 	// Disable ADC.
-	hal_power_set_module_power(adc_off);
+	hal_power_set_module_power(hal_power_adc_off);

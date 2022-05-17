@@ -38,8 +38,8 @@
  * @brief Pin states for I/O.
  * */
 typedef enum hal_io_pin_states {
-	io_state_high,
-	io_state_low
+	hal_io_high_state,
+	hal_io_low_state
 } hal_io_pin_states;
 
 /**
@@ -47,9 +47,9 @@ typedef enum hal_io_pin_states {
  * @brief Pin modes for I/O.
  * */
 typedef enum hal_io_pin_modes {
-	io_mode_output,
-	io_mode_input_pull_up_on,
-	io_mode_input_pull_up_off
+	hal_io_output_mode,
+	hal_io_input_pull_up_on_mode,
+	hal_io_input_pull_up_off_mode
 } hal_io_pin_modes;
 
 /**
@@ -57,9 +57,9 @@ typedef enum hal_io_pin_modes {
  * @brief Ports for I/O.
  * */
 typedef enum hal_io_ports {
-	io_port_b,
-	io_port_c,
-	io_port_d
+	hal_io_port_b,
+	hal_io_port_c,
+	hal_io_port_d
 } hal_io_ports;
 
 void hal_io_set_pin_mode(hal_io_ports port, uint8_t pin, hal_io_pin_modes mode);

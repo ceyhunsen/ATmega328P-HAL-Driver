@@ -36,12 +36,12 @@
  * @brief Sleep modes for ATmega328P.
  * */
 typedef enum hal_power_sleep_modes {
-	idle,
-	adc_noise_reduction,
-	power_down,
-	power_save,
-	standby,
-	external_standby
+	hal_power_idle_mode,
+	hal_power_adc_noise_reduction_mode,
+	hal_power_power_down_mode,
+	hal_power_power_save_mode,
+	hal_power_standby_mode,
+	hal_power_external_standby_mode
 } hal_power_sleep_modes;
 
 /**
@@ -49,20 +49,20 @@ typedef enum hal_power_sleep_modes {
  * @brief Module power modes.
  * */
 typedef enum hal_power_module_power_modes {
-	twi_off,
-	twi_on,
-	timer_0_off,
-	timer_0_on,
-	timer_1_off,
-	timer_1_on,
-	timer_2_off,
-	timer_2_on,
-	spi_off,
-	spi_on,
-	usart0_off,
-	usart0_on,
-	adc_off,
-	adc_on
+	hal_power_twi_off,
+	hal_power_twi_on,
+	hal_power_timer_0_off,
+	hal_power_timer_0_on,
+	hal_power_timer_1_off,
+	hal_power_timer_1_on,
+	hal_power_timer_2_off,
+	hal_power_timer_2_on,
+	hal_power_spi_off,
+	hal_power_spi_on,
+	hal_power_usart0_off,
+	hal_power_usart0_on,
+	hal_power_adc_off,
+	hal_power_adc_on
 } hal_power_module_power_modes;
 
 void hal_power_set_sleep_mode(hal_power_sleep_modes mode);

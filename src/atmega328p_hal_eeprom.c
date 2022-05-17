@@ -44,15 +44,15 @@ void hal_eeprom_set_mode(hal_eeprom_modes mode)
 
 	// Set mode.
 	switch (mode) {
-		case atomic:
+		case hal_eeprom_atomic_mode:
 			_CLEAR_BIT(EECR, EEPM0);
 			_CLEAR_BIT(EECR, EEPM1);
 			break;
-		case erase_only:
+		case hal_eeprom_erase_only_mode:
 			_SET_BIT(EECR, EEPM0);
 			_CLEAR_BIT(EECR, EEPM1);
 			break;
-		case write_only:
+		case hal_eeprom_write_only_mode:
 			_CLEAR_BIT(EECR, EEPM0);
 			_SET_BIT(EECR, EEPM1);
 			break;

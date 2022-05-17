@@ -38,9 +38,9 @@
  * @brief Operating modes for USART.
  * */
 typedef enum hal_usart_operating_mode {
-	asynchronous_normal_mode,
-	asynchronous_double_speed_mode,
-	synchronous_master_mode
+	hal_usart_asynchronous_normal_mode,
+	hal_usart_asynchronous_double_speed_mode,
+	hal_usart_synchronous_master_mode
 } hal_usart_operating_mode;
 
 /**
@@ -48,9 +48,9 @@ typedef enum hal_usart_operating_mode {
  * @brief Modes for USART.
  * */
 typedef enum hal_usart_mode {
-	transmit,
-	receive,
-	transmit_and_receive
+	hal_usart_transmit_mode,
+	hal_usart_receive_mode,
+	hal_usart_transmit_and_receive_mode
 } hal_usart_mode;
 
 /**
@@ -58,9 +58,9 @@ typedef enum hal_usart_mode {
  * @brief Parity settings for USART.
  * */
 typedef enum hal_usart_parity {
-	disabled,
-	even_parity,
-	odd_parity
+	hal_usart_parity_disabled,
+	hal_usart_even_parity,
+	hal_usart_odd_parity
 } hal_usart_parity;
 
 /**
