@@ -31,12 +31,22 @@ int main(void)
 	hal_usart_init(&usart);
 	hal_usart_stdio_init();
 
+	hal_twi_init(hal_twi_fast_mode);
+
 	uint16_t packet_count = 0;
+	uint8_t buffer[3] = {2, 2, 2}, ret = 0;
+
+	printf("ATmega328P started!\n");
+
+	buffer[0] = 23;
+	ret = hal_twi_write_memory(0b1101000, 119, hal_twi_register_size_1_byte, buffer, 1);
 
 	while (1) {
 		hal_io_toggle_pin(hal_io_port_b, 5);
 
-		printf("%u\n", packet_count);
+		ret = hal_twi_read_memory(0b1101000, 117, hal_twi_register_size_1_byte, buffer, sizeof(buffer));
+
+		printf("%u, %u: %u %u %u\n", packet_count, ret, buffer[0], buffer[1], buffer[2]);
 
 		packet_count++;
 		_delay_ms(100);

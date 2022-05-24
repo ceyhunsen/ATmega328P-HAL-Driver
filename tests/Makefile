@@ -47,6 +47,7 @@ test.c \
 ../src/atmega328p_hal_io.c \
 ../src/atmega328p_hal_usart.c \
 ../src/atmega328p_hal_usart_extra.c \
+../src/atmega328p_hal_twi.c \
 
 # Binary files.
 BUILD_DIR = build
