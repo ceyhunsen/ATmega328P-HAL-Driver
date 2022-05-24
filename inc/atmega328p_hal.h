@@ -31,11 +31,21 @@
 #ifndef __ATMEGA328P_HAL_H
 #define __ATMEGA328P_HAL_H
 
+// C++ compatibility.
+#ifdef __cplusplus
+extern "C" {
+#endif // __cplusplus
+
 #include "atmega328p_hal_power.h"
 #include "atmega328p_hal_system.h"
 #include "atmega328p_hal_eeprom.h"
 #include "atmega328p_hal_io.h"
 #include "atmega328p_hal_usart.h"
 #include "atmega328p_hal_twi.h"
+
+// C++ compatibility.
+#ifdef __cplusplus
+}
+#endif // __cplusplus
 
 #endif // __ATMEGA328P_HAL_H
