@@ -36,7 +36,7 @@ CFLAGS = -Wall $(OPT_FLAG) -mmcu=$(MCU) $(C_INCLUDES) -D F_CPU=16000000UL
 
 # Include directories.
 C_INCLUDES = \
--I../inc
+-I../include
 
 # Source files.
 C_SOURCES = \
