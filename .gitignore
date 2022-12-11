@@ -1,7 +1,15 @@
+# Git ignore file for ATMega328P HAL driver.
+
+# C build artifacts.
 *.o
 *.elf
 *.hex
 *.exe
 tests/build
-docs/build
+
+# Editors.
 *.geany
+.vscode
+
+# Documentation.
+docs/build
