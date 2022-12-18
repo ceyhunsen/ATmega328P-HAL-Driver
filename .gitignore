@@ -2,10 +2,11 @@
 
 # C build artifacts.
 *.o
+*.a
 *.elf
 *.hex
 *.exe
-tests/build
+**/build
 
 # Editors.
 *.geany
