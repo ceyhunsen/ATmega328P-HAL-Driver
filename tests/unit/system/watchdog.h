@@ -1,7 +1,7 @@
 /**
  * @file watchdog.h
  * @author Ceyhun Şen
- * @brief Watchdog timer tests.
+ * @brief Unit tests for watchdog timer.
  */
 
 /*
@@ -31,6 +31,6 @@
 #ifndef __WATCHDOG_H
 #define __WATCHDOG_H
 
-void test_wdt_enable();
+void test_wdt_enable_cycles();
 
 #endif // __WATCHDOG_H

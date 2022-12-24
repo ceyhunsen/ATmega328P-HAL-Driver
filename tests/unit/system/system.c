@@ -1,12 +1,12 @@
 /**
- * @file watchdog.c
+ * @file system.c
  * @author Ceyhun Şen
- * @brief System tests.
+ * @brief Unit tests for system module
  */
 
 #include "watchdog.h"
 #include "unity.h"
-#include <avr/definitions.h>
+#include <definitions.h>
 
 void setUp()
 {
@@ -20,7 +20,7 @@ void tearDown()
 
 int main()
 {
-	RUN_TEST(test_wdt_enable);
+	RUN_TEST(test_wdt_enable_cycles);
 
 	return UnityEnd();
 }

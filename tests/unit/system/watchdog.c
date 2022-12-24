@@ -1,7 +1,7 @@
 /**
  * @file watchdog.c
  * @author Ceyhun Şen
- * @brief Watchdog timer tests.
+ * @brief Unit tests for watchdog timer.
  */
 
 /*
@@ -28,10 +28,26 @@
  * SOFTWARE.
  * */
 
+#include "atmega328p_hal_system.h"
 #include "watchdog.h"
 #include "unity.h"
+#include <avr/io.h>
 
-void test_wdt_enable()
+/**
+ * @brief Unit test for cycle check when enabling watchdog timer.
+ */
+void test_wdt_enable_cycles()
 {
-	
+	int j = 0;
+
+	for (hal_system_watchdog_cycles i = 0; i <= hal_system_watchdog_1024k_cycles; i++, j++) {
+		// Set cycle.
+		hal_system_enable_watchdog(i, hal_system_watchdog_interrupt_mode);
+
+		// Check if written correctly.
+		TEST_ASSERT_EQUAL(WDTCSR & 0b1111, j);
+
+		// Reset register.
+		WDTCSR = 0;
+	}
 }

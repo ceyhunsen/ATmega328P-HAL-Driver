@@ -1,12 +1,10 @@
 /**
- * @file definitions.h
+ * @file definitions.c
  * @author Ceyhun Şen
- * @brief Mock up register definitions. This file must included just once.
+ * @brief Mock up register definitions.
  */
 
-#ifndef __DEFINITIONS_H
-#define __DEFINITIONS_H
-
+#include <definitions.h>
 #include <avr/io.h>
 
 // System control and reset.
@@ -21,5 +19,3 @@ void reset_registers()
 	MCUSR = 0;
 	WDTCSR = 0;
 }
-
-#endif // __DEFINITIONS_H

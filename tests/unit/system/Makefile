@@ -8,6 +8,7 @@ TARGET = system_test
 BUILD_DIR = build
 
 C_SOURCES = \
+../../mocks/definitions.c \
 ../../../src/atmega328p_hal_system.c \
 ../../Unity/src/unity.c \
 system.c \
