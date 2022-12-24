@@ -1,7 +1,11 @@
 /**
  * @file atmega328p_hal_system.h
  * @author Ceyhun Şen
- * @brief System control and reset header file for ATmega328P HAL driver.
+ * @brief System control and reset module.
+ * 
+ * This module includes support for:
+ * * Reset status
+ * * Watchdog timer
  * */
 
 /*
@@ -40,29 +44,29 @@
 
 /**
  * @enum hal_system_watchdog_cycles
- * @brief Watchdog wait cycles options before a trigger.
+ * @brief Watchdog oscillator cycles before a trigger.
  * */
 typedef enum hal_system_watchdog_cycles {
-	hal_system_watchdog_2k_cycles = 0,
-	hal_system_watchdog_4k_cycles = 1,
-	hal_system_watchdog_8k_cycles = 2,
-	hal_system_watchdog_16k_cycles = 3,
-	hal_system_watchdog_32k_cycles = 4,
-	hal_system_watchdog_64k_cycles = 5,
-	hal_system_watchdog_128k_cycles = 6,
-	hal_system_watchdog_256k_cycles = 7,
-	hal_system_watchdog_512k_cycles = 8,
-	hal_system_watchdog_1024k_cycles = 9
+	hal_system_watchdog_2k_cycles    = 0, ///< 16 ms at 5.0 V.
+	hal_system_watchdog_4k_cycles    = 1, ///< 32 ms at 5.0 V.
+	hal_system_watchdog_8k_cycles    = 2, ///< 64 ms at 5.0 V.
+	hal_system_watchdog_16k_cycles   = 3, ///< 0.125 s at 5.0 V.
+	hal_system_watchdog_32k_cycles   = 4, ///< 0.25 s at 5.0 V.
+	hal_system_watchdog_64k_cycles   = 5, ///< 0.5 s at 5.0 V.
+	hal_system_watchdog_128k_cycles  = 6, ///< 1 s at 5.0 V.
+	hal_system_watchdog_256k_cycles  = 7, ///< 2 s at 5.0 V.
+	hal_system_watchdog_512k_cycles  = 8, ///< 4 s at 5.0 V.
+	hal_system_watchdog_1024k_cycles = 9  ///< 8 s at 5.0 V.
 } hal_system_watchdog_cycles;
 
 /**
  * @enum hal_system_watchdog_modes
- * @brief Wathcdog trigger modes.
+ * @brief Trigger modes after watchdog timer expires.
  * */
 typedef enum hal_system_watchdog_modes {
-	hal_system_watchdog_interrupt_mode = 0,
-	hal_system_watchdog_reset_mode,
-	hal_system_watchdog_interrupt_and_reset_mode
+	hal_system_watchdog_interrupt_mode = 0,       ///< Trigger interrupt after watchdog timer expires.
+	hal_system_watchdog_reset_mode,               ///< Reset MCU after watchdog timer expires.
+	hal_system_watchdog_interrupt_and_reset_mode  ///< Trigger interrupt and reset MCU after watchdog timer expires.
 } hal_system_watchdog_modes;
 
 uint8_t hal_system_get_reset_status();

@@ -112,7 +112,7 @@ void hal_system_disable_watchdog()
 /**
  * @brief Reset watchdog timer.
  * */
-void hal_system_reset_watchdog()
+inline void hal_system_reset_watchdog()
 {
 	wdt_reset();
 }
