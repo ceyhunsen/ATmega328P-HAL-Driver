@@ -54,9 +54,12 @@ uint8_t hal_system_get_reset_status()
  * */
 void hal_system_enable_watchdog(hal_system_watchdog_cycles cycles, hal_system_watchdog_modes mode)
 {
-	// Get watchdog register value with cycle and mode information.
+	// Save cycles.
 	uint8_t watchdog_register_value = (cycles << WDP0);
+
+	// Save mode.
 	switch (mode) {
+		default:
 		case hal_system_watchdog_interrupt_mode:
 			_CLEAR_BIT(MCUSR, WDRF);
 			watchdog_register_value |= (1 << WDIE);
@@ -67,10 +70,6 @@ void hal_system_enable_watchdog(hal_system_watchdog_cycles cycles, hal_system_wa
 		case hal_system_watchdog_interrupt_and_reset_mode:
 			watchdog_register_value |= (1 << WDIE);
 			watchdog_register_value |= (1 << WDE);
-			break;
-		default:
-			_CLEAR_BIT(MCUSR, WDRF);
-			watchdog_register_value |= (1 << WDIE);
 			break;
 	}
 

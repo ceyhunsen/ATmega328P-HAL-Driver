@@ -60,7 +60,7 @@ typedef enum hal_system_watchdog_cycles {
  * @brief Wathcdog trigger modes.
  * */
 typedef enum hal_system_watchdog_modes {
-	hal_system_watchdog_interrupt_mode,
+	hal_system_watchdog_interrupt_mode = 0,
 	hal_system_watchdog_reset_mode,
 	hal_system_watchdog_interrupt_and_reset_mode
 } hal_system_watchdog_modes;

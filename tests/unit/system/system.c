@@ -21,6 +21,7 @@ void tearDown()
 int main()
 {
 	RUN_TEST(test_wdt_enable_cycles);
+	RUN_TEST(test_wdt_enable_mode);
 
 	return UnityEnd();
 }

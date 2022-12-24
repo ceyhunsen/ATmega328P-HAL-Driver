@@ -32,22 +32,44 @@
 #include "watchdog.h"
 #include "unity.h"
 #include <avr/io.h>
+#include <stdint.h>
 
 /**
  * @brief Unit test for cycle check when enabling watchdog timer.
  */
 void test_wdt_enable_cycles()
 {
-	int j = 0;
+	// Unnecessary for this test.
+	hal_system_watchdog_modes _ = hal_system_watchdog_interrupt_mode;
 
-	for (hal_system_watchdog_cycles i = 0; i <= hal_system_watchdog_1024k_cycles; i++, j++) {
+	uint8_t j = 0;
+
+	for (hal_system_watchdog_cycles i = hal_system_watchdog_2k_cycles; i <= hal_system_watchdog_1024k_cycles; i++, j++) {
 		// Set cycle.
-		hal_system_enable_watchdog(i, hal_system_watchdog_interrupt_mode);
+		hal_system_enable_watchdog(i, _);
 
 		// Check if written correctly.
 		TEST_ASSERT_EQUAL(WDTCSR & 0b1111, j);
-
-		// Reset register.
-		WDTCSR = 0;
 	}
+}
+
+/**
+ * @brief Unit tests for mode check when enabling watchdog timer.
+ */
+void test_wdt_enable_mode()
+{
+	// Unnecessary for this test.
+	hal_system_watchdog_modes _ = hal_system_watchdog_2k_cycles;
+
+	hal_system_enable_watchdog(_, hal_system_watchdog_interrupt_mode);
+	TEST_ASSERT_EQUAL(WDTCSR & (1 << WDIE), (1 << WDIE));
+	TEST_ASSERT_EQUAL(WDTCSR & (1 << WDE),  (0 << WDE));
+
+	hal_system_enable_watchdog(_, hal_system_watchdog_reset_mode);
+	TEST_ASSERT_EQUAL(WDTCSR & (1 << WDIE), (0 << WDIE));
+	TEST_ASSERT_EQUAL(WDTCSR & (1 << WDE),  (1 << WDE));
+
+	hal_system_enable_watchdog(_, hal_system_watchdog_interrupt_and_reset_mode);
+	TEST_ASSERT_EQUAL(WDTCSR & (1 << WDIE), (1 << WDIE));
+	TEST_ASSERT_EQUAL(WDTCSR & (1 << WDE),  (1 << WDE));
 }

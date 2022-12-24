@@ -32,5 +32,6 @@
 #define __WATCHDOG_H
 
 void test_wdt_enable_cycles();
+void test_wdt_enable_mode();
 
 #endif // __WATCHDOG_H
