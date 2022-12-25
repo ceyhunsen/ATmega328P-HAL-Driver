@@ -1,15 +1,5 @@
 .. _system-info:
 
-How To Add To Project
-=====================
-
-If instructions in :ref:`getting-started` applied, this part can be skipped.
-
-1. Copy ``atmega328p_hal_driver`` directory to target project's driver directory.
-2. Add ``atmega328p_hal_driver/inc/`` directory to target project's include path.
-3. Add ``atmega328p_hal_driver/src/atmega328p_hal_system.c`` to target project's build toolchain as a source file.
-4. Include ``atmega328p_hal_system.h`` header to desired source file(s).
-
 Getting System Reset Source
 ===========================
 
@@ -65,11 +55,11 @@ Timeout Options
 
 Watchdog timer features 10 different timeout options:
 
-.. list-table:: Timeout Modes
+.. list-table:: Typical Time-out For Each Cycle
 	:header-rows: 1
 
 	* - Number of WDT Oscillator Cycles
-	  - Typical Time-out at VCC = 5.0V
+	  - Typical Time-out At VCC = 5.0V
 	* - 2K (2048) cycles
 	  - 16ms
 	* - 4K (4096) cycles
@@ -94,17 +84,14 @@ Watchdog timer features 10 different timeout options:
 .. doxygenenum:: hal_system_watchdog_cycles
 	:project: ATmega328P HAL Driver
 
-Enabling Watchdog
-"""""""""""""""""
+Setting Watchdog Timer
+""""""""""""""""""""""
 
-``hal_system_enable_watchdog()`` function can be used to enable watchdog. While calling this function, give timeout option and operating mode as parameters.
+Watchdog timer can be set enabled or disabled with ``hal_system_set_watchdog()`` function. While calling this function, give timeout option and operating mode as parameters.
 
 Example code:
 
-.. code-block:: c
-
-	// Enable watchdog with 2 s timeout and reset mode.
-	hal_system_enable_watchdog(hal_system_watchdog_256k_cycles, hal_system_watchdog_reset_mode);
+.. include:: ../../../examples/system/watchdog.c
 
 Resetting Watchdog Timer
 """"""""""""""""""""""""
@@ -117,13 +104,3 @@ Example code:
 
 	// Call reset function to reset watchdog timer.
 	hal_system_reset_watchdog();
-
-Disabling Watchdog
-""""""""""""""""""
-
-Watchdog can be disabled with ``hal_system_disable_watchdog()`` function. After a power on reset, ATmega328P defaults to disabled watchdog.
-
-.. code-block:: c
-
-	// Call disable function to disable watchdog.
-	hal_system_disable_watchdog();

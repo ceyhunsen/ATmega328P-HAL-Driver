@@ -39,14 +39,16 @@
  */
 void test_wdt_enable_cycles()
 {
-	// Unnecessary for this test.
-	hal_system_watchdog_modes _ = hal_system_watchdog_interrupt_mode;
+	hal_system_watchdog_t watchdog;
 
 	uint8_t j = 0;
 
 	for (hal_system_watchdog_cycles i = hal_system_watchdog_2k_cycles; i <= hal_system_watchdog_1024k_cycles; i++, j++) {
 		// Set cycle.
-		hal_system_enable_watchdog(i, _);
+		watchdog.cycles = i;
+
+		// Enable watchdog with given cycle.
+		hal_system_set_watchdog(watchdog);
 
 		// Check if written correctly.
 		TEST_ASSERT_EQUAL(WDTCSR & 0b1111, j);
@@ -58,18 +60,32 @@ void test_wdt_enable_cycles()
  */
 void test_wdt_enable_mode()
 {
-	// Unnecessary for this test.
-	hal_system_watchdog_modes _ = hal_system_watchdog_2k_cycles;
+	hal_system_watchdog_t watchdog;
 
-	hal_system_enable_watchdog(_, hal_system_watchdog_interrupt_mode);
+	watchdog.mode = hal_system_watchdog_interrupt_mode;
+	hal_system_set_watchdog(watchdog);
 	TEST_ASSERT_EQUAL(WDTCSR & (1 << WDIE), (1 << WDIE));
 	TEST_ASSERT_EQUAL(WDTCSR & (1 << WDE),  (0 << WDE));
 
-	hal_system_enable_watchdog(_, hal_system_watchdog_reset_mode);
+	watchdog.mode = hal_system_watchdog_reset_mode;
+	hal_system_set_watchdog(watchdog);
 	TEST_ASSERT_EQUAL(WDTCSR & (1 << WDIE), (0 << WDIE));
 	TEST_ASSERT_EQUAL(WDTCSR & (1 << WDE),  (1 << WDE));
 
-	hal_system_enable_watchdog(_, hal_system_watchdog_interrupt_and_reset_mode);
+	watchdog.mode = hal_system_watchdog_interrupt_and_reset_mode;
+	hal_system_set_watchdog(watchdog);
 	TEST_ASSERT_EQUAL(WDTCSR & (1 << WDIE), (1 << WDIE));
 	TEST_ASSERT_EQUAL(WDTCSR & (1 << WDE),  (1 << WDE));
+}
+
+/**
+ * @brief Unit test for disabling watchdog timer.
+ */
+void test_wdt_disable()
+{
+	hal_system_watchdog_t watchdog;
+
+	watchdog.mode = hal_system_watchdog_disabled;
+	hal_system_set_watchdog(watchdog);
+	TEST_ASSERT_EQUAL(WDTCSR, 0);
 }

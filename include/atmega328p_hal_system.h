@@ -43,6 +43,17 @@
 #define HAL_SYSTEM_POWER_ON_RESET 0
 
 /**
+ * @enum hal_system_watchdog_modes
+ * @brief Trigger modes after watchdog timer expires.
+ * */
+typedef enum hal_system_watchdog_modes {
+	hal_system_watchdog_disabled = 0,             ///< Disable watchdog timer.
+	hal_system_watchdog_interrupt_mode,           ///< Trigger interrupt after watchdog timer expires.
+	hal_system_watchdog_reset_mode,               ///< Reset MCU after watchdog timer expires.
+	hal_system_watchdog_interrupt_and_reset_mode  ///< Trigger interrupt and reset MCU after watchdog timer expires.
+} hal_system_watchdog_modes;
+
+/**
  * @enum hal_system_watchdog_cycles
  * @brief Watchdog oscillator cycles before a trigger.
  * */
@@ -60,18 +71,20 @@ typedef enum hal_system_watchdog_cycles {
 } hal_system_watchdog_cycles;
 
 /**
- * @enum hal_system_watchdog_modes
- * @brief Trigger modes after watchdog timer expires.
- * */
-typedef enum hal_system_watchdog_modes {
-	hal_system_watchdog_interrupt_mode = 0,       ///< Trigger interrupt after watchdog timer expires.
-	hal_system_watchdog_reset_mode,               ///< Reset MCU after watchdog timer expires.
-	hal_system_watchdog_interrupt_and_reset_mode  ///< Trigger interrupt and reset MCU after watchdog timer expires.
-} hal_system_watchdog_modes;
+ * @struct hal_system_watchdog_t
+ * @brief Watchdog timer settings.
+ * @param mode Watchdog timer trigger mode.
+ * @param cycles Oscillator cycles before a watchdog trigger. Doesn't matter in disabled mode.
+ * @see hal_system_watchdog_modes
+ * @see hal_system_watchdog_cycles
+ */
+typedef struct hal_system_watchdog_t {
+	hal_system_watchdog_modes mode;
+	hal_system_watchdog_cycles cycles;
+} hal_system_watchdog_t;
 
 uint8_t hal_system_get_reset_status();
-void hal_system_enable_watchdog(hal_system_watchdog_cycles cycles, hal_system_watchdog_modes mode);
-void hal_system_disable_watchdog();
+void hal_system_set_watchdog(hal_system_watchdog_t watchdog);
 void hal_system_reset_watchdog();
 
 #endif // __ATMEGA328P_HAL_SYSTEM_H

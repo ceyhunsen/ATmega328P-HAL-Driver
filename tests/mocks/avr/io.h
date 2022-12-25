@@ -33,6 +33,8 @@
 
 #include <stdint.h>
 
+#define _BV(bit) (1 << (bit))
+
 typedef uint8_t  byte_register_t;
 typedef uint16_t word_register_t;
 typedef uint32_t dword_register_t;

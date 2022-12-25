@@ -46,36 +46,46 @@ uint8_t hal_system_get_reset_status()
 }
 
 /**
- * @brief Enable watchdog with given settings.
- * @param cycles Oscillator cycles before a watchdog trigger.
- * @param mode Watchdog trigger mode.
- * @see hal_system_watchdog_cycles
- * @see hal_system_watchdog_modes
+ * @brief Set watchdog timer with given settings.
+ * @param mode Watchdog timer trigger mode.
+ * @param cycles Oscillator cycles before a watchdog trigger. Doesn't matter in disabled mode.
+ * @see hal_system_watchdog_t
  * */
-void hal_system_enable_watchdog(hal_system_watchdog_cycles cycles, hal_system_watchdog_modes mode)
+void hal_system_set_watchdog(hal_system_watchdog_t watchdog)
 {
-	// Save cycles.
-	uint8_t watchdog_register_value = (cycles << WDP0);
+	// Because of register value must be written to register in one operation,
+	// register value must be calculated beforehand.
+	uint8_t watchdog_register_value = 0;
 
-	// Save mode.
-	switch (mode) {
+	// Save operating mode.
+	switch (watchdog.mode) {
 		default:
+		case hal_system_watchdog_disabled:
+			watchdog_register_value = 0;
+			break;
 		case hal_system_watchdog_interrupt_mode:
-			_CLEAR_BIT(MCUSR, WDRF);
-			watchdog_register_value |= (1 << WDIE);
+			_SET_BIT(watchdog_register_value, WDIE);
 			break;
 		case hal_system_watchdog_reset_mode:
-			watchdog_register_value |= (1 << WDE);
+			_SET_BIT(watchdog_register_value, WDE);
 			break;
 		case hal_system_watchdog_interrupt_and_reset_mode:
-			watchdog_register_value |= (1 << WDIE);
-			watchdog_register_value |= (1 << WDE);
+			_SET_BIT(watchdog_register_value, WDIE);
+			_SET_BIT(watchdog_register_value, WDE);
 			break;
+	}
+
+	// If watchdog timer is not disabled, save cycles.
+	if (watchdog.mode != hal_system_watchdog_disabled) {
+		watchdog_register_value |= (watchdog.cycles << WDP0);
 	}
 
 	// Disable interrupts and reset watchdog.
 	cli();
 	hal_system_reset_watchdog();
+
+	// Clear watchdog status flag.
+	_CLEAR_BIT(MCUSR, WDRF);
 
 	// Set change enable.
 	WDTCSR |= (1 << WDCE) | (1 << WDE);
@@ -88,29 +98,7 @@ void hal_system_enable_watchdog(hal_system_watchdog_cycles cycles, hal_system_wa
 }
 
 /**
- * @brief Disable watchdog timer.
- * */
-void hal_system_disable_watchdog()
-{
-	// Disable interrupts and reset watchdog.
-	cli();
-	hal_system_reset_watchdog();
-
-	// Clear watchdog status flag.
-	_CLEAR_BIT(MCUSR, WDRF);
-
-	// Set change enable.
-	WDTCSR |= (1 << WDCE) | (1 << WDE);
-
-	// Turn off watchdog timer.
-	WDTCSR = 0;
-
-	// Finally, enable interrupts.
-	sei(); 
-}
-
-/**
- * @brief Reset watchdog timer.
+ * @brief Reset watchdog timer counter.
  * */
 inline void hal_system_reset_watchdog()
 {

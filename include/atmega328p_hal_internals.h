@@ -31,6 +31,8 @@
 #ifndef __ATMEGA328P_HAL_INTERNALS_H
 #define __ATMEGA328P_HAL_INTERNALS_H
 
+#include <avr/io.h>
+
 /**
  * @addtogroup bit_manipulation
  * @brief Bit manipulation defines.
