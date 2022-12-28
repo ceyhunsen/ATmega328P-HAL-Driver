@@ -1,3 +1,6 @@
 [submodule "tests/Unity"]
 	path = tests/Unity
 	url = https://github.com/ThrowTheSwitch/Unity.git
+[submodule "docs/theme/doxygen-awesome-css"]
+	path = docs/theme/doxygen-awesome-css
+	url = https://github.com/jothepro/doxygen-awesome-css.git

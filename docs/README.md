@@ -1,21 +1,27 @@
 # Documentation
 
-Documentation is available online at [http://atmega328p-hal-driver.rtfd.io/](http://atmega328p-hal-driver.rtfd.io/). Also can be created offline.
+Welcome to the ATmega328P hal driver documentation. This driver's source code is hosted on [Github](https://github.com/ceyhunsen/ATmega328P-HAL-Driver) and it's documentation is at [currently not available](https://www.example.com).
 
-## Creating Documents Offline
+## Sections
 
-This project uses Doxygen and Sphinx to create documents. So, prerequisites are:
+1. [Getting Started](getting-started.md)
+2. [AVR Memories](memories.md)
+3. [Power Management And Sleep Modes](power_management_and_sleep_modes.md)
+4. [System Control And Reset](system_control_and_reset.md)
+5. [I/O Ports](io_ports.md)
+6. [Timer](timer.md)
+7. [SPI](spi.md)
+8. [USART](usart.md)
+9. [TWI](twi.md)
+10. [ADC](adc.md)
 
-* Doxygen
-* Python 3
-* Python 3 pip
-* Make
+## More About Documentation
 
-Install absent programs and run these commands in this directory to create documents:
+Doxygen based documentation can be generated offline:
 
 ```bash
-pip3 install -r requirements.txt
-make html
+cd docs/
+doxygen Doxyfile
 ```
 
-Then navigate `build/html/` and open `index.html` file with your favorite browser.
+Generated documents will be in `docs/build` directory.

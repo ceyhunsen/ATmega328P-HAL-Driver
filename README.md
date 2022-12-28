@@ -1,10 +1,12 @@
-# ATMega328P HAL Drivers
+# ATmega328P HAL Drivers
 
-Hal drivers for ATmega328P microcontroller. **This driver is still in development! Use it in your own risk.**
+Unofficial hal drivers for ATmega328P microcontroller.
+
+**This driver is still in development! Use it in your own risk.**
 
 ## Adding To Project
 
-ATMega328P hal driver should be added as a submodule to your project:
+ATmega328P hal driver should be added as a submodule to your project:
 
 ```bash
 cd project/drivers/directory
