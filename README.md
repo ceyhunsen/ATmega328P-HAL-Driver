@@ -23,7 +23,7 @@ For more, see [documentation](#documentation).
 
 ## Documentation
 
-Documentation is available [online](http://atmega328p-hal-driver.rtfd.io/) and can be created offline. See [docs/](docs/) directory for more information.
+Documentation is available at [atmega328p-hal-driver.rtfd.io](http://atmega328p-hal-driver.rtfd.io/) and can be created offline. See [docs/](docs/) directory for more information.
 
 ## License
 
