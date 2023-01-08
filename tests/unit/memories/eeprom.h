@@ -1,8 +1,8 @@
 /**
- * @file atmega328p_hal_eeprom.h
+ * @file eeprom.h
  * @author Ceyhun Şen
- * @brief EEPROM header file for ATmega328P HAL driver.
- * */
+ * @brief Unit tests for eeprom.
+ */
 
 /*
  * MIT License
@@ -28,28 +28,10 @@
  * SOFTWARE.
  * */
 
-#ifndef __ATMEGA328P_HAL_EEPROM_H
-#define __ATMEGA328P_HAL_EEPROM_H
+#ifndef __EEPROM_H
+#define __EEPROM_H
 
-#include <stdint.h>
+void test_eeprom_modes();
+void test_eeprom_interrupt();
 
-/**
- * @enum hal_eeprom_modes
- * @brief EEPROM modes.
- * 
- * Atomic operation will take 3.4 ms and perform write and erase operation,
- * hal_eeprom_write_only_mode will take 1.8 ms and only perform write operation and
- * hal_eeprom_erase_only_mode will take 1.8 ms and only perform erase operation on writing to
- * EEPROM.
- * */
-typedef enum hal_eeprom_modes {
-	hal_eeprom_atomic_mode,
-	hal_eeprom_write_only_mode,
-	hal_eeprom_erase_only_mode
-} hal_eeprom_modes;
-
-void hal_eeprom_set_mode(hal_eeprom_modes mode);
-uint16_t hal_eeprom_read(uint16_t start_address, uint8_t *data, uint16_t len);
-uint16_t hal_eeprom_write(uint16_t start_address, uint8_t *data, uint16_t len);
-
-#endif // __ATMEGA328P_HAL_EEPROM_H
+#endif // __EEPROM_H

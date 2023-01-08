@@ -1,13 +1,13 @@
 /**
- * @file atmega328p_hal_eeprom.c
+ * @file atmega328p_hal_memories.c
  * @author Ceyhun Şen
- * @brief EEPROM HAL functions for ATmega328P HAL driver.
+ * @brief Memory operations.
  * */
 
 /*
  * MIT License
  * 
- * Copyright (c) 2022 Ceyhun Şen
+ * Copyright (c) 2023 Ceyhun Şen
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,37 +28,36 @@
  * SOFTWARE.
  * */
 
-#include "atmega328p_hal_eeprom.h"
+#include "atmega328p_hal_memories.h"
 #include "atmega328p_hal_internals.h"
 #include <avr/io.h>
 
 /**
- * @brief Set EEPROM mode.
- * @param mode EEPROM mode to be set.
- * @see hal_eeprom_modes
+ * @brief Set EEPROM settings.
+ * 
+ * @param settings EEPROM settings
+ * 
+ * @see hal_memories_eeprom_settings
  * */
-void hal_eeprom_set_mode(hal_eeprom_modes mode)
+void hal_memories_eeprom_set(hal_memories_eeprom_settings settings)
 {
 	// Wait for ongoing write operations.
-	while (EECR & _PIN_TO_BIT(EEPE));
+	loop_until_bit_is_clear(EECR, EEPE);
 
 	// Set mode.
-	switch (mode) {
-		case hal_eeprom_atomic_mode:
+	switch (settings.mode) {
+		default:
+		case hal_memories_eeprom_erase_and_write_mode:
 			_CLEAR_BIT(EECR, EEPM0);
 			_CLEAR_BIT(EECR, EEPM1);
 			break;
-		case hal_eeprom_erase_only_mode:
+		case hal_memories_eeprom_erase_only_mode:
 			_SET_BIT(EECR, EEPM0);
 			_CLEAR_BIT(EECR, EEPM1);
 			break;
-		case hal_eeprom_write_only_mode:
+		case hal_memories_eeprom_write_only_mode:
 			_CLEAR_BIT(EECR, EEPM0);
 			_SET_BIT(EECR, EEPM1);
-			break;
-		default:
-			_CLEAR_BIT(EECR, EEPM0);
-			_CLEAR_BIT(EECR, EEPM1);
 			break;
 	}
 }
@@ -70,7 +69,7 @@ void hal_eeprom_set_mode(hal_eeprom_modes mode)
  * @param len Length of the data that will be read.
  * @returns Length of the readed data.
  * */
-uint16_t hal_eeprom_read(uint16_t start_address, uint8_t *data, uint16_t len)
+uint16_t hal_memories_eeprom_read(uint16_t start_address, uint8_t *data, uint16_t len)
 {
 	for (uint16_t i = 0; i < len; i++) {
 		// Check start_address overflow.
@@ -99,7 +98,7 @@ uint16_t hal_eeprom_read(uint16_t start_address, uint8_t *data, uint16_t len)
  * @param len Length of the data that will be written.
  * @returns Length of the written data.
  * */
-uint16_t hal_eeprom_write(uint16_t start_address, uint8_t *data, uint16_t len)
+uint16_t hal_memories_eeprom_write(uint16_t start_address, uint8_t *data, uint16_t len)
 {
 	for (uint16_t i = 0; i < len; i++) {
 		// Check start_address overflow.
