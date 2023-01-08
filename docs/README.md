@@ -1,6 +1,6 @@
 # Documentation
 
-Welcome to the ATmega328P hal driver documentation. This driver's source code is hosted on [Github](https://github.com/ceyhunsen/ATmega328P-HAL-Driver) and it's documentation is at [currently not available](https://www.example.com).
+Welcome to the ATmega328P hal driver documentation. This driver's source code is hosted on [Github](https://github.com/ceyhunsen/ATmega328P-HAL-Driver) and it's documentation is at [atmega328p-hal-driver.rtfd.io](http://atmega328p-hal-driver.rtfd.io/).
 
 ## Sections
 
