@@ -79,7 +79,4 @@ unit: $(UNIT_TESTS)
 $(UNIT_TESTS):
 	$(MAKE) -C $@
 
-clean:
-	$(MAKE) clean -C $(UNIT_TESTS)
-
 .PHONY: clean $(UNIT_TESTS)

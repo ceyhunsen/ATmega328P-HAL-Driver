@@ -24,10 +24,7 @@
 TARGET = test.out
 
 # Append source files.
-C_SOURCES +=             \
-system.c                 \
-watchdog.c               \
-atmega328p_hal_system.c  \
+C_SOURCES += \
 
 # Create object files.
 OBJS = $(C_SOURCES:%.c=$(BUILD_DIR)/%.o)

@@ -6,7 +6,7 @@
 
 #include "watchdog.h"
 #include "unity.h"
-#include <definitions.h>
+#include <test_mock_up.h>
 
 void setUp()
 {
