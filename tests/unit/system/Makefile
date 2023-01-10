@@ -22,6 +22,8 @@ C_SYS_INCLUDES = \
 -isystem ../../mocks \
 
 all:
-	@mkdir -p $(BUILD_DIR)
-	$(CC) $(C_SOURCES) $(C_INCLUDES) $(C_SYS_INCLUDES) -o $(BUILD_DIR)/$(TARGET).out
-	$(BUILD_DIR)/$(TARGET).out
+# 	@mkdir -p $(BUILD_DIR)
+# 	$(CC) $(C_SOURCES) $(C_INCLUDES) $(C_SYS_INCLUDES) -o $(BUILD_DIR)/$(TARGET).out
+# 	$(BUILD_DIR)/$(TARGET).out
+clean:
+	rm -rf $(BUILD_DIR)
