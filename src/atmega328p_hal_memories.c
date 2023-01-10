@@ -35,7 +35,7 @@
 /**
  * @brief Set EEPROM settings.
  * 
- * @param settings EEPROM settings
+ * @param settings EEPROM settings.
  * 
  * @see hal_memories_eeprom_settings
  * */
@@ -78,7 +78,7 @@ uint16_t hal_memories_eeprom_read(uint16_t start_address, uint8_t *data, uint16_
 		}
 
 		// Wait for ongoing write operations.
-		while (EECR & _PIN_TO_BIT(EEPE));
+		while (EECR & _BV(EEPE));
 
 		// Set start_address.
 		EEAR = start_address + i;
@@ -107,7 +107,7 @@ uint16_t hal_memories_eeprom_write(uint16_t start_address, uint8_t *data, uint16
 		}
 
 		// Wait for ongoing write operations.
-		while (EECR & _PIN_TO_BIT(EEPE));
+		while (EECR & _BV(EEPE));
 
 		// Set start_address and data.
 		EEAR = start_address + i;

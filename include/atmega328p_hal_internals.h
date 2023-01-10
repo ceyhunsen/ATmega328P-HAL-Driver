@@ -1,13 +1,13 @@
 /**
  * @file hal_internals.h
  * @author Ceyhun Şen
- * @brief Internal header file for ATmega328P HAL driver.
+ * @brief Internal macros for ATmega328P HAL driver.
  * */
 
 /*
  * MIT License
  * 
- * Copyright (c) 2022 Ceyhun Şen
+ * Copyright (c) 2023 Ceyhun Şen
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -35,24 +35,19 @@
 
 /**
  * @addtogroup bit_manipulation
- * @brief Bit manipulation defines.
+ * Internal bit manipulation macros.
  * @{
  * */
 
 /**
- * @brief Clear specified bit of var.
+ * @brief Clear specified `bit` of `var`.
  * */
-#define _CLEAR_BIT(var, bit) (var &= ~(1 << bit))
+#define _CLEAR_BIT(var, bit) (var &= ~(_BV(bit)))
 
 /**
- * @brief Set specified bit of var.
+ * @brief Set specified `bit` of `var`.
  * */
-#define _SET_BIT(var, bit) (var |= _BV(bit))
-
-/**
- * @brief Get pin value of a bit.
- * */
-#define _PIN_TO_BIT(pin) (1 << (pin))
+#define _SET_BIT(var, bit)   (var |= _BV(bit))
 
 /**
  * @}
