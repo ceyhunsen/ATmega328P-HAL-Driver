@@ -8,9 +8,9 @@ TARGET = memories_test
 BUILD_DIR = build
 
 C_SOURCES = \
-../../mocks/definitions.c \
-../../../src/atmega328p_hal_memories.c \
+../../mocks/test_mock_up.c \
 ../../Unity/src/unity.c \
+../../../src/atmega328p_hal_memories.c \
 memories.c \
 eeprom.c \
 
@@ -19,9 +19,14 @@ C_INCLUDES = \
 -I ../../Unity/src/ \
 
 C_SYS_INCLUDES = \
+-isystem /usr/include/ \
 -isystem ../../mocks \
+-isystem /usr/avr/include \
+
+C_DEFINES = \
+-D __AVR_ATmega328P__
 
 all:
 	@mkdir -p $(BUILD_DIR)
-	$(CC) $(C_SOURCES) $(C_INCLUDES) $(C_SYS_INCLUDES) -o $(BUILD_DIR)/$(TARGET).out
+	$(CC) $(C_SOURCES) $(C_DEFINES) $(C_INCLUDES) $(C_SYS_INCLUDES) -o $(BUILD_DIR)/$(TARGET).out
 	$(BUILD_DIR)/$(TARGET).out

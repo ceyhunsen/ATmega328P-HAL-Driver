@@ -1,13 +1,13 @@
 /**
- * @file wdt.h
- * @brief Mock up watchdog timer definitions.
+ * @file test_mock_up.h
  * @author Ceyhun Şen
+ * @brief Mock-up register definitions for testing.
  */
 
 /*
  * MIT License
  * 
- * Copyright (c) 2022 Ceyhun Şen
+ * Copyright (c) 2023 Ceyhun Şen
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,9 +28,9 @@
  * SOFTWARE.
  * */
 
-#ifndef __WDT_H
-#define __WDT_H
+#ifndef __TEST_MOCK_UP_H
+#define __TEST_MOCK_UP_H
 
-#define wdt_reset()
+void reset_registers();
 
-#endif // __WDT_H
+#endif // __TEST_MOCK_UP_H
