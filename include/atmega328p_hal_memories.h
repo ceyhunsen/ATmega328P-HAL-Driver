@@ -34,7 +34,7 @@
 #include <stdint.h>
 
 /**
- * @enum hal_memories_eeprom_modes
+ * @enum hal_memories_eeprom_programming_mode
  * @brief EEPROM programming modes.
  * 
  * Erase and write mode will take 3.4 ms and perform write and erase operation
@@ -42,16 +42,15 @@
  * operation. Finally, erase only mode will take 1.8 ms and only perform erase
  * operation on writing to EEPROM.
  * */
-typedef enum hal_memories_eeprom_modes {
+typedef enum hal_memories_eeprom_programming_mode {
 	hal_memories_eeprom_erase_and_write_mode = 0,
 	hal_memories_eeprom_write_only_mode      = 1,
 	hal_memories_eeprom_erase_only_mode      = 2
-} hal_memories_eeprom_modes;
+} hal_memories_eeprom_programming_mode;
 
 /**
  * @enum hal_memories_eeprom_interrupt_mode
- * @brief EEPROM interrupt modes. If enabled, read or write operations will
- * be based on interrupt and won't block main program.
+ * @brief EEPROM interrupt modes.
  */
 typedef enum hal_memories_eeprom_interrupt_mode {
 	hal_memories_eeprom_interrupt_disabled = 0,
@@ -59,14 +58,17 @@ typedef enum hal_memories_eeprom_interrupt_mode {
 } hal_memories_eeprom_interrupt_mode;
 
 /**
- * @brief All EEPROM settings.
+ * @brief EEPROM settings.
+ * 
+ * @see hal_memories_eeprom_programming_mode
+ * @see hal_memories_eeprom_interrupt_mode
  */
-typedef struct hal_memories_eeprom_settings {
-	hal_memories_eeprom_modes mode;
+typedef struct hal_memories_eeprom_t {
+	hal_memories_eeprom_programming_mode programming_mode;
 	hal_memories_eeprom_interrupt_mode interrupt_mode;
-} hal_memories_eeprom_settings;
+} hal_memories_eeprom_t;
 
-void hal_memories_eeprom_set(hal_memories_eeprom_settings settings);
+void hal_memories_eeprom_set(hal_memories_eeprom_t settings);
 uint16_t hal_memories_eeprom_read(uint16_t start_address, uint8_t *data, uint16_t len);
 uint16_t hal_memories_eeprom_write(uint16_t start_address, uint8_t *data, uint16_t len);
 

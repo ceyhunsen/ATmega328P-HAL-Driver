@@ -39,24 +39,24 @@
  */
 void test_eeprom_modes()
 {
-	hal_memories_eeprom_settings settings;
+	hal_memories_eeprom_t settings;
 
-	settings.mode = hal_memories_eeprom_erase_and_write_mode;
+	settings.programming_mode = hal_memories_eeprom_erase_and_write_mode;
 	hal_memories_eeprom_set(settings);
 	TEST_ASSERT(bit_is_clear(EECR, EEPM1));
 	TEST_ASSERT(bit_is_clear(EECR, EEPM0));
 
-	settings.mode = hal_memories_eeprom_erase_only_mode;
+	settings.programming_mode = hal_memories_eeprom_erase_only_mode;
 	hal_memories_eeprom_set(settings);
 	TEST_ASSERT(bit_is_clear(EECR, EEPM1));
 	TEST_ASSERT(bit_is_set(EECR, EEPM0));
 
-	settings.mode = hal_memories_eeprom_write_only_mode;
+	settings.programming_mode = hal_memories_eeprom_write_only_mode;
 	hal_memories_eeprom_set(settings);
 	TEST_ASSERT(bit_is_set(EECR, EEPM1));
 	TEST_ASSERT(bit_is_clear(EECR, EEPM0));
 
-	settings.mode = hal_memories_eeprom_erase_and_write_mode;
+	settings.programming_mode = hal_memories_eeprom_erase_and_write_mode;
 	hal_memories_eeprom_set(settings);
 	TEST_ASSERT(bit_is_clear(EECR, EEPM1));
 	TEST_ASSERT(bit_is_clear(EECR, EEPM0));
@@ -67,7 +67,7 @@ void test_eeprom_modes()
  */
 void test_eeprom_interrupt()
 {
-	hal_memories_eeprom_settings settings;
+	hal_memories_eeprom_t settings;
 
 	settings.interrupt_mode = hal_memories_eeprom_interrupt_disabled;
 	hal_memories_eeprom_set(settings);

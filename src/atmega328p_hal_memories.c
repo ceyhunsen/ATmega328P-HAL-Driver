@@ -37,15 +37,15 @@
  * 
  * @param settings EEPROM settings.
  * 
- * @see hal_memories_eeprom_settings
+ * @see hal_memories_eeprom_t
  * */
-void hal_memories_eeprom_set(hal_memories_eeprom_settings settings)
+void hal_memories_eeprom_set(hal_memories_eeprom_t settings)
 {
 	// Wait for ongoing write operations.
 	loop_until_bit_is_clear(EECR, EEPE);
 
 	// Set programming mode.
-	switch (settings.mode) {
+	switch (settings.programming_mode) {
 		default:
 		case hal_memories_eeprom_erase_and_write_mode:
 			_CLEAR_BIT(EECR, EEPM0);
