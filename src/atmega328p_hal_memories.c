@@ -44,7 +44,7 @@ void hal_memories_eeprom_set(hal_memories_eeprom_settings settings)
 	// Wait for ongoing write operations.
 	loop_until_bit_is_clear(EECR, EEPE);
 
-	// Set mode.
+	// Set programming mode.
 	switch (settings.mode) {
 		default:
 		case hal_memories_eeprom_erase_and_write_mode:
@@ -58,6 +58,17 @@ void hal_memories_eeprom_set(hal_memories_eeprom_settings settings)
 		case hal_memories_eeprom_write_only_mode:
 			_CLEAR_BIT(EECR, EEPM0);
 			_SET_BIT(EECR, EEPM1);
+			break;
+	}
+
+	// Set interrupt mode.
+	switch (settings.interrupt_mode) {
+		default:
+		case hal_memories_eeprom_interrupt_disabled:
+			_CLEAR_BIT(EECR, EERIE);
+			break;
+		case hal_memories_eeprom_interrupt_enabled:
+			_SET_BIT(EECR, EERIE);
 			break;
 	}
 }

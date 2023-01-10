@@ -50,7 +50,8 @@ typedef enum hal_memories_eeprom_modes {
 
 /**
  * @enum hal_memories_eeprom_interrupt_mode
- * @brief Interrupt mode for EEPROM access.
+ * @brief EEPROM interrupt modes. If enabled, read or write operations will
+ * be based on interrupt and won't block main program.
  */
 typedef enum hal_memories_eeprom_interrupt_mode {
 	hal_memories_eeprom_interrupt_disabled = 0,

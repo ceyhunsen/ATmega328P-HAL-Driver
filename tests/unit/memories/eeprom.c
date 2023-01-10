@@ -67,5 +67,17 @@ void test_eeprom_modes()
  */
 void test_eeprom_interrupt()
 {
+	hal_memories_eeprom_settings settings;
 
+	settings.interrupt_mode = hal_memories_eeprom_interrupt_disabled;
+	hal_memories_eeprom_set(settings);
+	TEST_ASSERT(bit_is_clear(EECR, EERIE));
+
+	settings.interrupt_mode = hal_memories_eeprom_interrupt_enabled;
+	hal_memories_eeprom_set(settings);
+	TEST_ASSERT(bit_is_set(EECR, EERIE));
+
+	settings.interrupt_mode = hal_memories_eeprom_interrupt_disabled;
+	hal_memories_eeprom_set(settings);
+	TEST_ASSERT(bit_is_clear(EECR, EERIE));
 }
