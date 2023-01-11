@@ -34,6 +34,11 @@
 #include <stdint.h>
 
 /**
+ * @brief Size of the EEPROM in bytes.
+ */
+#define HAL_EEPROM_SIZE (1 << 9)
+
+/**
  * @enum hal_memories_eeprom_programming_mode
  * @brief EEPROM programming modes.
  * 

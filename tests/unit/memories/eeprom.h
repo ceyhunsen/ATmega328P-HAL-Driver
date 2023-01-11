@@ -33,5 +33,6 @@
 
 void test_eeprom_modes();
 void test_eeprom_interrupt();
+void test_eeprom_read_single_byte();
 
 #endif // __EEPROM_H

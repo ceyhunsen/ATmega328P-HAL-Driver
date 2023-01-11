@@ -75,27 +75,31 @@ void hal_memories_eeprom_set(hal_memories_eeprom_t settings)
 
 /**
  * @brief Read data from EEPROM.
+ * 
  * @param start_address Start address of the read operation.
  * @param data Data buffer that will hold read data.
  * @param len Length of the data that will be read.
- * @returns Length of the readed data.
+ * 
+ * @returns Length of the read data in bytes.
  * */
 uint16_t hal_memories_eeprom_read(uint16_t start_address, uint8_t *data, uint16_t len)
 {
-	for (uint16_t i = 0; i < len; i++) {
-		// Check start_address overflow.
-		if (start_address + i > (1 << 9) - 1) {
-			return i;
-		}
+	// Check address overflow. Read no more than `HAL_EEPROM_SIZE` - `start_address`.
+	if (start_address + len > HAL_EEPROM_SIZE) {
+		len = HAL_EEPROM_SIZE - start_address;
+	}
 
+	for (uint16_t i = 0; i < len; i++) {
 		// Wait for ongoing write operations.
-		while (EECR & _BV(EEPE));
+		loop_until_bit_is_clear(EECR, EEPE);
 
 		// Set start_address.
 		EEAR = start_address + i;
 
-		// Start reading and set it to data[i].
+		// Start read operation.
 		_SET_BIT(EECR, EERE);
+
+		// Save read value.
 		data[i] = EEDR;
 	}
 
