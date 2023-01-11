@@ -6,19 +6,19 @@
 
 /*
  * MIT License
- * 
+ *
  * Copyright (c) 2023 Ceyhun Şen
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -31,12 +31,13 @@
 #include "atmega328p_hal_memories.h"
 #include "atmega328p_hal_internals.h"
 #include <avr/io.h>
+#include <util/atomic.h>
 
 /**
  * @brief Set EEPROM settings.
- * 
+ *
  * @param settings EEPROM settings.
- * 
+ *
  * @see hal_memories_eeprom_t
  * */
 void hal_memories_eeprom_set(hal_memories_eeprom_t settings)
@@ -45,53 +46,57 @@ void hal_memories_eeprom_set(hal_memories_eeprom_t settings)
 	loop_until_bit_is_clear(EECR, EEPE);
 
 	// Set programming mode.
-	switch (settings.programming_mode) {
-		default:
-		case hal_memories_eeprom_erase_and_write_mode:
-			_CLEAR_BIT(EECR, EEPM0);
-			_CLEAR_BIT(EECR, EEPM1);
-			break;
-		case hal_memories_eeprom_erase_only_mode:
-			_SET_BIT(EECR, EEPM0);
-			_CLEAR_BIT(EECR, EEPM1);
-			break;
-		case hal_memories_eeprom_write_only_mode:
-			_CLEAR_BIT(EECR, EEPM0);
-			_SET_BIT(EECR, EEPM1);
-			break;
+	switch (settings.programming_mode)
+	{
+	default:
+	case hal_memories_eeprom_erase_and_write_mode:
+		_CLEAR_BIT(EECR, EEPM0);
+		_CLEAR_BIT(EECR, EEPM1);
+		break;
+	case hal_memories_eeprom_erase_only_mode:
+		_SET_BIT(EECR, EEPM0);
+		_CLEAR_BIT(EECR, EEPM1);
+		break;
+	case hal_memories_eeprom_write_only_mode:
+		_CLEAR_BIT(EECR, EEPM0);
+		_SET_BIT(EECR, EEPM1);
+		break;
 	}
 
 	// Set interrupt mode.
-	switch (settings.interrupt_mode) {
-		default:
-		case hal_memories_eeprom_interrupt_disabled:
-			_CLEAR_BIT(EECR, EERIE);
-			break;
-		case hal_memories_eeprom_interrupt_enabled:
-			_SET_BIT(EECR, EERIE);
-			break;
+	switch (settings.interrupt_mode)
+	{
+	default:
+	case hal_memories_eeprom_interrupt_disabled:
+		_CLEAR_BIT(EECR, EERIE);
+		break;
+	case hal_memories_eeprom_interrupt_enabled:
+		_SET_BIT(EECR, EERIE);
+		break;
 	}
 }
 
 /**
  * @brief Read data from EEPROM.
- * 
+ *
  * @param start_address Start address of the read operation.
  * @param data Data buffer that will hold read data.
  * @param len Length of the data that will be read.
- * 
+ *
  * @returns Length of the read data in bytes.
  * */
 uint16_t hal_memories_eeprom_read(uint16_t start_address, uint8_t *data, uint16_t len)
 {
 	// Check address overflow. Read no more than `HAL_EEPROM_SIZE` - `start_address`.
-	if (start_address + len > HAL_EEPROM_SIZE) {
+	if (start_address + len > HAL_EEPROM_SIZE)
+	{
 		// If `start_address` alone is bigger than `HAL_EEPROM_SIZE`, don't read
 		// anything. Else read bytes in between.
 		len = (start_address > HAL_EEPROM_SIZE)? 0: HAL_EEPROM_SIZE - start_address;
 	}
 
-	for (uint16_t i = 0; i < len; i++) {
+	for (uint16_t i = 0; i < len; i++)
+	{
 		// Wait for ongoing write operations.
 		loop_until_bit_is_clear(EECR, EEPE);
 
@@ -110,29 +115,40 @@ uint16_t hal_memories_eeprom_read(uint16_t start_address, uint8_t *data, uint16_
 
 /**
  * @brief Write data to EEPROM.
+ *
  * @param start_address Start address of the write operation.
  * @param data Data buffer that holds write data.
  * @param len Length of the data that will be written.
- * @returns Length of the written data.
+ *
+ * @returns Length of the written data in bytes.
  * */
 uint16_t hal_memories_eeprom_write(uint16_t start_address, uint8_t *data, uint16_t len)
 {
-	for (uint16_t i = 0; i < len; i++) {
-		// Check start_address overflow.
-		if (start_address + i > (1 << 10) - 1) {
-			return i;
-		}
+	// Check address overflow. Read no more than `HAL_EEPROM_SIZE` - `start_address`.
+	if (start_address + len > HAL_EEPROM_SIZE)
+	{
+		// If `start_address` alone is bigger than `HAL_EEPROM_SIZE`, don't read
+		// anything. Else read bytes in between.
+		len = (start_address > HAL_EEPROM_SIZE)? 0: HAL_EEPROM_SIZE - start_address;
+	}
 
+	for (uint16_t i = 0; i < len; i++)
+	{
 		// Wait for ongoing write operations.
-		while (EECR & _BV(EEPE));
+		loop_until_bit_is_clear(EECR, EEPE);
 
 		// Set start_address and data.
 		EEAR = start_address + i;
 		EEDR = data[i];
 
-		// Enable writing.
-		_SET_BIT(EECR, EEMPE);
-		_SET_BIT(EECR, EEPE);
+		// Write operation must be performed atomically (at most in 4 clock cycles).
+		ATOMIC_BLOCK (ATOMIC_RESTORESTATE) {
+			// Enable writing.
+			_SET_BIT(EECR, EEMPE);
+
+			// Perform write operetion.
+			_SET_BIT(EECR, EEPE);
+		}
 	}
 
 	return len;

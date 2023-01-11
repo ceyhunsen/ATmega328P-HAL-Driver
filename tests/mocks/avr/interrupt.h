@@ -1,7 +1,8 @@
 /**
- * @file memories.c
+ * @file interrupt.h
  * @author Ceyhun Şen
- * @brief Unit tests for system module
+ * @brief Mock-up header of macros for accessing AVR special function registers.
+ * This header must overwrite avr/sfr_defs.h for testing.
  */
 
 /*
@@ -28,28 +29,10 @@
  * SOFTWARE.
  * */
 
-#include "eeprom.h"
-#include "unity.h"
-#include <test_mock_up.h>
+#ifndef __INTERRUPT_H
+#define __INTERRUPT_H
 
-void setUp()
-{
-	reset_registers();
-}
+#define sei()
+#define cli()
 
-void tearDown()
-{
-	reset_registers();
-}
-
-int main()
-{
-	RUN_TEST(test_eeprom_modes);
-	RUN_TEST(test_eeprom_interrupt);
-	RUN_TEST(test_eeprom_read_single_byte);
-	RUN_TEST(test_eeprom_read_multiple_bytes);
-	RUN_TEST(test_eeprom_write_single_byte);
-	RUN_TEST(test_eeprom_write_multiple_bytes);
-
-	return UnityEnd();
-}
+#endif // __INTERRUPT_H

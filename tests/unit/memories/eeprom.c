@@ -37,6 +37,11 @@
 #include <string.h>
 
 /**
+ * @brief Some random number for testing.
+ */
+#define FIXED_VALUE 0xF0
+
+/**
  * @brief Test EEPROM programming modes.
  */
 void test_eeprom_modes()
@@ -89,21 +94,16 @@ void test_eeprom_interrupt()
  */
 void test_eeprom_read_single_byte()
 {
-	#define FIXED_VALUE 0xF0
-
-	// Create a buffer with fixed element.
 	uint8_t buffer = FIXED_VALUE;
 
 	// Read single byte from start, middle and end.
 	uint16_t read_addresses[3] = {0, HAL_EEPROM_SIZE / 2, HAL_EEPROM_SIZE - 1};
 	for (uint16_t i = 0; i < 3; i++) {
-		// Reset buffer.
 		buffer = FIXED_VALUE;
 
-		// Read single byte.
 		uint16_t read_length = hal_memories_eeprom_read(read_addresses[i], &buffer, 1);
 
-		// Check if read enable bit is set.
+		// Read enable bit should be set during read operation.
 		TEST_ASSERT_EQUAL(_BV(EERE), EECR & _BV(EERE));
 
 		// It should return 1 byte as it reads only one byte.
@@ -113,7 +113,6 @@ void test_eeprom_read_single_byte()
 		TEST_ASSERT_EQUAL(0, buffer);
 		TEST_ASSERT_NOT_EQUAL(FIXED_VALUE, buffer);
 
-		// Reset registers for other reads.
 		reset_registers();
 	}
 
@@ -124,7 +123,7 @@ void test_eeprom_read_single_byte()
 	// Read single byte.
 	uint16_t read_length = hal_memories_eeprom_read(read_addresses[0], &buffer, 1);
 
-	// Read enable bit shouldn't be set.
+	// // Read enable bit shouldn't be set during read operation.
 	TEST_ASSERT_NOT_EQUAL(_BV(EERE), EECR & _BV(EERE));
 
 	// It should return 1 byte as it reads only one byte.
@@ -150,7 +149,7 @@ void test_eeprom_read_multiple_bytes()
 
 		uint16_t read_length = hal_memories_eeprom_read(read_addresses[i], buffer, 3);
 
-		// Read enable bit should be set.
+		// Read enable bit should be set during read operation.
 		TEST_ASSERT_EQUAL(_BV(EERE), EECR & _BV(EERE));
 
 		TEST_ASSERT_EQUAL(3, read_length);
@@ -170,7 +169,7 @@ void test_eeprom_read_multiple_bytes()
 
 	uint16_t read_length = hal_memories_eeprom_read(read_addresses[0], buffer, 3);
 
-	// Read enable bit shouldn't be set.
+	// Read enable bit shouldn't be set during read operation.
 	TEST_ASSERT_NOT_EQUAL(_BV(EERE), EECR & _BV(EERE));
 
 	TEST_ASSERT_EQUAL(0, read_length);
@@ -204,4 +203,78 @@ void test_eeprom_read_multiple_bytes()
 
 	TEST_ASSERT_EQUAL(FIXED_VALUE, buffer[2]);
 	TEST_ASSERT_NOT_EQUAL(0, buffer[2]);
+}
+
+/**
+ * @brief Test EEPROM single byte write operation.
+ */
+void test_eeprom_write_single_byte()
+{
+	uint8_t buffer = FIXED_VALUE;
+
+	// Write single byte to start, middle and end.
+	uint16_t write_addresses[3] = {0, HAL_EEPROM_SIZE / 2, HAL_EEPROM_SIZE - 1};
+	for (uint16_t i = 0; i < 3; i++) {
+		// Before the write operation, EEPROM data register should be in reset
+		// state (0 in this case).
+		TEST_ASSERT_EQUAL(0, EEDR);
+		TEST_ASSERT_NOT_EQUAL(FIXED_VALUE, EEDR);
+
+		uint16_t read_length = hal_memories_eeprom_write(write_addresses[i], &buffer, 1);
+
+		// It should return 1 byte as it writes only one byte.
+		TEST_ASSERT_EQUAL(1, read_length);
+
+		// EEPROM data register should be `FIXED_VALUE`.
+		TEST_ASSERT_EQUAL(FIXED_VALUE, EEDR);
+
+		// Reset registers for other reads.
+		reset_registers();
+	}
+
+	// Write single byte to out of range address.
+	write_addresses[0] = HAL_EEPROM_SIZE + 10;
+
+	// Before the write operation, EEPROM data register should be in reset
+	// state (0 in this case).
+	TEST_ASSERT_EQUAL(0, EEDR);
+	TEST_ASSERT_NOT_EQUAL(FIXED_VALUE, EEDR);
+
+	uint16_t read_length = hal_memories_eeprom_write(write_addresses[0], &buffer, 1);
+
+	TEST_ASSERT_EQUAL(0, read_length);
+
+	// EEPROM data register should be reset value (0 in this case).
+	TEST_ASSERT_EQUAL(0, EEDR);
+}
+
+/**
+ * @brief Test EEPROM multiple bytes write operation.
+ */
+void test_eeprom_write_multiple_bytes()
+{
+	// Currently, write operation needs some hardware or thread to clear some
+	// bits. So, this test is ignored at the moment.
+	TEST_IGNORE();
+
+	uint8_t buffer[3] = {FIXED_VALUE, FIXED_VALUE - 1, FIXED_VALUE - 2};
+
+	// Write multiple bytes to start, middle and end.
+	uint16_t write_addresses[3] = {0, HAL_EEPROM_SIZE / 2, HAL_EEPROM_SIZE - 4};
+	for (uint16_t i = 0; i < 3; i++) {
+		// Before the write operation, EEPROM data register should be in reset
+		// state (0 in this case).
+		TEST_ASSERT_EQUAL(0, EEDR);
+		TEST_ASSERT_NOT_EQUAL(FIXED_VALUE, EEDR);
+
+		uint16_t read_length = hal_memories_eeprom_write(write_addresses[i], buffer, 3);
+
+		TEST_ASSERT_EQUAL(3, read_length);
+
+		// EEPROM data register should be last member of buffer.
+		TEST_ASSERT_EQUAL(buffer[2], EEDR);
+
+		// Reset registers for other reads.
+		reset_registers();
+	}
 }
