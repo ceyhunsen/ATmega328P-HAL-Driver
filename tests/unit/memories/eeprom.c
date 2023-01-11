@@ -116,4 +116,21 @@ void test_eeprom_read_single_byte()
 		// Reset registers for other reads.
 		reset_registers();
 	}
+
+	// Try to read out of range address.
+	read_addresses[0] = HAL_EEPROM_SIZE + 10;
+	buffer = FIXED_VALUE;
+
+	// Read single byte.
+	uint16_t read_length = hal_memories_eeprom_read(read_addresses[0], &buffer, 1);
+
+	// Read enable bit shouldn't be set.
+	TEST_ASSERT_NOT_EQUAL(_BV(EERE), EECR & _BV(EERE));
+
+	// It should return 1 byte as it reads only one byte.
+	TEST_ASSERT_EQUAL(0, read_length);
+
+	// It shouldn't read anything.
+	TEST_ASSERT_EQUAL(FIXED_VALUE, buffer);
+	TEST_ASSERT_NOT_EQUAL(0, buffer);
 }

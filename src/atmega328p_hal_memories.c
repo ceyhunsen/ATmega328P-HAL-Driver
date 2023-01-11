@@ -86,7 +86,9 @@ uint16_t hal_memories_eeprom_read(uint16_t start_address, uint8_t *data, uint16_
 {
 	// Check address overflow. Read no more than `HAL_EEPROM_SIZE` - `start_address`.
 	if (start_address + len > HAL_EEPROM_SIZE) {
-		len = HAL_EEPROM_SIZE - start_address;
+		// If `start_address` alone is bigger than `HAL_EEPROM_SIZE`, don't read
+		// anything. Else read bytes in between.
+		len = (start_address > HAL_EEPROM_SIZE)? 0: HAL_EEPROM_SIZE - start_address;
 	}
 
 	for (uint16_t i = 0; i < len; i++) {
