@@ -30,36 +30,77 @@ HOST_C_STD = /usr/include/
 MCU_C_LIB  = /usr/avr/include
 
 # Host C compiler.
-export CC = gcc
+export HOST_CC = gcc
+
+# MCU C compiler and other stuff.
+export MCU_CC = avr-gcc
+export MCU_OBJ_COPY = avr-objcopy
+export MCU_SIZE = avr-size
+
+# MCU specific stuff.
+export MCU = atmega328p
+export PROGRAMMER = arduino
+export BAUD = 115200
+export PORT = /dev/ttyUSB0
 
 # Local build directory.
 export BUILD_DIR = build
 
-# Include directories.
-export C_INCLUDES =      \
+# Host include directories.
+export HOST_C_INCLUDES =  \
+-I $(CURDIR)/../include   \
+-I $(CURDIR)/Unity/src    \
+
+# MCU include directories.
+export MCU_C_INCLUDES =  \
 -I $(CURDIR)/../include  \
--I $(CURDIR)/Unity/src
 
-# System include directories.
-export C_SYS_INCLUDES =   \
--isystem $(HOST_C_STD)    \
--isystem $(CURDIR)/mocks  \
--isystem $(MCU_C_LIB)     \
+# Host system include directories.
+export HOST_C_SYS_INCLUDES =  \
+-isystem $(HOST_C_STD)        \
+-isystem $(CURDIR)/mocks      \
+-isystem $(MCU_C_LIB)         \
 
-# C definitions.
-export C_DEFINES =     \
--D __AVR_ATmega328P__  \
+# Host C definitions.
+export HOST_C_DEFINES =  \
+-D __AVR_ATmega328P__    \
+
+# MCU C definitions.
+export MCU_C_DEFINES =  \
+-D F_CPU=16000000UL     \
+
+# Host C flags.
+export HOST_C_FLAGS =  \
+-Wall                  \
+-O2                    \
+$(HOST_C_DEFINES)      \
+$(HOST_C_INCLUDES)     \
+$(HOST_C_SYS_INCLUDES) \
+
+# MCU C flags.
+export MCU_C_FLAGS =  \
+-Wall                 \
+-O2                   \
+-mmcu=$(MCU)          \
+$(MCU_C_DEFINES)      \
+$(MCU_C_INCLUDES)     \
 
 # Source files.
-export C_SOURCES =  \
-unity.c             \
-test_mock_up.c      \
+export HOST_C_SOURCES =  \
+unity.c                  \
+test_mock_up.c           \
 
 # Compile .c files to object files.
-export HOST_COMPILE_OBJ = $(CC) $(C_DEFINES) $(C_INCLUDES) $(C_SYS_INCLUDES) -c
+export HOST_COMPILE_OBJ = $(HOST_CC) $(HOST_C_FLAGS) -c
 
 # Link previously compiled object files and create the test executable.
-export HOST_COMPILE = $(CC) $(BUILD_DIR)/*.o
+export HOST_COMPILE = $(HOST_CC) $(HOST_C_FLAGS) $(BUILD_DIR)/*.o
+
+# Compile .c files to object files.
+export MCU_COMPILE_OBJ = $(MCU_CC) $(MCU_C_FLAGS) -c
+
+# Link previously compiled object files and create the test executable.
+export MCU_COMPILE = $(MCU_CC) $(MCU_C_FLAGS) $(BUILD_DIR)/*.o
 
 # Use this paths for searching source and header files.
 export VPATH =         \
@@ -71,12 +112,20 @@ $(CURDIR)/../include/  \
 # All unit test directories.
 UNIT_TESTS = $(wildcard unit/*/.)
 
+# All integration test directories.
+INTEGRATION_TESTS = $(wildcard integration/*/.)
+
 # Run all tests.
-all: unit
+all: unit integration
 
 unit: $(UNIT_TESTS)
 
 $(UNIT_TESTS):
 	$(MAKE) -C $@
 
-.PHONY: clean $(UNIT_TESTS)
+integration: $(INTEGRATION_TESTS)
+
+$(INTEGRATION_TESTS):
+	$(MAKE) -C $@
+
+.PHONY: clean $(UNIT_TESTS) $(INTEGRATION_TESTS)

@@ -24,13 +24,13 @@
 TARGET = test.out
 
 # Append source files.
-C_SOURCES +=               \
+HOST_C_SOURCES +=          \
 memories.c                 \
 eeprom.c                   \
 atmega328p_hal_memories.c  \
 
 # Create object files.
-OBJS = $(C_SOURCES:%.c=$(BUILD_DIR)/%.o)
+OBJS = $(HOST_C_SOURCES:%.c=$(BUILD_DIR)/%.o)
 
 # Check source files first. Then run test.
 all: $(OBJS) $(BUILD_DIR)/$(TARGET)

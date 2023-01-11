@@ -1,7 +1,7 @@
 /**
  * @file memories.c
  * @author Ceyhun Şen
- * @brief Unit tests for memories module.
+ * @brief Integration tests for memories module.
  */
 
 /*
@@ -28,28 +28,7 @@
  * SOFTWARE.
  * */
 
-#include "eeprom.h"
-#include "unity.h"
-#include <test_mock_up.h>
-
-void setUp()
-{
-	reset_registers();
-}
-
-void tearDown()
-{
-	reset_registers();
-}
-
 int main()
 {
-	RUN_TEST(test_eeprom_modes);
-	RUN_TEST(test_eeprom_interrupt);
-	RUN_TEST(test_eeprom_read_single_byte);
-	RUN_TEST(test_eeprom_read_multiple_bytes);
-	RUN_TEST(test_eeprom_write_single_byte);
-	RUN_TEST(test_eeprom_write_multiple_bytes);
-
-	return UnityEnd();
+	return 0;
 }
