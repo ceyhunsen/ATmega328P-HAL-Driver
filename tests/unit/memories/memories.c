@@ -47,6 +47,7 @@ int main()
 	RUN_TEST(test_eeprom_modes);
 	RUN_TEST(test_eeprom_interrupt);
 	RUN_TEST(test_eeprom_read_single_byte);
+	RUN_TEST(test_eeprom_read_multiple_bytes);
 
 	return UnityEnd();
 }

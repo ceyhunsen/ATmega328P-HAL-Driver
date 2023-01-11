@@ -134,3 +134,74 @@ void test_eeprom_read_single_byte()
 	TEST_ASSERT_EQUAL(FIXED_VALUE, buffer);
 	TEST_ASSERT_NOT_EQUAL(0, buffer);
 }
+
+/**
+ * @brief Test EEPROM multiple bytes read operation.
+ */
+void test_eeprom_read_multiple_bytes()
+{
+	#define FIXED_VALUE 0xF0
+	uint8_t buffer[3] = {FIXED_VALUE, FIXED_VALUE, FIXED_VALUE};
+
+	// Read multiple bytes from start, middle and end.
+	uint16_t read_addresses[3] = {0, HAL_EEPROM_SIZE / 2, HAL_EEPROM_SIZE - 4};
+	for (uint16_t i = 0; i < 3; i++) {
+		memset(buffer, FIXED_VALUE, sizeof buffer);
+
+		uint16_t read_length = hal_memories_eeprom_read(read_addresses[i], buffer, 3);
+
+		// Read enable bit should be set.
+		TEST_ASSERT_EQUAL(_BV(EERE), EECR & _BV(EERE));
+
+		TEST_ASSERT_EQUAL(3, read_length);
+
+		// It should read 0 because EEPROM and registers are in reset state.
+		for (uint8_t i = 0; i < 3; i++) {
+			TEST_ASSERT_EQUAL(0, buffer[i]);
+			TEST_ASSERT_NOT_EQUAL(FIXED_VALUE, buffer[i]);
+		}
+
+		reset_registers();
+	}
+
+	// Try to read out of range address.
+	read_addresses[0] = HAL_EEPROM_SIZE + 10;
+	memset(buffer, FIXED_VALUE, sizeof buffer);
+
+	uint16_t read_length = hal_memories_eeprom_read(read_addresses[0], buffer, 3);
+
+	// Read enable bit shouldn't be set.
+	TEST_ASSERT_NOT_EQUAL(_BV(EERE), EECR & _BV(EERE));
+
+	TEST_ASSERT_EQUAL(0, read_length);
+
+	// It shouldn't read anything.
+	for (uint8_t i = 0; i < 3; i++) {
+		TEST_ASSERT_NOT_EQUAL(0, buffer[i]);
+		TEST_ASSERT_EQUAL(FIXED_VALUE, buffer[i]);
+	}
+
+	// Reset registers for other reads.
+	reset_registers();
+
+	// Try to read both in and out of range addresses.
+	read_addresses[0] = HAL_EEPROM_SIZE - 2;
+	memset(buffer, FIXED_VALUE, sizeof buffer);
+
+	read_length = hal_memories_eeprom_read(read_addresses[0], buffer, 3);
+
+	// Read enable bit should be set.
+	TEST_ASSERT_EQUAL(_BV(EERE), EECR & _BV(EERE));
+
+	// It should read 2 bytes.
+	TEST_ASSERT_EQUAL(2, read_length);
+
+	TEST_ASSERT_EQUAL(0, buffer[0]);
+	TEST_ASSERT_NOT_EQUAL(FIXED_VALUE, buffer[0]);
+
+	TEST_ASSERT_EQUAL(0, buffer[1]);
+	TEST_ASSERT_NOT_EQUAL(FIXED_VALUE, buffer[1]);
+
+	TEST_ASSERT_EQUAL(FIXED_VALUE, buffer[2]);
+	TEST_ASSERT_NOT_EQUAL(0, buffer[2]);
+}
