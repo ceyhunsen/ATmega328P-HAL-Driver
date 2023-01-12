@@ -42,12 +42,12 @@
 /**
  * @brief Clear specified `bit` of `var`.
  * */
-#define _CLEAR_BIT(var, bit) (var &= ~(_BV(bit)))
+#define _CLEAR_BIT(var, bit) ((var) &= ~(_BV(bit)))
 
 /**
  * @brief Set specified `bit` of `var`.
  * */
-#define _SET_BIT(var, bit)   (var |= _BV(bit))
+#define _SET_BIT(var, bit)   ((var) |= _BV(bit))
 
 /**
  * @}

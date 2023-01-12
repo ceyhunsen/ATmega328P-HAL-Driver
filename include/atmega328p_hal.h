@@ -1,13 +1,14 @@
 /**
  * @file atmega328p_hal.h
  * @author Ceyhun Şen
- * @brief Main header file for ATmega328P HAL driver.
+ * @brief Main header file for ATmega328P HAL driver. This header file includes
+ * all HAL functions.
  * */
 
 /*
  * MIT License
  * 
- * Copyright (c) 2022 Ceyhun Şen
+ * Copyright (c) 2023 Ceyhun Şen
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -36,12 +37,7 @@
 extern "C" {
 #endif // __cplusplus
 
-#include "atmega328p_hal_power.h"
-#include "atmega328p_hal_system.h"
-#include "atmega328p_hal_eeprom.h"
-#include "atmega328p_hal_io.h"
-#include "atmega328p_hal_usart.h"
-#include "atmega328p_hal_twi.h"
+#include "atmega328p_hal_memories.h"
 
 // C++ compatibility.
 #ifdef __cplusplus

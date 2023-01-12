@@ -1,7 +1,7 @@
 /**
- * @file memories.c
+ * @file eeprom.h
  * @author Ceyhun Şen
- * @brief Integration tests for memories module.
+ * @brief Integration tests for EEPROM.
  */
 
 /*
@@ -28,23 +28,12 @@
  * SOFTWARE.
  * */
 
-#include "eeprom.h"
-#include "debug.h"
-#include "unity.h"
-#include <util/delay.h>
+#ifndef __EEPROM_H
+#define __EEPROM_H
 
-void setUp() {}
+void test_eeprom_single_byte();
+void test_eeprom_single_byte_out_of_range();
+void test_eeprom_multiple_bytes();
+void test_eeprom_multiple_bytes_out_of_range();
 
-void tearDown() {}
-
-int main()
-{
-	debug_init();
-
-	RUN_TEST(test_eeprom_single_byte);
-	RUN_TEST(test_eeprom_single_byte_out_of_range);
-	RUN_TEST(test_eeprom_multiple_bytes);
-	RUN_TEST(test_eeprom_multiple_bytes_out_of_range);
-
-	return UnityEnd();
-}
+#endif // __EEPROM_H

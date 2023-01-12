@@ -42,6 +42,7 @@ export MCU = atmega328p
 export PROGRAMMER = arduino
 export BAUD = 115200
 export PORT = /dev/ttyUSB0
+export AVRDUDE = avrdude
 
 # Local build directory.
 export BUILD_DIR = build
@@ -52,8 +53,10 @@ export HOST_C_INCLUDES =  \
 -I $(CURDIR)/Unity/src    \
 
 # MCU include directories.
-export MCU_C_INCLUDES =  \
--I $(CURDIR)/../include  \
+export MCU_C_INCLUDES =          \
+-I $(CURDIR)/../include          \
+-I $(CURDIR)/Unity/src           \
+-I $(CURDIR)/integration/common  \
 
 # Host system include directories.
 export HOST_C_SYS_INCLUDES =  \
@@ -80,15 +83,20 @@ $(HOST_C_SYS_INCLUDES) \
 # MCU C flags.
 export MCU_C_FLAGS =  \
 -Wall                 \
--O2                   \
+-O1                   \
 -mmcu=$(MCU)          \
 $(MCU_C_DEFINES)      \
 $(MCU_C_INCLUDES)     \
 
-# Source files.
+# Host source files.
 export HOST_C_SOURCES =  \
 unity.c                  \
 test_mock_up.c           \
+
+# MCU source files.
+export MCU_C_SOURCES =  \
+unity.c                 \
+debug.c                 \
 
 # Compile .c files to object files.
 export HOST_COMPILE_OBJ = $(HOST_CC) $(HOST_C_FLAGS) -c
@@ -103,11 +111,12 @@ export MCU_COMPILE_OBJ = $(MCU_CC) $(MCU_C_FLAGS) -c
 export MCU_COMPILE = $(MCU_CC) $(MCU_C_FLAGS) $(BUILD_DIR)/*.o
 
 # Use this paths for searching source and header files.
-export VPATH =         \
-$(CURDIR)/Unity/src/   \
-$(CURDIR)/mocks/       \
-$(CURDIR)/../src/      \
-$(CURDIR)/../include/  \
+export VPATH =                \
+$(CURDIR)/Unity/src/          \
+$(CURDIR)/mocks/              \
+$(CURDIR)/integration/common  \
+$(CURDIR)/../src/             \
+$(CURDIR)/../include/         \
 
 # All unit test directories.
 UNIT_TESTS = $(wildcard unit/*/.)
@@ -127,5 +136,8 @@ integration: $(INTEGRATION_TESTS)
 
 $(INTEGRATION_TESTS):
 	$(MAKE) -C $@
+
+clean:
+	rm -rf unit/*/build/ integration/*/build
 
 .PHONY: clean $(UNIT_TESTS) $(INTEGRATION_TESTS)

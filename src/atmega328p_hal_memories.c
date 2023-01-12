@@ -46,33 +46,31 @@ void hal_memories_eeprom_set(hal_memories_eeprom_t settings)
 	loop_until_bit_is_clear(EECR, EEPE);
 
 	// Set programming mode.
-	switch (settings.programming_mode)
-	{
-	default:
-	case hal_memories_eeprom_erase_and_write_mode:
-		_CLEAR_BIT(EECR, EEPM0);
-		_CLEAR_BIT(EECR, EEPM1);
-		break;
-	case hal_memories_eeprom_erase_only_mode:
-		_SET_BIT(EECR, EEPM0);
-		_CLEAR_BIT(EECR, EEPM1);
-		break;
-	case hal_memories_eeprom_write_only_mode:
-		_CLEAR_BIT(EECR, EEPM0);
-		_SET_BIT(EECR, EEPM1);
-		break;
+	switch (settings.programming_mode) {
+		default:
+		case hal_memories_eeprom_erase_and_write_mode:
+			_CLEAR_BIT(EECR, EEPM0);
+			_CLEAR_BIT(EECR, EEPM1);
+			break;
+		case hal_memories_eeprom_erase_only_mode:
+			_SET_BIT(EECR, EEPM0);
+			_CLEAR_BIT(EECR, EEPM1);
+			break;
+		case hal_memories_eeprom_write_only_mode:
+			_CLEAR_BIT(EECR, EEPM0);
+			_SET_BIT(EECR, EEPM1);
+			break;
 	}
 
 	// Set interrupt mode.
-	switch (settings.interrupt_mode)
-	{
-	default:
-	case hal_memories_eeprom_interrupt_disabled:
-		_CLEAR_BIT(EECR, EERIE);
-		break;
-	case hal_memories_eeprom_interrupt_enabled:
-		_SET_BIT(EECR, EERIE);
-		break;
+	switch (settings.interrupt_mode) {
+		default:
+		case hal_memories_eeprom_interrupt_disabled:
+			_CLEAR_BIT(EECR, EERIE);
+			break;
+		case hal_memories_eeprom_interrupt_enabled:
+			_SET_BIT(EECR, EERIE);
+			break;
 	}
 }
 

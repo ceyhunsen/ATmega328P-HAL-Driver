@@ -24,8 +24,12 @@
 TARGET = test
 
 # Append source files.
-MCU_C_SOURCES = \
-memories.c      \
+MCU_C_SOURCES +=              \
+memories.c                    \
+eeprom.c                      \
+atmega328p_hal_memories.c     \
+atmega328p_hal_usart.c        \
+atmega328p_hal_usart_extra.c  \
 
 # Create object files.
 OBJS = $(MCU_C_SOURCES:%.c=$(BUILD_DIR)/%.o)
@@ -49,4 +53,4 @@ $(BUILD_DIR)/$(TARGET).hex: $(BUILD_DIR)/$(TARGET).elf
 
 # Upload .hex file to MCU.
 upload:
-	avrdude -v -p $(MCU) -c $(PROGRAMMER) -P $(PORT) -b $(BAUD) -U flash:w:$(BUILD_DIR)/$(TARGET).hex:i
+	$(AVRDUDE) -v -p $(MCU) -c $(PROGRAMMER) -P $(PORT) -b $(BAUD) -U flash:w:$(BUILD_DIR)/$(TARGET).hex:i

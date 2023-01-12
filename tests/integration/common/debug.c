@@ -1,7 +1,7 @@
 /**
- * @file memories.c
+ * @file debug.c
  * @author Ceyhun Şen
- * @brief Integration tests for memories module.
+ * @brief Debug output for integration tests.
  */
 
 /*
@@ -28,23 +28,23 @@
  * SOFTWARE.
  * */
 
-#include "eeprom.h"
 #include "debug.h"
-#include "unity.h"
-#include <util/delay.h>
+#include "atmega328p_hal_usart.h"
 
-void setUp() {}
-
-void tearDown() {}
-
-int main()
+/**
+ * @brief Initialize USART and printf.
+ */
+void debug_init()
 {
-	debug_init();
+	hal_usart_t usart = {
+		.baud_rate = 115200,
+		.stop_bits = 1,
+		.parity = hal_usart_parity_disabled,
+		.data_bits = 8,
+		.operating_mode = hal_usart_asynchronous_double_speed_mode,
+		.mode = hal_usart_transmit_and_receive_mode,
+	};
 
-	RUN_TEST(test_eeprom_single_byte);
-	RUN_TEST(test_eeprom_single_byte_out_of_range);
-	RUN_TEST(test_eeprom_multiple_bytes);
-	RUN_TEST(test_eeprom_multiple_bytes_out_of_range);
-
-	return UnityEnd();
+	hal_usart_init(&usart);
+	hal_usart_stdio_init();
 }
