@@ -1,7 +1,8 @@
 /**
  * @file atmega328p_hal_memories.c
  * @author Ceyhun Şen
- * @brief Memory operations.
+ * @brief Memories module, standard functions. This module can handle blocking
+ * EEPROM operations.
  * */
 
 /*
@@ -46,7 +47,8 @@ void hal_memories_eeprom_set(hal_memories_eeprom_t settings)
 	loop_until_bit_is_clear(EECR, EEPE);
 
 	// Set programming mode.
-	switch (settings.programming_mode) {
+	switch (settings.programming_mode)
+	{
 		default:
 		case hal_memories_eeprom_erase_and_write_mode:
 			_CLEAR_BIT(EECR, EEPM0);
@@ -63,7 +65,8 @@ void hal_memories_eeprom_set(hal_memories_eeprom_t settings)
 	}
 
 	// Set interrupt mode.
-	switch (settings.interrupt_mode) {
+	switch (settings.interrupt_mode)
+	{
 		default:
 		case hal_memories_eeprom_interrupt_disabled:
 			_CLEAR_BIT(EECR, EERIE);
@@ -140,7 +143,8 @@ uint16_t hal_memories_eeprom_write(uint16_t start_address, uint8_t *data, uint16
 		EEDR = data[i];
 
 		// Write operation must be performed atomically (at most in 4 clock cycles).
-		ATOMIC_BLOCK (ATOMIC_RESTORESTATE) {
+		ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
+		{
 			// Enable writing.
 			_SET_BIT(EECR, EEMPE);
 

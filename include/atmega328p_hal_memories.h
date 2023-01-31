@@ -1,7 +1,7 @@
 /**
  * @file atmega328p_hal_memories.h
  * @author Ceyhun Şen
- * @brief Memory operations.
+ * @brief Memories module. This module can handle EEPROM operations.
  * */
 
 /*
@@ -47,7 +47,8 @@
  * operation. Finally, erase only mode will take 1.8 ms and only perform erase
  * operation on writing to EEPROM.
  * */
-typedef enum hal_memories_eeprom_programming_mode {
+typedef enum hal_memories_eeprom_programming_mode
+{
 	hal_memories_eeprom_erase_and_write_mode = 0,
 	hal_memories_eeprom_write_only_mode      = 1,
 	hal_memories_eeprom_erase_only_mode      = 2
@@ -57,7 +58,8 @@ typedef enum hal_memories_eeprom_programming_mode {
  * @enum hal_memories_eeprom_interrupt_mode
  * @brief EEPROM interrupt modes.
  */
-typedef enum hal_memories_eeprom_interrupt_mode {
+typedef enum hal_memories_eeprom_interrupt_mode
+{
 	hal_memories_eeprom_interrupt_disabled = 0,
 	hal_memories_eeprom_interrupt_enabled  = 1
 } hal_memories_eeprom_interrupt_mode;
@@ -68,7 +70,8 @@ typedef enum hal_memories_eeprom_interrupt_mode {
  * @see hal_memories_eeprom_programming_mode
  * @see hal_memories_eeprom_interrupt_mode
  */
-typedef struct hal_memories_eeprom_t {
+typedef struct hal_memories_eeprom_t
+{
 	hal_memories_eeprom_programming_mode programming_mode;
 	hal_memories_eeprom_interrupt_mode interrupt_mode;
 } hal_memories_eeprom_t;
