@@ -1,27 +1,51 @@
-# Documentation
+# Getting Started
 
-Welcome to the ATmega328P hal driver documentation. This driver's source code is hosted on [Github](https://github.com/ceyhunsen/ATmega328P-HAL-Driver) and it's documentation is at [atmega328p-hal-driver.rtfd.io](http://atmega328p-hal-driver.rtfd.io/).
+Welcome to the ATmega328P HAL driver documentation. This driver provides easy
+to use interface for device peripherals.
 
-## Sections
+ATmega328P hal driver is seperated in to independent modules for every
+peripheral. In this way, unneeded modules can be omitted to save both memory and
+flash space.
 
-1. [Getting Started](getting-started.md)
-2. [AVR Memories](memories.md)
-3. [Power Management And Sleep Modes](power_management_and_sleep_modes.md)
-4. [System Control And Reset](system_control_and_reset.md)
-5. [I/O Ports](io_ports.md)
-6. [Timer](timer.md)
-7. [SPI](spi.md)
-8. [USART](usart.md)
-9. [TWI](twi.md)
-10. [ADC](adc.md)
+This driver depends on [avr-libc](https://www.nongnu.org/avr-libc/) and uses
+[avr-gcc](https://gcc.gnu.org/wiki/avr-gcc) as the compiler.
 
-## More About Documentation
+## How To Add To Project
 
-Doxygen based documentation can be generated offline:
+1. Copy `atmega328p_hal_driver` directory to target project's drivers directory.
+2. Add `atmega328p_hal_driver/include/` directory to target project's include
+path.
+3. Add desired source file(s) in `atmega328p_hal_driver/src/` to target
+project's build toolchain as source file(s).
+4. Include `hal.h` header or a specific header to desired source
+file(s).
 
-```bash
-cd docs/
-doxygen Doxyfile
-```
+## Example Usage
 
-Generated documents will be in `docs/build` directory.
+Example usage for every module is in `examples` directory.
+
+## Naming Conventions
+
+* Module names do not follow ATmega328P data-sheet conventions. Common names are
+used.
+* All of the namings are in `snake_case`, except for the constants: they are in
+`SCREAMING_SNAKE_CASE`.
+* All file names includes `hal_` prefix (e.g.: `hal_usart.c`).
+* All function, struct, enum and enum member names includes it's module name's
+prefix (e.g.: `usart_transmit()` or `struct usart_t`).
+
+With these information, needed members of this driver can be found easily.
+
+### More On Modules
+
+A module can have 3 different files and they have different suffixes:
+
+1. Core module with blocking functions. Have no suffixes. E.g.: `hal_usart.c`.
+2. Interrupt module with non-blocking functions. Have `_it` suffix. E.g.:
+`hal_usart_it.c`.
+3. Extra module with non-standard functions. Have `_extra` suffix. E.g.:
+`hal_usart_extra.c`.
+
+## License
+
+This project is licensed under MIT license.

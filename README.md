@@ -1,6 +1,6 @@
 # ATmega328P HAL Drivers
 
-Unofficial hal drivers for ATmega328P microcontroller.
+Unofficial HAL drivers for ATmega328P microcontroller.
 
 **This driver is still in development! Use it in your own risk.**
 
@@ -19,11 +19,18 @@ For contributing to project, clone it recursively for third party libraries:
 git clone --recurse-submodules https://github.com/ceyhunsen/ATmega328P-HAL-Driver.git
 ```
 
-For more, see [documentation](#documentation).
-
 ## Documentation
 
-Documentation is available at [atmega328p-hal-driver.rtfd.io](http://atmega328p-hal-driver.rtfd.io/) and can be created offline. See [docs/](docs/) directory for more information.
+Documentation is available at
+[atmega328p-hal-driver.rtfd.io](http://atmega328p-hal-driver.rtfd.io/).
+Alternatively, documentation can be generated locally with:
+
+```bash
+cd docs/
+doxygen Doxyfile
+```
+
+Generated documents will be placed in `docs/build` directory.
 
 ## License
 
