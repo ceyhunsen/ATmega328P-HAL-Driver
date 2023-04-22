@@ -1,7 +1,8 @@
 /**
- * @file hal_internals.h
+ * @file
  * @author Ceyhun Şen
- * @brief Internal macros for ATmega328P HAL driver.
+ * @brief Main header file for ATmega328P HAL driver. This header file includes
+ * all HAL functions.
  * */
 
 /*
@@ -28,29 +29,19 @@
  * SOFTWARE.
  * */
 
-#ifndef __ATMEGA328P_HAL_INTERNALS_H
-#define __ATMEGA328P_HAL_INTERNALS_H
+#ifndef __HAL_H
+#define __HAL_H
 
-#include <avr/io.h>
+// C++ compatibility.
+#ifdef __cplusplus
+extern "C" {
+#endif // __cplusplus
 
-/**
- * @addtogroup bit_manipulation
- * Internal bit manipulation macros.
- * @{
- * */
+#include "hal_gpio.h"
 
-/**
- * @brief Clear specified `bit` of `var`.
- * */
-#define _CLEAR_BIT(var, bit) ((var) &= ~(_BV(bit)))
+// C++ compatibility.
+#ifdef __cplusplus
+}
+#endif // __cplusplus
 
-/**
- * @brief Set specified `bit` of `var`.
- * */
-#define _SET_BIT(var, bit)   ((var) |= _BV(bit))
-
-/**
- * @}
- * */
-
-#endif // __ATMEGA328P_HAL_INTERNALS_H
+#endif // __HAL_H

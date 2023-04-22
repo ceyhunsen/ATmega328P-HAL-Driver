@@ -1,13 +1,13 @@
 /**
- * @file atmega328p_hal_io.h
+ * @file
  * @author Ceyhun Şen
- * @brief I/O header file for ATmega328P HAL driver.
+ * @brief GPIO header file for ATmega328P HAL driver.
  * */
 
 /*
  * MIT License
  * 
- * Copyright (c) 2022 Ceyhun Şen
+ * Copyright (c) 2023 Ceyhun Şen
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,43 +28,43 @@
  * SOFTWARE.
  * */
 
-#ifndef __ATMEGA328P_HAL_IO_H
-#define __ATMEGA328P_HAL_IO_H
+#ifndef __HAL_GPIO_H
+#define __HAL_GPIO_H
 
 #include <stdint.h>
 
 /**
- * @enum hal_io_pin_states
- * @brief Pin states for I/O.
+ * @enum
+ * @brief Pin states for GPIO module.
  * */
-typedef enum hal_io_pin_states {
-	hal_io_high_state,
-	hal_io_low_state
-} hal_io_pin_states;
+enum gpio_pin_states {
+	gpio_state_low  = 0,
+	gpio_state_high = 1
+};
 
 /**
- * @enum hal_io_pin_modes
- * @brief Pin modes for I/O.
+ * @enum
+ * @brief Pin modes for GPIO module.
  * */
-typedef enum hal_io_pin_modes {
-	hal_io_output_mode,
-	hal_io_input_pull_up_on_mode,
-	hal_io_input_pull_up_off_mode
-} hal_io_pin_modes;
+enum gpio_pin_modes {
+	gpio_mode_output = 0,
+	gpio_mode_input_pull_up_off,
+	gpio_mode_input_pull_up_on
+};
 
 /**
- * @enum hal_io_ports
- * @brief Ports for I/O.
+ * @enum
+ * @brief Ports for GPIO module.
  * */
-typedef enum hal_io_ports {
-	hal_io_port_b,
-	hal_io_port_c,
-	hal_io_port_d
-} hal_io_ports;
+enum gpio_ports {
+	gpio_port_b,
+	gpio_port_c,
+	gpio_port_d
+};
 
-void hal_io_set_pin_mode(hal_io_ports port, uint8_t pin, hal_io_pin_modes mode);
-void hal_io_write_pin(hal_io_ports port, uint8_t pin, hal_io_pin_states state);
-void hal_io_toggle_pin(hal_io_ports port, uint8_t pin);
-uint8_t hal_io_read_pin(hal_io_ports port, uint8_t pin);
+void gpio_set_pin_mode(gpio_ports port, uint8_t pin, gpio_pin_modes mode);
+void gpio_write_pin(gpio_ports port, uint8_t pin, gpio_pin_states state);
+void gpio_toggle_pin(gpio_ports port, uint8_t pin);
+uint8_t gpio_read_pin(gpio_ports port, uint8_t pin);
 
-#endif // __ATMEGA328P_HAL_IO_H
+#endif // __HAL_GPIO_H
