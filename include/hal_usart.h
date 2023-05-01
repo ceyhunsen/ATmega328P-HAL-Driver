@@ -7,7 +7,7 @@
 /*
  * MIT License
  * 
- * Copyright (c) 2022 Ceyhun Şen
+ * Copyright (c) 2023 Ceyhun Şen
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,43 +28,43 @@
  * SOFTWARE.
  * */
 
-#ifndef __ATMEGA328P_HAL_USART_H
-#define __ATMEGA328P_HAL_USART_H
+#ifndef __HAL_USART_H
+#define __HAL_USART_H
 
 #include <stdint.h>
 
 /**
- * @enum hal_usart_operating_mode
+ * @enum usart_operating_mode
  * @brief Operating modes for USART.
  * */
-typedef enum hal_usart_operating_mode {
-	hal_usart_asynchronous_normal_mode,
-	hal_usart_asynchronous_double_speed_mode,
-	hal_usart_synchronous_master_mode
-} hal_usart_operating_mode;
+typedef enum usart_operating_mode {
+	usart_asynchronous_normal_mode,
+	usart_asynchronous_double_speed_mode,
+	usart_synchronous_master_mode
+} usart_operating_mode;
 
 /**
- * @enum hal_usart_mode
+ * @enum usart_mode
  * @brief Modes for USART.
  * */
-typedef enum hal_usart_mode {
-	hal_usart_transmit_mode,
-	hal_usart_receive_mode,
-	hal_usart_transmit_and_receive_mode
-} hal_usart_mode;
+typedef enum usart_mode {
+	usart_transmit_mode,
+	usart_receive_mode,
+	usart_transmit_and_receive_mode
+} usart_mode;
 
 /**
- * @enum hal_usart_parity
+ * @enum usart_parity
  * @brief Parity settings for USART.
  * */
-typedef enum hal_usart_parity {
-	hal_usart_parity_disabled,
-	hal_usart_even_parity,
-	hal_usart_odd_parity
-} hal_usart_parity;
+typedef enum usart_parity {
+	usart_parity_disabled,
+	usart_even_parity,
+	usart_odd_parity
+} usart_parity;
 
 /**
- * @struct hal_usart_t
+ * @struct usart_t
  * @brief USART data struct.
  *
  * @param baud_rate
@@ -92,25 +92,25 @@ typedef enum hal_usart_parity {
  * * 1
  * * 2
  *
- * @see hal_usart_parity
- * @see hal_usart_operating_mode
- * @see hal_usart_mode
+ * @see usart_parity
+ * @see usart_operating_mode
+ * @see usart_mode
  * */
-typedef struct hal_usart_t {
+typedef struct usart_t {
 	uint32_t baud_rate;
 	uint8_t data_bits;
 	uint8_t stop_bits;
-	hal_usart_operating_mode operating_mode;
-	hal_usart_mode mode;
-	hal_usart_parity parity;
-} hal_usart_t;
+	usart_operating_mode operating_mode;
+	usart_mode mode;
+	usart_parity parity;
+} usart_t;
 
 // Core functions.
-void hal_usart_init(hal_usart_t *usart);
-void hal_usart_transmit(hal_usart_t *usart, uint8_t *data, uint16_t len);
-void hal_usart_receive(hal_usart_t *usart, uint8_t *data, uint16_t len);
+void usart_init(usart_t *usart);
+void usart_transmit(usart_t *usart, uint8_t *data, uint16_t len);
+void usart_receive(usart_t *usart, uint8_t *data, uint16_t len);
 
 // Extras.
-void hal_usart_stdio_init();
+void usart_stdio_init();
 
-#endif // __ATMEGA328P_HAL_USART_H
+#endif // __HAL_USART_H

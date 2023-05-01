@@ -1,4 +1,4 @@
-# Integration test sub-Makefile for ATmega328P HAL driver.
+# Unit test sub-Makefile for ATmega328P HAL driver.
 # Author: Ceyhun Şen
 
 # Copyright (c) 2023 Ceyhun Şen
@@ -21,36 +21,29 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-TARGET = test
+TARGET = test.out
 
 # Append source files.
-MCU_C_SOURCES +=              \
-memories.c                    \
-eeprom.c                      \
-atmega328p_hal_memories.c     \
-atmega328p_hal_usart.c        \
-atmega328p_hal_usart_extra.c  \
+HOST_C_SOURCES += \
+hal_gpio.c        \
+gpio.c            \
 
 # Create object files.
-OBJS = $(MCU_C_SOURCES:%.c=$(BUILD_DIR)/%.o)
+OBJS = $(HOST_C_SOURCES:%.c=$(BUILD_DIR)/%.o)
 
 # Check source files first. Then run test.
-all: $(OBJS) $(BUILD_DIR)/$(TARGET).elf $(BUILD_DIR)/$(TARGET).hex upload
+all: $(OBJS) $(BUILD_DIR)/$(TARGET)
+	$(BUILD_DIR)/$(TARGET)
 
 # Create object files.
 $(BUILD_DIR)/%.o: %.c
 	@mkdir -p $(BUILD_DIR)
-	$(MCU_COMPILE_OBJ) $< -o $@
+	$(HOST_COMPILE_OBJ) $< -o $@
 
-# Link everything to an elf file.
-$(BUILD_DIR)/$(TARGET).elf: $(OBJS)
-	$(MCU_COMPILE) -o $@
+# Link everything.
+$(BUILD_DIR)/$(TARGET): $(OBJS)
+	$(HOST_COMPILE) -o $(BUILD_DIR)/$(TARGET)
 
-# Convert elf file to hex file.
-$(BUILD_DIR)/$(TARGET).hex: $(BUILD_DIR)/$(TARGET).elf
-	$(MCU_OBJ_COPY) -j .text -j .data -O ihex $< $@
-	$(MCU_SIZE) --mcu=$(MCU) $@
-
-# Upload .hex file to MCU.
-upload:
-	$(AVRDUDE) -v -p $(MCU) -c $(PROGRAMMER) -P $(PORT) -b $(BAUD) -U flash:w:$(BUILD_DIR)/$(TARGET).hex:i
+.PHONY: clean
+clean:
+	rm -rf $(BUILD_DIR)

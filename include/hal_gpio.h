@@ -1,7 +1,7 @@
 /**
  * @file
  * @author Ceyhun Şen
- * @brief GPIO header file for ATmega328P HAL driver.
+ * @brief Enumeration and function declarations for GPIO module.
  * */
 
 /*
@@ -16,8 +16,8 @@
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
  * 
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
  * 
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -34,37 +34,45 @@
 #include <stdint.h>
 
 /**
- * @enum
- * @brief Pin states for GPIO module.
+ * Return results for GPIO module.
+ */
+enum gpio_result {
+	gpio_success = 0,
+	gpio_error,
+};
+
+/**
+ * Pin states for GPIO module.
  * */
-enum gpio_pin_states {
+enum gpio_state {
 	gpio_state_low  = 0,
 	gpio_state_high = 1
 };
 
 /**
- * @enum
- * @brief Pin modes for GPIO module.
+ * Direction options for GPIO.
  * */
-enum gpio_pin_modes {
-	gpio_mode_output = 0,
-	gpio_mode_input_pull_up_off,
-	gpio_mode_input_pull_up_on
+enum gpio_direction {
+	gpio_direction_output = 0,
+	gpio_direction_input_pull_up_off,
+	gpio_direction_input_pull_up_on
 };
 
 /**
- * @enum
- * @brief Ports for GPIO module.
+ * Ports for GPIO.
  * */
-enum gpio_ports {
+enum gpio_port {
 	gpio_port_b,
 	gpio_port_c,
 	gpio_port_d
 };
 
-void gpio_set_pin_mode(gpio_ports port, uint8_t pin, gpio_pin_modes mode);
-void gpio_write_pin(gpio_ports port, uint8_t pin, gpio_pin_states state);
-void gpio_toggle_pin(gpio_ports port, uint8_t pin);
-uint8_t gpio_read_pin(gpio_ports port, uint8_t pin);
+enum gpio_result gpio_set_direction(enum gpio_port port, uint8_t pin,
+                                    enum gpio_direction mode);
+enum gpio_result gpio_write(enum gpio_port port, uint8_t pin,
+                            enum gpio_state state);
+enum gpio_result gpio_toggle_pin(enum gpio_port port, uint8_t pin);
+enum gpio_result gpio_read_pin(enum gpio_port port, uint8_t pin,
+                               enum gpio_state *state);
 
 #endif // __HAL_GPIO_H

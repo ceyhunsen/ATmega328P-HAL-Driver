@@ -1,7 +1,7 @@
 /**
- * @file memories.c
+ * @file
  * @author Ceyhun Şen
- * @brief Integration tests for memories module.
+ * @brief Unit test header for GPIO module.
  */
 
 /*
@@ -28,23 +28,9 @@
  * SOFTWARE.
  * */
 
-#include "eeprom.h"
-#include "debug.h"
-#include "unity.h"
-#include <util/delay.h>
+#ifndef __GPIO_H
+#define __GPIO_H
 
-void setUp() {}
 
-void tearDown() {}
 
-int main()
-{
-	debug_init();
-
-	RUN_TEST(test_eeprom_single_byte);
-	RUN_TEST(test_eeprom_single_byte_out_of_range);
-	RUN_TEST(test_eeprom_multiple_bytes);
-	RUN_TEST(test_eeprom_multiple_bytes_out_of_range);
-
-	return UnityEnd();
-}
+#endif // __GPIO_H

@@ -1,5 +1,5 @@
 /**
- * @file atmega328p_hal_usart.c
+ * @file
  * @author Ceyhun Şen
  * @brief USART HAL functions for ATmega328P HAL driver.
  * */
@@ -7,7 +7,7 @@
 /*
  * MIT License
  * 
- * Copyright (c) 2022 Ceyhun Şen
+ * Copyright (c) 2023 Ceyhun Şen
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,8 +28,8 @@
  * SOFTWARE.
  * */
 
-#include "atmega328p_hal_usart.h"
-#include "atmega328p_hal_internals.h"
+#include "hal_usart.h"
+#include "hal_internals.h"
 #include <avr/io.h>
 
 #ifndef F_CPU
@@ -41,7 +41,7 @@
  * @brief Initialize USART.
  * @param usart USART struct.
  * */
-void hal_usart_init(hal_usart_t *usart)
+void usart_init(usart_t *usart)
 {
 	// Wait until any ongoing operation is complete.
 	loop_until_bit_is_set(UCSR0A, UDRE0);
@@ -49,19 +49,19 @@ void hal_usart_init(hal_usart_t *usart)
 	// Get operating mode prescaler and set USART control and status register.
 	uint8_t operating_mode_prescaler = 16;
 	switch (usart->operating_mode) {
-		case hal_usart_asynchronous_normal_mode:
+		case usart_asynchronous_normal_mode:
 			operating_mode_prescaler = 16;
 			_CLEAR_BIT(UCSR0C, UMSEL00);
 			_CLEAR_BIT(UCSR0C, UMSEL01);
 			_CLEAR_BIT(UCSR0A, U2X0);
 			break;
-		case hal_usart_asynchronous_double_speed_mode:
+		case usart_asynchronous_double_speed_mode:
 			operating_mode_prescaler = 8;
 			_CLEAR_BIT(UCSR0C, UMSEL00);
 			_CLEAR_BIT(UCSR0C, UMSEL01);
 			_SET_BIT(UCSR0A, U2X0);
 			break;
-		case hal_usart_synchronous_master_mode:
+		case usart_synchronous_master_mode:
 			operating_mode_prescaler = 2;
 			_CLEAR_BIT(UCSR0C, UMSEL00);
 			_SET_BIT(UCSR0C, UMSEL01);
@@ -77,15 +77,15 @@ void hal_usart_init(hal_usart_t *usart)
 
 	// Set parity bit setting.
 	switch (usart->parity) {
-		case hal_usart_parity_disabled:
+		case usart_parity_disabled:
 			_CLEAR_BIT(UCSR0C, UPM00);
 			_CLEAR_BIT(UCSR0C, UPM01);
 			break;
-		case hal_usart_even_parity:
+		case usart_even_parity:
 			_CLEAR_BIT(UCSR0C, UPM00);
 			_SET_BIT(UCSR0C, UPM01);
 			break;
-		case hal_usart_odd_parity:
+		case usart_odd_parity:
 			_SET_BIT(UCSR0C, UPM00);
 			_SET_BIT(UCSR0C, UPM01);
 			break;
@@ -139,15 +139,15 @@ void hal_usart_init(hal_usart_t *usart)
 
 	// Set mode.
 	switch (usart->mode) {
-		case hal_usart_transmit_mode:
+		case usart_transmit_mode:
 			_SET_BIT(UCSR0B, TXEN0);
 			_CLEAR_BIT(UCSR0B, RXEN0);
 			break;
-		case hal_usart_receive_mode:
+		case usart_receive_mode:
 			_CLEAR_BIT(UCSR0B, TXEN0);
 			_SET_BIT(UCSR0B, RXEN0);
 			break;
-		case hal_usart_transmit_and_receive_mode:
+		case usart_transmit_and_receive_mode:
 			_SET_BIT(UCSR0B, TXEN0);
 			_SET_BIT(UCSR0B, RXEN0);
 			break;
@@ -164,7 +164,7 @@ void hal_usart_init(hal_usart_t *usart)
  * @param data Data buffer that will be written to USART buffer.
  * @param len Data buffer length.
  * */
-void hal_usart_transmit(hal_usart_t *usart, uint8_t *data, uint16_t len)
+void usart_transmit(usart_t *usart, uint8_t *data, uint16_t len)
 {
 	for (uint16_t i = 0; i < len; i++) {
 		// Wait till' any ongoing transfer is complete.
@@ -181,7 +181,7 @@ void hal_usart_transmit(hal_usart_t *usart, uint8_t *data, uint16_t len)
  * @param data Data buffer that will hold read data from USART buffer.
  * @param len Data buffer length.
  * */
-void hal_usart_receive(hal_usart_t *usart, uint8_t *data, uint16_t len)
+void usart_receive(usart_t *usart, uint8_t *data, uint16_t len)
 {
 	for (uint16_t i = 0; i < len; i++) {
 		// Wait till' any ongoing transfer is complete.

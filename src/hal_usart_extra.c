@@ -1,5 +1,5 @@
 /**
- * @file atmega328p_hal_usart_extra.c
+ * @file
  * @author Ceyhun Şen
  * @brief USART extra HAL functions for ATmega328P HAL driver.
  * */
@@ -28,8 +28,8 @@
  * SOFTWARE.
  * */
 
-#include "atmega328p_hal_usart.h"
-#include "atmega328p_hal_internals.h"
+#include "hal_usart.h"
+#include "hal_internals.h"
 #include <avr/io.h>
 #include <stdio.h>
 
@@ -43,11 +43,11 @@
  * @param stream I/O stream (only here cause it's necessary).
  * @retval 0
  * */
-static int hal_usart_stdio_transmit_char(char c, FILE *stream)
+static int usart_stdio_transmit_char(char c, FILE *stream)
 {
 	// Add cariage return character to the end of the stream.
 	if (c == '\n')
-		hal_usart_stdio_transmit_char('\r', stream);
+		usart_stdio_transmit_char('\r', stream);
 
 	// Wait till' any ongoing transfer is complete.
 	loop_until_bit_is_set(UCSR0A, UDRE0);
@@ -63,7 +63,7 @@ static int hal_usart_stdio_transmit_char(char c, FILE *stream)
  * @param stream I/O stream (only here cause it's necessary).
  * @returns Received char.
  * */
-static int hal_usart_stdio_receive_char(FILE *stream)
+static int usart_stdio_receive_char(FILE *stream)
 {
 	// Wait till' any ongoing transfer is complete.
 	loop_until_bit_is_set(UCSR0A, UDRE0);
@@ -80,13 +80,13 @@ static int hal_usart_stdio_receive_char(FILE *stream)
 /**
  * @brief Initialize standart I/O stream.
  * */
-void hal_usart_stdio_init()
+void usart_stdio_init()
 {
 	// Set stdout.
-	static FILE hal_stdout = FDEV_SETUP_STREAM(hal_usart_stdio_transmit_char, NULL, _FDEV_SETUP_WRITE);
+	static FILE hal_stdout = FDEV_SETUP_STREAM(usart_stdio_transmit_char, NULL, _FDEV_SETUP_WRITE);
 	stdout = &hal_stdout;
 
 	// Set stdin.
-	static FILE hal_stdin = FDEV_SETUP_STREAM(NULL, hal_usart_stdio_receive_char, _FDEV_SETUP_READ);
+	static FILE hal_stdin = FDEV_SETUP_STREAM(NULL, usart_stdio_receive_char, _FDEV_SETUP_READ);
 	stdin = &hal_stdin;
 }
