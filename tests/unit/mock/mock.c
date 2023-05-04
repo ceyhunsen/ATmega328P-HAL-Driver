@@ -1,8 +1,8 @@
 /**
- * @file hal_internals.h
+ * @file
  * @author Ceyhun Şen
- * @brief Internal macros for ATmega328P HAL driver.
- * */
+ * @brief Unit tests for mock interface.
+ */
 
 /*
  * MIT License
@@ -16,8 +16,8 @@
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
  * 
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
  * 
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -28,24 +28,46 @@
  * SOFTWARE.
  * */
 
-#ifndef __HAL_INTERNALS_H
-#define __HAL_INTERNALS_H
-
+#include "unity.h"
+#include <test_mock_up.h>
 #include <avr/io.h>
 
 /**
- * Create a value with shifting 1 to the left, `bit` times.
+ * Tests if reset register function actually clears mock-up register.
  */
-#define BIT(bit) (_BV(bit))
+void test_reset()
+{
+	__atmega328p_registers[0x00] = 0xDE;
+	__atmega328p_registers[0x0F] = 0xAD;
+	__atmega328p_registers[0x1F] = 0xBE;
+	__atmega328p_registers[0xFE] = 0xEF;
 
-/**
- * Clear specified `bit` of `var`.
- * */
-#define CLEAR_BIT(var, bit) ((var) &= ~(BIT(bit)))
+	TEST_ASSERT_EQUAL(0xDE, __atmega328p_registers[0x00]);
+	TEST_ASSERT_EQUAL(0xAD, __atmega328p_registers[0x0F]);
+	TEST_ASSERT_EQUAL(0xBE, __atmega328p_registers[0x1F]);
+	TEST_ASSERT_EQUAL(0xEF, __atmega328p_registers[0xFE]);
 
-/**
- * Set specified `bit` of `var`.
- * */
-#define SET_BIT(var, bit)   ((var) |= BIT(bit))
+	reset_registers();
 
-#endif // __HAL_INTERNALS_H
+	TEST_ASSERT_EQUAL(0x00, __atmega328p_registers[0x00]);
+	TEST_ASSERT_EQUAL(0x00, __atmega328p_registers[0x0F]);
+	TEST_ASSERT_EQUAL(0x00, __atmega328p_registers[0x1F]);
+	TEST_ASSERT_EQUAL(0x00, __atmega328p_registers[0xFE]);
+}
+
+void setUp()
+{
+
+}
+
+void tearDown()
+{
+
+}
+
+int main()
+{
+	RUN_TEST(test_reset);
+
+	return UnityEnd();
+}
