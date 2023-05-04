@@ -39,14 +39,13 @@ static volatile uint8_t *get_pin_pointer(enum gpio_port port);
 #define _PIN_TO_BIT(x) (1 << x)
 
 /**
- * @brief Set pin mode of given port/pin.
- * @param port I/O port.
- * @param pin Pin of specified I/O port.
- * @param mode Pin mode to be set.
- * @see gpio_port
- * @see gpio_direction
+ * @brief Set pin direction of given gpio pin.
+ * @param port Gpio port.
+ * @param pin Pin number of specified gpio port.
+ * @param direction Direction to be set.
  * */
-void gpio_set_pin_mode(enum gpio_port port, uint8_t pin, enum gpio_direction mode)
+enum gpio_result gpio_set_direction(enum gpio_port port, uint8_t pin,
+                                    enum gpio_direction direction)
 {
 	// Get port pointers.
 	volatile uint8_t *ddr_pointer, *port_pointer;
@@ -57,37 +56,39 @@ void gpio_set_pin_mode(enum gpio_port port, uint8_t pin, enum gpio_direction mod
 	uint8_t ddr_value = *ddr_pointer;
 	uint8_t port_value = *port_pointer;
 
-	// Set mode.
-	switch (mode) {
+	// Set direction.
+	switch (direction) {
 		case gpio_direction_output:
 			// Tri-state intermediate step.
 			if (!(ddr_value & _PIN_TO_BIT(pin)) && !(port_value & _PIN_TO_BIT(pin))) {
-				_CLEAR_BIT(*port_pointer, pin);
+				CLEAR_BIT(*port_pointer, pin);
 			}
 			// Input pull up intermediate step.
 			if (!(ddr_value & _PIN_TO_BIT(pin)) && (port_value & _PIN_TO_BIT(pin))) {
-				_CLEAR_BIT(*port_pointer, pin);
+				CLEAR_BIT(*port_pointer, pin);
 			}
-			_SET_BIT(*ddr_pointer, pin);
+			SET_BIT(*ddr_pointer, pin);
 			break;
 		case gpio_direction_input_pull_up_on:
 			// Output low intermediate step.
 			if ((ddr_value & _PIN_TO_BIT(pin)) && !(port_value & _PIN_TO_BIT(pin))) {
-				_SET_BIT(*port_pointer, pin);
+				SET_BIT(*port_pointer, pin);
 			}
-			_CLEAR_BIT(*ddr_pointer, pin);
-			_SET_BIT(*port_pointer, pin);
+			CLEAR_BIT(*ddr_pointer, pin);
+			SET_BIT(*port_pointer, pin);
 			break;
 		case gpio_direction_input_pull_up_off:
 			// Output high intermediate step.
 			if ((ddr_value & _PIN_TO_BIT(pin)) && (port_value & _PIN_TO_BIT(pin))) {
-				_SET_BIT(*ddr_pointer, pin);
-				_CLEAR_BIT(*port_pointer, pin);
+				SET_BIT(*ddr_pointer, pin);
+				CLEAR_BIT(*port_pointer, pin);
 			}
-			_CLEAR_BIT(*ddr_pointer, pin);
-			_CLEAR_BIT(*port_pointer, pin);
+			CLEAR_BIT(*ddr_pointer, pin);
+			CLEAR_BIT(*port_pointer, pin);
 			break;
 	}
+
+	return gpio_success;
 }
 
 /**
@@ -95,36 +96,36 @@ void gpio_set_pin_mode(enum gpio_port port, uint8_t pin, enum gpio_direction mod
  * @param port I/O port.
  * @param pin Pin of specified I/O port.
  * @param state Pin state to be set.
- * @see gpio_port
- * @see gpio_pin_states
  * */
-void gpio_write_pin(enum gpio_port port, uint8_t pin, enum gpio_state state)
+enum gpio_result gpio_write(enum gpio_port port, uint8_t pin,
+                            enum gpio_state state)
 {
 	volatile uint8_t *port_pointer;
 	port_pointer = get_port_pointer(port);
 
 	switch (state) {
 		case gpio_state_high:
-			_SET_BIT(*port_pointer, pin);
+			SET_BIT(*port_pointer, pin);
 			break;
 		case gpio_state_low:
-			_CLEAR_BIT(*port_pointer, pin);
+			CLEAR_BIT(*port_pointer, pin);
 			break;
 	}
+
+	return gpio_success;
 }
 
 /**
  * @brief Toggle given pin.
  * @param port I/O port.
  * @param pin Pin of specified I/O port.
- * @see gpio_port
  * */
-enum gpio_result gpio_toggle_pin(enum gpio_port port, uint8_t pin)
+enum gpio_result gpio_toggle(enum gpio_port port, uint8_t pin)
 {
 	volatile uint8_t *pin_pointer;
 	pin_pointer = get_pin_pointer(port);
 
-	_SET_BIT(*pin_pointer, pin);
+	SET_BIT(*pin_pointer, pin);
 
 	return gpio_success;
 }
@@ -134,17 +135,16 @@ enum gpio_result gpio_toggle_pin(enum gpio_port port, uint8_t pin)
  * @param port I/O port.
  * @param pin Pin of specified I/O port.
  * @returns 1 if pin is high, 0 otherwise.
- * @see gpio_port
  * */
-enum gpio_result gpio_read_pin(enum gpio_port port, uint8_t pin,
-                               enum gpio_state *state)
+enum gpio_result gpio_read(enum gpio_port port, uint8_t pin,
+                           enum gpio_state *state)
 {
 	volatile uint8_t *pin_pointer;
 	pin_pointer = get_pin_pointer(port);
 
 	uint8_t pin_value = *pin_pointer;
 
-	state = (pin_value & _PIN_TO_BIT(pin))? gpio_state_high: gpio_state_low;
+	*state = (pin_value & _PIN_TO_BIT(pin))? gpio_state_high: gpio_state_low;
 
 	return gpio_success;
 }

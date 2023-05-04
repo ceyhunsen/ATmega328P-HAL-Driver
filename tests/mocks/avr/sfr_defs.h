@@ -34,22 +34,11 @@
 
 #include <stdint.h>
 
-/**
- * @brief Use mock up memory as registers.
- */
 extern uint8_t __atmega328p_registers[];
 
-/**
- * @addtogroup mock_up_registers
- * Access mock up memory instead of real registers.
- * @{
- */
 #define _MMIO_BYTE(mem_addr)               __atmega328p_registers[mem_addr]
 #define _MMIO_WORD(mem_addr)               __atmega328p_registers[mem_addr]
 #define _MMIO_DWORD(mem_addr)              __atmega328p_registers[mem_addr]
-/**
- * @}
- */
 
 #define __SFR_OFFSET                       0x20
 

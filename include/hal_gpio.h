@@ -71,8 +71,8 @@ enum gpio_result gpio_set_direction(enum gpio_port port, uint8_t pin,
                                     enum gpio_direction mode);
 enum gpio_result gpio_write(enum gpio_port port, uint8_t pin,
                             enum gpio_state state);
-enum gpio_result gpio_toggle_pin(enum gpio_port port, uint8_t pin);
-enum gpio_result gpio_read_pin(enum gpio_port port, uint8_t pin,
+enum gpio_result gpio_toggle(enum gpio_port port, uint8_t pin);
+enum gpio_result gpio_read(enum gpio_port port, uint8_t pin,
                                enum gpio_state *state);
 
 #endif // __HAL_GPIO_H

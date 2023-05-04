@@ -51,84 +51,84 @@ void usart_init(usart_t *usart)
 	switch (usart->operating_mode) {
 		case usart_asynchronous_normal_mode:
 			operating_mode_prescaler = 16;
-			_CLEAR_BIT(UCSR0C, UMSEL00);
-			_CLEAR_BIT(UCSR0C, UMSEL01);
-			_CLEAR_BIT(UCSR0A, U2X0);
+			CLEAR_BIT(UCSR0C, UMSEL00);
+			CLEAR_BIT(UCSR0C, UMSEL01);
+			CLEAR_BIT(UCSR0A, U2X0);
 			break;
 		case usart_asynchronous_double_speed_mode:
 			operating_mode_prescaler = 8;
-			_CLEAR_BIT(UCSR0C, UMSEL00);
-			_CLEAR_BIT(UCSR0C, UMSEL01);
-			_SET_BIT(UCSR0A, U2X0);
+			CLEAR_BIT(UCSR0C, UMSEL00);
+			CLEAR_BIT(UCSR0C, UMSEL01);
+			SET_BIT(UCSR0A, U2X0);
 			break;
 		case usart_synchronous_master_mode:
 			operating_mode_prescaler = 2;
-			_CLEAR_BIT(UCSR0C, UMSEL00);
-			_SET_BIT(UCSR0C, UMSEL01);
-			_CLEAR_BIT(UCSR0A, U2X0);
+			CLEAR_BIT(UCSR0C, UMSEL00);
+			SET_BIT(UCSR0C, UMSEL01);
+			CLEAR_BIT(UCSR0A, U2X0);
 			break;
 		default:
 			operating_mode_prescaler = 16;
-			_CLEAR_BIT(UCSR0C, UMSEL00);
-			_CLEAR_BIT(UCSR0C, UMSEL01);
-			_CLEAR_BIT(UCSR0A, U2X0);
+			CLEAR_BIT(UCSR0C, UMSEL00);
+			CLEAR_BIT(UCSR0C, UMSEL01);
+			CLEAR_BIT(UCSR0A, U2X0);
 			break;
 	}
 
 	// Set parity bit setting.
 	switch (usart->parity) {
 		case usart_parity_disabled:
-			_CLEAR_BIT(UCSR0C, UPM00);
-			_CLEAR_BIT(UCSR0C, UPM01);
+			CLEAR_BIT(UCSR0C, UPM00);
+			CLEAR_BIT(UCSR0C, UPM01);
 			break;
 		case usart_even_parity:
-			_CLEAR_BIT(UCSR0C, UPM00);
-			_SET_BIT(UCSR0C, UPM01);
+			CLEAR_BIT(UCSR0C, UPM00);
+			SET_BIT(UCSR0C, UPM01);
 			break;
 		case usart_odd_parity:
-			_SET_BIT(UCSR0C, UPM00);
-			_SET_BIT(UCSR0C, UPM01);
+			SET_BIT(UCSR0C, UPM00);
+			SET_BIT(UCSR0C, UPM01);
 			break;
 		default:
-			_CLEAR_BIT(UCSR0C, UPM00);
-			_CLEAR_BIT(UCSR0C, UPM01);
+			CLEAR_BIT(UCSR0C, UPM00);
+			CLEAR_BIT(UCSR0C, UPM01);
 			break;
 	}
 
 	// Set stop bit setting.
 	if (usart->stop_bits == 1) {
-		_CLEAR_BIT(UCSR0C, USBS0);
+		CLEAR_BIT(UCSR0C, USBS0);
 	}
 	else {
-		_SET_BIT(UCSR0C, USBS0);
+		SET_BIT(UCSR0C, USBS0);
 	}
 
 	// Set data bit setting.
 	switch (usart->data_bits) {
 		case 5:
-			_CLEAR_BIT(UCSR0C, UCSZ00);
-			_CLEAR_BIT(UCSR0C, UCSZ01);
+			CLEAR_BIT(UCSR0C, UCSZ00);
+			CLEAR_BIT(UCSR0C, UCSZ01);
 			break;
 		case 6:
-			_SET_BIT(UCSR0C, UCSZ00);
-			_CLEAR_BIT(UCSR0C, UCSZ01);
+			SET_BIT(UCSR0C, UCSZ00);
+			CLEAR_BIT(UCSR0C, UCSZ01);
 			break;
 		case 7:
-			_CLEAR_BIT(UCSR0C, UCSZ00);
-			_SET_BIT(UCSR0C, UCSZ01);
+			CLEAR_BIT(UCSR0C, UCSZ00);
+			SET_BIT(UCSR0C, UCSZ01);
 			break;
 		case 8:
-			_SET_BIT(UCSR0C, UCSZ00);
-			_SET_BIT(UCSR0C, UCSZ01);
+			SET_BIT(UCSR0C, UCSZ00);
+			SET_BIT(UCSR0C, UCSZ01);
 			break;
 		case 9:
-			_SET_BIT(UCSR0C, UCSZ00);
-			_SET_BIT(UCSR0C, UCSZ01);
-			_SET_BIT(UCSR0B, UCSZ02);
+			SET_BIT(UCSR0C, UCSZ00);
+			SET_BIT(UCSR0C, UCSZ01);
+			SET_BIT(UCSR0B, UCSZ02);
 			break;
 		default:
-			_SET_BIT(UCSR0C, UCSZ00);
-			_SET_BIT(UCSR0C, UCSZ01);
+			SET_BIT(UCSR0C, UCSZ00);
+			SET_BIT(UCSR0C, UCSZ01);
 			break;
 	}
 
@@ -140,20 +140,20 @@ void usart_init(usart_t *usart)
 	// Set mode.
 	switch (usart->mode) {
 		case usart_transmit_mode:
-			_SET_BIT(UCSR0B, TXEN0);
-			_CLEAR_BIT(UCSR0B, RXEN0);
+			SET_BIT(UCSR0B, TXEN0);
+			CLEAR_BIT(UCSR0B, RXEN0);
 			break;
 		case usart_receive_mode:
-			_CLEAR_BIT(UCSR0B, TXEN0);
-			_SET_BIT(UCSR0B, RXEN0);
+			CLEAR_BIT(UCSR0B, TXEN0);
+			SET_BIT(UCSR0B, RXEN0);
 			break;
 		case usart_transmit_and_receive_mode:
-			_SET_BIT(UCSR0B, TXEN0);
-			_SET_BIT(UCSR0B, RXEN0);
+			SET_BIT(UCSR0B, TXEN0);
+			SET_BIT(UCSR0B, RXEN0);
 			break;
 		default:
-			_SET_BIT(UCSR0B, TXEN0);
-			_SET_BIT(UCSR0B, RXEN0);
+			SET_BIT(UCSR0B, TXEN0);
+			SET_BIT(UCSR0B, RXEN0);
 			break;
 	}
 }

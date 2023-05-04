@@ -27,6 +27,7 @@ TARGET = test.out
 HOST_C_SOURCES += \
 hal_gpio.c        \
 gpio.c            \
+direction.c       \
 
 # Create object files.
 OBJS = $(HOST_C_SOURCES:%.c=$(BUILD_DIR)/%.o)
