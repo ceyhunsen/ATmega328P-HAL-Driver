@@ -36,8 +36,6 @@ static volatile uint8_t *get_ddr_pointer(enum gpio_port port);
 static volatile uint8_t *get_port_pointer(enum gpio_port port);
 static volatile uint8_t *get_pin_pointer(enum gpio_port port);
 
-#define _PIN_TO_BIT(x) (1 << x)
-
 /**
  * @brief Set pin direction of given gpio pin.
  * 
@@ -63,13 +61,13 @@ enum gpio_result gpio_set_direction(enum gpio_port port, uint8_t pin,
 	switch (direction) {
 		case gpio_direction_output:
 			// Tri-state intermediate step.
-			if (!(ddr_value & _PIN_TO_BIT(pin)) &&
-			    !(port_value & _PIN_TO_BIT(pin))) {
+			if (!(ddr_value & BIT(pin)) &&
+			    !(port_value & BIT(pin))) {
 				CLEAR_BIT(*port_pointer, pin);
 			}
 			// Input pull up intermediate step.
-			if (!(ddr_value & _PIN_TO_BIT(pin)) &&
-			    (port_value & _PIN_TO_BIT(pin))) {
+			if (!(ddr_value & BIT(pin)) &&
+			    (port_value & BIT(pin))) {
 				CLEAR_BIT(*port_pointer, pin);
 			}
 
@@ -78,8 +76,8 @@ enum gpio_result gpio_set_direction(enum gpio_port port, uint8_t pin,
 			break;
 		case gpio_direction_input_pull_up_on:
 			// Output low intermediate step.
-			if ((ddr_value & _PIN_TO_BIT(pin)) &&
-			    !(port_value & _PIN_TO_BIT(pin))) {
+			if ((ddr_value & BIT(pin)) &&
+			    !(port_value & BIT(pin))) {
 				SET_BIT(*port_pointer, pin);
 			}
 
@@ -89,8 +87,8 @@ enum gpio_result gpio_set_direction(enum gpio_port port, uint8_t pin,
 			break;
 		case gpio_direction_input_pull_up_off:
 			// Output high intermediate step.
-			if ((ddr_value & _PIN_TO_BIT(pin)) &&
-			    (port_value & _PIN_TO_BIT(pin))) {
+			if ((ddr_value & BIT(pin)) &&
+			    (port_value & BIT(pin))) {
 				SET_BIT(*ddr_pointer, pin);
 				CLEAR_BIT(*port_pointer, pin);
 			}
@@ -131,8 +129,9 @@ enum gpio_result gpio_write(enum gpio_port port, uint8_t pin,
 
 /**
  * @brief Toggle given pin.
- * @param port I/O port.
- * @param pin Pin of specified I/O port.
+ * 
+ * @param port GPIO port.
+ * @param pin Pin of specified GPIO port.
  * */
 enum gpio_result gpio_toggle(enum gpio_port port, uint8_t pin)
 {
@@ -147,8 +146,9 @@ enum gpio_result gpio_toggle(enum gpio_port port, uint8_t pin)
 
 /**
  * @brief Read value of a pin.
- * @param port I/O port.
- * @param pin Pin of specified I/O port.
+ * 
+ * @param port GPIO port.
+ * @param pin Pin of specified GPIO port.
  * @returns 1 if pin is high, 0 otherwise.
  * */
 enum gpio_result gpio_read(enum gpio_port port, uint8_t pin,
@@ -159,14 +159,16 @@ enum gpio_result gpio_read(enum gpio_port port, uint8_t pin,
 
 	uint8_t pin_value = *pin_pointer;
 
-	*state = (pin_value & _PIN_TO_BIT(pin))? gpio_state_high: gpio_state_low;
+	*state = (pin_value & BIT(pin))? gpio_state_high:
+	                                         gpio_state_low;
 
 	return gpio_success;
 }
 
 /**
  * @brief Get DDRx pointer.
- * @param port I/O port.
+ * 
+ * @param port GPIO port.
  * @returns DDRx pointer
  * @see gpio_port
  * */
@@ -192,7 +194,8 @@ static volatile uint8_t *get_ddr_pointer(enum gpio_port port)
 
 /**
  * @brief Get PORTx pointer.
- * @param port I/O port.
+ * 
+ * @param port GPIO port.
  * @returns PORTx pointer.
  * @see gpio_port
  * */
@@ -218,7 +221,8 @@ static volatile uint8_t *get_port_pointer(enum gpio_port port)
 
 /**
  * @brief Get PINx pointer.
- * @param port I/O port.
+ * 
+ * @param port GPIO port.
  * @returns PINx pointer.
  * @see gpio_port
  * */
