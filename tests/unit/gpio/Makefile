@@ -28,6 +28,9 @@ HOST_C_SOURCES += \
 hal_gpio.c        \
 gpio.c            \
 direction.c       \
+toggle.c          \
+write.c           \
+read.c            \
 
 # Create object files.
 OBJS = $(HOST_C_SOURCES:%.c=$(BUILD_DIR)/%.o)

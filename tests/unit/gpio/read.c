@@ -1,7 +1,7 @@
 /**
  * @file
  * @author Ceyhun Şen
- * @brief Unit tests for GPIO module.
+ * @brief Unit tests for read operations in GPIO module.
  */
 
 /*
@@ -28,34 +28,10 @@
  * SOFTWARE.
  * */
 
+#include "hal_gpio.h"
 #include "gpio.h"
 #include "unity.h"
+#include <test_mock_up.h>
+#include <avr/io.h>
+#include <stdint.h>
 
-void setUp()
-{
-	reset_registers();
-}
-
-void tearDown()
-{
-	reset_registers();
-}
-
-int main()
-{
-	RUN_TEST(test_direction_output_b_single);
-	RUN_TEST(test_direction_output_b_multi);
-	RUN_TEST(test_direction_output_c_single);
-	RUN_TEST(test_direction_output_c_multi);
-	RUN_TEST(test_direction_output_d_single);
-	RUN_TEST(test_direction_output_d_multi);
-
-	RUN_TEST(test_toggle_b_single);
-	RUN_TEST(test_toggle_b_multi);
-	RUN_TEST(test_toggle_c_single);
-	RUN_TEST(test_toggle_c_multi);
-	RUN_TEST(test_toggle_d_single);
-	RUN_TEST(test_toggle_d_multi);
-
-	return UnityEnd();
-}

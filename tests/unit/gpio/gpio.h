@@ -40,4 +40,11 @@ void test_direction_output_c_multi();
 void test_direction_output_d_single();
 void test_direction_output_d_multi();
 
+void test_toggle_b_single();
+void test_toggle_b_multi();
+void test_toggle_c_single();
+void test_toggle_c_multi();
+void test_toggle_d_single();
+void test_toggle_d_multi();
+
 #endif // __GPIO_H

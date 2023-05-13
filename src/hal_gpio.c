@@ -40,6 +40,7 @@ static volatile uint8_t *get_pin_pointer(enum gpio_port port);
 
 /**
  * @brief Set pin direction of given gpio pin.
+ * 
  * @param port Gpio port.
  * @param pin Pin number of specified gpio port.
  * @param direction Direction to be set.
@@ -105,8 +106,9 @@ enum gpio_result gpio_set_direction(enum gpio_port port, uint8_t pin,
 
 /**
  * @brief Set pin mode of given port/pin.
- * @param port I/O port.
- * @param pin Pin of specified I/O port.
+ * 
+ * @param port GPIO port.
+ * @param pin Pin of specified GPIO port.
  * @param state Pin state to be set.
  * */
 enum gpio_result gpio_write(enum gpio_port port, uint8_t pin,
@@ -135,6 +137,7 @@ enum gpio_result gpio_write(enum gpio_port port, uint8_t pin,
 enum gpio_result gpio_toggle(enum gpio_port port, uint8_t pin)
 {
 	volatile uint8_t *pin_pointer;
+
 	pin_pointer = get_pin_pointer(port);
 
 	SET_BIT(*pin_pointer, pin);
