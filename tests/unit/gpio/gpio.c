@@ -45,6 +45,10 @@ int main()
 {
 	RUN_TEST(test_direction_output_b_single);
 	RUN_TEST(test_direction_output_b_multi);
+	RUN_TEST(test_direction_output_c_single);
+	RUN_TEST(test_direction_output_c_multi);
+	RUN_TEST(test_direction_output_d_single);
+	RUN_TEST(test_direction_output_d_multi);
 
 	return UnityEnd();
 }

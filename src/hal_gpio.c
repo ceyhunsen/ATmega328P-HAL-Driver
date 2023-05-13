@@ -49,42 +49,54 @@ enum gpio_result gpio_set_direction(enum gpio_port port, uint8_t pin,
 {
 	// Get port pointers.
 	volatile uint8_t *ddr_pointer, *port_pointer;
+	uint8_t ddr_value, port_value;
+
 	ddr_pointer = get_ddr_pointer(port);
 	port_pointer = get_port_pointer(port);
 
 	// Read register values.
-	uint8_t ddr_value = *ddr_pointer;
-	uint8_t port_value = *port_pointer;
+	ddr_value = *ddr_pointer;
+	port_value = *port_pointer;
 
 	// Set direction.
 	switch (direction) {
 		case gpio_direction_output:
 			// Tri-state intermediate step.
-			if (!(ddr_value & _PIN_TO_BIT(pin)) && !(port_value & _PIN_TO_BIT(pin))) {
+			if (!(ddr_value & _PIN_TO_BIT(pin)) &&
+			    !(port_value & _PIN_TO_BIT(pin))) {
 				CLEAR_BIT(*port_pointer, pin);
 			}
 			// Input pull up intermediate step.
-			if (!(ddr_value & _PIN_TO_BIT(pin)) && (port_value & _PIN_TO_BIT(pin))) {
+			if (!(ddr_value & _PIN_TO_BIT(pin)) &&
+			    (port_value & _PIN_TO_BIT(pin))) {
 				CLEAR_BIT(*port_pointer, pin);
 			}
+
 			SET_BIT(*ddr_pointer, pin);
+
 			break;
 		case gpio_direction_input_pull_up_on:
 			// Output low intermediate step.
-			if ((ddr_value & _PIN_TO_BIT(pin)) && !(port_value & _PIN_TO_BIT(pin))) {
+			if ((ddr_value & _PIN_TO_BIT(pin)) &&
+			    !(port_value & _PIN_TO_BIT(pin))) {
 				SET_BIT(*port_pointer, pin);
 			}
+
 			CLEAR_BIT(*ddr_pointer, pin);
 			SET_BIT(*port_pointer, pin);
+
 			break;
 		case gpio_direction_input_pull_up_off:
 			// Output high intermediate step.
-			if ((ddr_value & _PIN_TO_BIT(pin)) && (port_value & _PIN_TO_BIT(pin))) {
+			if ((ddr_value & _PIN_TO_BIT(pin)) &&
+			    (port_value & _PIN_TO_BIT(pin))) {
 				SET_BIT(*ddr_pointer, pin);
 				CLEAR_BIT(*port_pointer, pin);
 			}
+
 			CLEAR_BIT(*ddr_pointer, pin);
 			CLEAR_BIT(*port_pointer, pin);
+
 			break;
 	}
 
@@ -160,6 +172,7 @@ static volatile uint8_t *get_ddr_pointer(enum gpio_port port)
 	volatile uint8_t *p;
 
 	switch (port) {
+		default:
 		case gpio_port_b:
 			p = &DDRB;
 			break;
@@ -168,9 +181,6 @@ static volatile uint8_t *get_ddr_pointer(enum gpio_port port)
 			break;
 		case gpio_port_d:
 			p = &DDRD;
-			break;
-		default:
-			p = &DDRB;
 			break;
 	}
 
@@ -188,6 +198,7 @@ static volatile uint8_t *get_port_pointer(enum gpio_port port)
 	volatile uint8_t *p;
 
 	switch (port) {
+		default:
 		case gpio_port_b:
 			p = &PORTB;
 			break;
@@ -196,9 +207,6 @@ static volatile uint8_t *get_port_pointer(enum gpio_port port)
 			break;
 		case gpio_port_d:
 			p = &PORTD;
-			break;
-		default:
-			p = &PORTB;
 			break;
 	}
 
@@ -216,6 +224,7 @@ static volatile uint8_t *get_pin_pointer(enum gpio_port port)
 	volatile uint8_t *p;
 
 	switch (port) {
+		default:
 		case gpio_port_b:
 			p = &PINB;
 			break;
@@ -224,9 +233,6 @@ static volatile uint8_t *get_pin_pointer(enum gpio_port port)
 			break;
 		case gpio_port_d:
 			p = &PIND;
-			break;
-		default:
-			p = &PINB;
 			break;
 	}
 
