@@ -1,50 +1,67 @@
 # GPIO
 
-TODO: This page needs rework
-
 ## Setting Pins As Output Or Input
 
-Pins are configurable via `hal_io_set_pin_mode()` function. Pin port, pin and pin mode must be given as parameter to function.
+Pins are configurable via `gpio_set_direction()` function.
 
 Code example:
 
 ```c
+enum gpio_result result;
+
 // Set PB5 pin as output.
-hal_io_set_pin_mode(hal_io_port_b, 5, hal_io_output_mode);
+result = gpio_set_direction(gpio_port_b, 5, gpio_direction_output);
+
+// Set PC4 pin as input, pull up off.
+result = gpio_set_direction(gpio_port_c, 4, gpio_direction_input_pull_up_off);
+
+// Set PD4 pin as input, pull up on.
+result = gpio_set_direction(gpio_port_d, 3, gpio_direction_input_pull_up_on);
 ```
 
 ## Changing Pin State
 
-Pins can be drived high or low with `hal_io_write_pin()` function. Pin port, pin and state must be given as parameter to function.
+Pins can be driven high or low with `gpio_write()` function.
 
 Code example:
 
 ```c
+enum gpio_result result;
+
 // Write high to PB5 pin.
-hal_io_write_pin(hal_io_port_b, 5, hal_io_high_state);
+result = gpio_write(gpio_port_b, 5, gpio_state_high);
+
+// Write low to PB5 pin.
+result = gpio_write(gpio_port_b, 5, gpio_state_low);
 ```
 
 ## Toggling Pin State
 
-Pin state can be toggled with `hal_io_toggle_pin()` function. Pin port and pin must be given as parameter to function.
+Pin state can be toggled with `gpio_toggle()` function.
 
 Code example:
 
 ```c
+enum gpio_result result;
+
 // Toggle PB5 pin state.
-hal_io_toggle_pin(hal_io_port_b, 5);
+result = gpio_toggle(gpio_port_b, 5);
 ```
 
 ## Reading Pin State
 
-Pin state can be read with `hal_io_read_pin()` function. Pin port and pin must be given as parameter to function. 1 will be returned if pin state is high, 0 otherwise.
+Pin state can be read with `gpio_read()` function.
 
 Code example:
 
 ```c
+enum gpio_result result;
+enum gpio_state state;
+
 // Read PB0 pin state.
-uint8_t pb0_state = hal_io_read_pin(hal_io_port_b, 0);
-if (pb0_state == 1) {
+result = gpio_read(gpio_port_b, 0, &state);
+
+if (state == gpio_state_high) {
     printf("PB0 is in high state.\n");
 }
 else {
