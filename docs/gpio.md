@@ -1,4 +1,6 @@
-# I/O Ports
+# GPIO
+
+TODO: This page needs rework
 
 ## Setting Pins As Output Or Input
 
