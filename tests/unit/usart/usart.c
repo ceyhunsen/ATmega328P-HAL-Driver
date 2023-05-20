@@ -30,10 +30,14 @@
 
 #include "usart.h"
 #include "unity.h"
+#include <avr/io.h>
 
 void setUp()
 {
 	reset_registers();
+
+	// This register's value must be modified for tests to pass.
+	UCSR0A |= 1 << UDRE0;
 }
 
 void tearDown()
@@ -43,5 +47,9 @@ void tearDown()
 
 int main()
 {
+	RUN_TEST(test_direction_transmit);
+	RUN_TEST(test_direction_receive);
+	RUN_TEST(test_direction_transmit_and_receive);
+
 	return UnityEnd();
 }

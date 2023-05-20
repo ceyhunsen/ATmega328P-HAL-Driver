@@ -1,7 +1,7 @@
 /**
  * @file
  * @author Ceyhun Şen
- * @brief Unit test header for USART module.
+ * @brief Unit tests for direction setting for USART.
  */
 
 /*
@@ -28,13 +28,61 @@
  * SOFTWARE.
  * */
 
-#ifndef __USART_H
-#define __USART_H
+#include "hal_usart.h"
+#include "usart.h"
+#include "unity.h"
+#include <test_mock_up.h>
+#include <avr/io.h>
 
-#include "test_mock_up.h"
+/**
+ * Sets necessary data for initializing.
+ */
+#define SET_MEMBERS(usart) \
+usart.stop_bits = 2;       \
+usart.baud_rate = 9600;    \
+usart.data_bits = 8;       \
 
-void test_direction_transmit();
-void test_direction_receive();
-void test_direction_transmit_and_receive();
+void test_direction_transmit()
+{
+	struct usart_t usart;
+	enum usart_result result;
 
-#endif // __USART_H
+	SET_MEMBERS(usart);
+	usart.direction = usart_direction_transmit;
+
+	result = usart_init(&usart);
+
+	TEST_ASSERT_EQUAL(usart_success, result);
+
+	TEST_ASSERT_EQUAL(1 << TXEN0, UCSR0B);
+}
+
+void test_direction_receive()
+{
+	struct usart_t usart;
+	enum usart_result result;
+
+	SET_MEMBERS(usart);
+	usart.direction = usart_direction_receive;
+
+	result = usart_init(&usart);
+
+	TEST_ASSERT_EQUAL(usart_success, result);
+
+	TEST_ASSERT_EQUAL(1 << RXEN0, UCSR0B);
+}
+
+void test_direction_transmit_and_receive()
+{
+	struct usart_t usart;
+	enum usart_result result;
+
+	SET_MEMBERS(usart);
+	usart.direction = usart_direction_transmit_and_receive;
+
+	result = usart_init(&usart);
+
+	TEST_ASSERT_EQUAL(usart_success, result);
+
+	TEST_ASSERT_EQUAL(1 << TXEN0 | 1 << RXEN0, UCSR0B);
+}
