@@ -41,57 +41,49 @@
  * @brief Initialize USART.
  * @param usart USART struct.
  * */
-void usart_init(usart_t *usart)
+enum usart_result usart_init(struct usart_t *usart)
 {
 	// Wait until any ongoing operation is complete.
 	loop_until_bit_is_set(UCSR0A, UDRE0);
 
 	// Get operating mode prescaler and set USART control and status register.
 	uint8_t operating_mode_prescaler = 16;
-	switch (usart->operating_mode) {
-		case usart_asynchronous_normal_mode:
+	switch (usart->mode) {
+		default:
+		case usart_mode_asynchronous_normal:
 			operating_mode_prescaler = 16;
 			CLEAR_BIT(UCSR0C, UMSEL00);
 			CLEAR_BIT(UCSR0C, UMSEL01);
 			CLEAR_BIT(UCSR0A, U2X0);
 			break;
-		case usart_asynchronous_double_speed_mode:
+		case usart_mode_asynchronous_double_speed:
 			operating_mode_prescaler = 8;
 			CLEAR_BIT(UCSR0C, UMSEL00);
 			CLEAR_BIT(UCSR0C, UMSEL01);
 			SET_BIT(UCSR0A, U2X0);
 			break;
-		case usart_synchronous_master_mode:
+		case usart_mode_synchronous_master:
 			operating_mode_prescaler = 2;
 			CLEAR_BIT(UCSR0C, UMSEL00);
 			SET_BIT(UCSR0C, UMSEL01);
-			CLEAR_BIT(UCSR0A, U2X0);
-			break;
-		default:
-			operating_mode_prescaler = 16;
-			CLEAR_BIT(UCSR0C, UMSEL00);
-			CLEAR_BIT(UCSR0C, UMSEL01);
 			CLEAR_BIT(UCSR0A, U2X0);
 			break;
 	}
 
 	// Set parity bit setting.
 	switch (usart->parity) {
+		default:
 		case usart_parity_disabled:
 			CLEAR_BIT(UCSR0C, UPM00);
 			CLEAR_BIT(UCSR0C, UPM01);
 			break;
-		case usart_even_parity:
+		case usart_parity_even:
 			CLEAR_BIT(UCSR0C, UPM00);
 			SET_BIT(UCSR0C, UPM01);
 			break;
-		case usart_odd_parity:
+		case usart_parity_odd:
 			SET_BIT(UCSR0C, UPM00);
 			SET_BIT(UCSR0C, UPM01);
-			break;
-		default:
-			CLEAR_BIT(UCSR0C, UPM00);
-			CLEAR_BIT(UCSR0C, UPM01);
 			break;
 	}
 
@@ -138,16 +130,16 @@ void usart_init(usart_t *usart)
 	UBRR0L = baud_rate & 0xFF;
 
 	// Set mode.
-	switch (usart->mode) {
-		case usart_transmit_mode:
+	switch (usart->direction) {
+		case usart_direction_transmit:
 			SET_BIT(UCSR0B, TXEN0);
 			CLEAR_BIT(UCSR0B, RXEN0);
 			break;
-		case usart_receive_mode:
+		case usart_direction_receive:
 			CLEAR_BIT(UCSR0B, TXEN0);
 			SET_BIT(UCSR0B, RXEN0);
 			break;
-		case usart_transmit_and_receive_mode:
+		case usart_direction_transmit_and_receive:
 			SET_BIT(UCSR0B, TXEN0);
 			SET_BIT(UCSR0B, RXEN0);
 			break;
@@ -156,6 +148,8 @@ void usart_init(usart_t *usart)
 			SET_BIT(UCSR0B, RXEN0);
 			break;
 	}
+
+	return usart_success;
 }
 
 /**
@@ -164,7 +158,7 @@ void usart_init(usart_t *usart)
  * @param data Data buffer that will be written to USART buffer.
  * @param len Data buffer length.
  * */
-void usart_transmit(usart_t *usart, uint8_t *data, uint16_t len)
+enum usart_result usart_transmit(struct usart_t *usart, uint8_t *data, uint16_t len)
 {
 	for (uint16_t i = 0; i < len; i++) {
 		// Wait till' any ongoing transfer is complete.
@@ -173,6 +167,8 @@ void usart_transmit(usart_t *usart, uint8_t *data, uint16_t len)
 		// Write data to the USART data register.
 		UDR0 = data[i];
 	}
+
+	return usart_success;
 }
 
 /**
@@ -181,7 +177,7 @@ void usart_transmit(usart_t *usart, uint8_t *data, uint16_t len)
  * @param data Data buffer that will hold read data from USART buffer.
  * @param len Data buffer length.
  * */
-void usart_receive(usart_t *usart, uint8_t *data, uint16_t len)
+enum usart_result usart_receive(struct usart_t *usart, uint8_t *data, uint16_t len)
 {
 	for (uint16_t i = 0; i < len; i++) {
 		// Wait till' any ongoing transfer is complete.
@@ -193,4 +189,6 @@ void usart_receive(usart_t *usart, uint8_t *data, uint16_t len)
 		// Read data from USART data register.
 		data[i] = UDR0;
 	}
+
+	return usart_success;
 }
