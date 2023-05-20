@@ -50,6 +50,9 @@ int main()
 	RUN_TEST(test_direction_transmit);
 	RUN_TEST(test_direction_receive);
 	RUN_TEST(test_direction_transmit_and_receive);
+	RUN_TEST(test_asynchronous_normal);
+	RUN_TEST(test_asynchronous_double_speed);
+	RUN_TEST(test_synchronous_master);
 
 	return UnityEnd();
 }

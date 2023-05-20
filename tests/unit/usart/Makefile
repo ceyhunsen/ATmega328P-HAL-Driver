@@ -28,6 +28,7 @@ HOST_C_SOURCES += \
 hal_usart.c       \
 usart.c           \
 direction.c       \
+mode.c            \
 
 # Create object files.
 OBJS = $(HOST_C_SOURCES:%.c=$(BUILD_DIR)/%.o)

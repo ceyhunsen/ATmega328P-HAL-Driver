@@ -33,8 +33,19 @@
 
 #include "test_mock_up.h"
 
+/**
+ * Sets necessary data for initializing.
+ */
+#define SET_MEMBERS(usart) \
+usart.stop_bits = 2;       \
+usart.baud_rate = 9600;    \
+usart.data_bits = 8;       \
+
 void test_direction_transmit();
 void test_direction_receive();
 void test_direction_transmit_and_receive();
+void test_asynchronous_normal();
+void test_asynchronous_double_speed();
+void test_synchronous_master();
 
 #endif // __USART_H

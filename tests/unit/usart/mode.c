@@ -34,47 +34,51 @@
 #include <test_mock_up.h>
 #include <avr/io.h>
 
-void test_direction_transmit()
+void test_asynchronous_normal()
 {
 	struct usart_t usart;
 	enum usart_result result;
 
 	SET_MEMBERS(usart);
-	usart.direction = usart_direction_transmit;
+	usart.mode = usart_mode_asynchronous_normal;
 
 	result = usart_init(&usart);
 
 	TEST_ASSERT_EQUAL(usart_success, result);
 
-	TEST_ASSERT_EQUAL(1 << TXEN0, UCSR0B);
+	TEST_ASSERT_EQUAL(0, UCSR0C & ((1 << UMSEL00) | (1 << UMSEL01)));
+	TEST_ASSERT_EQUAL(0, UCSR0A & (1 << U2X0));
 }
 
-void test_direction_receive()
+void test_asynchronous_double_speed()
 {
 	struct usart_t usart;
 	enum usart_result result;
 
 	SET_MEMBERS(usart);
-	usart.direction = usart_direction_receive;
+	usart.mode = usart_mode_asynchronous_double_speed;
 
 	result = usart_init(&usart);
 
 	TEST_ASSERT_EQUAL(usart_success, result);
 
-	TEST_ASSERT_EQUAL(1 << RXEN0, UCSR0B);
+	TEST_ASSERT_EQUAL(0, UCSR0C & ((1 << UMSEL00) | (1 << UMSEL01)));
+	TEST_ASSERT_EQUAL(1 << U2X0, UCSR0A & (1 << U2X0));
 }
 
-void test_direction_transmit_and_receive()
+void test_synchronous_master()
 {
 	struct usart_t usart;
 	enum usart_result result;
 
 	SET_MEMBERS(usart);
-	usart.direction = usart_direction_transmit_and_receive;
+	usart.mode = usart_mode_synchronous_master;
 
 	result = usart_init(&usart);
 
 	TEST_ASSERT_EQUAL(usart_success, result);
 
-	TEST_ASSERT_EQUAL(1 << TXEN0 | 1 << RXEN0, UCSR0B);
+	TEST_ASSERT_EQUAL(1 << UMSEL01, UCSR0C & ((1 << UMSEL00) |
+	                  (1 << UMSEL01)));
+	TEST_ASSERT_EQUAL(0, UCSR0A & (1 << U2X0));
 }
