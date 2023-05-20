@@ -1,5 +1,5 @@
 /**
- * @file atmega328p_hal_usart.h
+ * @file
  * @author Ceyhun Şen
  * @brief USART header file for ATmega328P HAL driver.
  * */
@@ -34,38 +34,46 @@
 #include <stdint.h>
 
 /**
- * @enum usart_operating_mode
- * @brief Operating modes for USART.
- * */
-typedef enum usart_operating_mode {
-	usart_asynchronous_normal_mode,
-	usart_asynchronous_double_speed_mode,
-	usart_synchronous_master_mode
-} usart_operating_mode;
+ * Return results for USART module.
+ */
+enum usart_result {
+	usart_success = 0,
+	usart_error,
+	usart_error_overrun,
+	usart_error_underrun,
+	usart_error_framing,
+	usart_error_parity,
+};
 
 /**
- * @enum usart_mode
- * @brief Modes for USART.
+ * USART data direction.
  * */
-typedef enum usart_mode {
-	usart_transmit_mode,
-	usart_receive_mode,
-	usart_transmit_and_receive_mode
-} usart_mode;
+enum usart_direction {
+	usart_direction_transmit,
+	usart_direction_receive,
+	usart_direction_transmit_and_receive
+};
 
 /**
- * @enum usart_parity
- * @brief Parity settings for USART.
+ * Operating modes for USART.
  * */
-typedef enum usart_parity {
+enum usart_mode {
+	usart_mode_asynchronous_normal,
+	usart_mode_asynchronous_double_speed,
+	usart_mode_synchronous_master
+};
+
+/**
+ * Parity options for USART.
+ * */
+enum usart_parity {
 	usart_parity_disabled,
-	usart_even_parity,
-	usart_odd_parity
-} usart_parity;
+	usart_parity_even,
+	usart_parity_odd
+};
 
 /**
- * @struct usart_t
- * @brief USART data struct.
+ * USART data struct.
  *
  * @param baud_rate
  * * 2400
@@ -86,31 +94,27 @@ typedef enum usart_parity {
  * * 6
  * * 7
  * * 8
- * * 9 (currently not supported with this driver.)
+ * * 9
  *
  * @param stop_bits
  * * 1
  * * 2
- *
- * @see usart_parity
- * @see usart_operating_mode
- * @see usart_mode
  * */
-typedef struct usart_t {
+struct usart_t {
 	uint32_t baud_rate;
 	uint8_t data_bits;
 	uint8_t stop_bits;
-	usart_operating_mode operating_mode;
-	usart_mode mode;
-	usart_parity parity;
-} usart_t;
+	enum usart_direction direction;
+	enum usart_mode mode;
+	enum usart_parity parity;
+};
 
 // Core functions.
-void usart_init(usart_t *usart);
-void usart_transmit(usart_t *usart, uint8_t *data, uint16_t len);
-void usart_receive(usart_t *usart, uint8_t *data, uint16_t len);
+enum usart_result usart_init(struct usart_t *usart);
+enum usart_result usart_transmit(struct usart_t *usart, uint8_t *data, uint16_t len);
+enum usart_result usart_receive(struct usart_t *usart, uint8_t *data, uint16_t len);
 
 // Extras.
-void usart_stdio_init();
+enum usart_result usart_init_stdio();
 
 #endif // __HAL_USART_H

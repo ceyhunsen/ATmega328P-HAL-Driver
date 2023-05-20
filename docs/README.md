@@ -41,8 +41,8 @@ With these information, needed members of this driver can be found easily.
 A module can have 3 different files and they have different suffixes:
 
 1. Core module with blocking functions. Have no suffixes. E.g.: `hal_usart.c`.
-2. Interrupt module with non-blocking functions. Have `_it` suffix. E.g.:
-`hal_usart_it.c`.
+2. Interrupt module with non-blocking functions. Have `_irq` suffix. E.g.:
+`hal_usart_irq.c`.
 3. Extra module with non-standard functions. Have `_extra` suffix. E.g.:
 `hal_usart_extra.c`.
 
