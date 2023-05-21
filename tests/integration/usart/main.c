@@ -1,7 +1,7 @@
 /**
  * @file
  * @author Ceyhun Şen
- * @brief Unit tests for stop bits settings for USART.
+ * @brief Integration tests for USART module.
  */
 
 /*
@@ -29,35 +29,26 @@
  * */
 
 #include "hal_usart.h"
-#include "usart.h"
-#include "unity.h"
-#include <test_mock_up.h>
-#include <avr/io.h>
 
-void test_stop_bits_legal()
+void setUp() {}
+void tearDown() {}
+
+int main()
 {
 	struct usart_t usart;
 	enum usart_result result;
+	uint8_t data[] = "Hello, world!\r\n";
 
-	SET_MEMBERS(usart);
-
-	usart.stop_bits = 2;
-
-	result = usart_init(&usart);
-
-	TEST_ASSERT_EQUAL(usart_success, result);
-}
-
-void test_stop_bits_illegal()
-{
-	struct usart_t usart;
-	enum usart_result result;
-
-	SET_MEMBERS(usart);
-
-	usart.stop_bits = 3;
+	usart.stop_bits = 1;
+	usart.baud_rate = 9600;
+	usart.data_bits = 8;
+	usart.parity = usart_parity_disabled;
+	usart.direction = usart_direction_transmit;
+	usart.mode = usart_mode_asynchronous_normal,
 
 	result = usart_init(&usart);
 
-	TEST_ASSERT_EQUAL(usart_error, result);
+	result = usart_transmit(&usart, data, sizeof data);
+
+	return 0;
 }
