@@ -1,7 +1,7 @@
 /**
  * @file
  * @author Ceyhun Şen
- * @brief Unit test header for USART module.
+ * @brief Unit tests for stop bits settings for USART.
  */
 
 /*
@@ -28,26 +28,36 @@
  * SOFTWARE.
  * */
 
-#ifndef __USART_H
-#define __USART_H
+#include "hal_usart.h"
+#include "usart.h"
+#include "unity.h"
+#include <test_mock_up.h>
+#include <avr/io.h>
 
-#include "test_mock_up.h"
+void test_stop_bits_legal()
+{
+	struct usart_t usart;
+	enum usart_result result;
 
-/**
- * Sets necessary data for initializing.
- */
-#define SET_MEMBERS(usart) \
-usart.stop_bits = 2;       \
-usart.baud_rate = 9600;    \
-usart.data_bits = 8;       \
+	SET_MEMBERS(usart);
+	
+	usart.stop_bits = 2;
 
-void test_direction_transmit();
-void test_direction_receive();
-void test_direction_transmit_and_receive();
-void test_asynchronous_normal();
-void test_asynchronous_double_speed();
-void test_synchronous_master();
-void test_stop_bits_legal();
-void test_stop_bits_illegal();
+	result = usart_init(&usart);
 
-#endif // __USART_H
+	TEST_ASSERT_EQUAL(usart_success, result);
+}
+
+void test_stop_bits_illegal()
+{
+	struct usart_t usart;
+	enum usart_result result;
+
+	SET_MEMBERS(usart);
+	
+	usart.stop_bits = 3;
+
+	result = usart_init(&usart);
+
+	TEST_ASSERT_EQUAL(usart_error, result);
+}

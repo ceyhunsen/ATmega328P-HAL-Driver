@@ -53,6 +53,8 @@ int main()
 	RUN_TEST(test_asynchronous_normal);
 	RUN_TEST(test_asynchronous_double_speed);
 	RUN_TEST(test_synchronous_master);
+	RUN_TEST(test_stop_bits_legal);
+	RUN_TEST(test_stop_bits_illegal);
 
 	return UnityEnd();
 }

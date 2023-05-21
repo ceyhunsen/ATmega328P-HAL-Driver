@@ -29,6 +29,7 @@ hal_usart.c       \
 usart.c           \
 direction.c       \
 mode.c            \
+stop_bits.c       \
 
 # Create object files.
 OBJS = $(HOST_C_SOURCES:%.c=$(BUILD_DIR)/%.o)
