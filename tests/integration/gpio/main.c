@@ -1,7 +1,7 @@
 /**
- * @file debug.c
+ * @file
  * @author Ceyhun Şen
- * @brief Debug output for integration tests.
+ * @brief Integration tests for GPIO module.
  */
 
 /*
@@ -16,8 +16,8 @@
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
  * 
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
  * 
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -28,23 +28,23 @@
  * SOFTWARE.
  * */
 
-#include "debug.h"
-#include "hal_usart.h"
+#include "hal_gpio.h"
+#include <util/delay.h>
 
-/**
- * @brief Initialize USART and printf.
- */
-void debug_init()
+void setUp() {}
+void tearDown() {}
+
+int main()
 {
-	struct usart_t usart = {
-		.baud_rate = 115200,
-		.stop_bits = 1,
-		.parity = usart_parity_disabled,
-		.data_bits = 8,
-		.mode = usart_mode_asynchronous_normal,
-		.direction = usart_direction_transmit_and_receive,
-	};
+	gpio_set_direction(gpio_port_b, 5, gpio_direction_output);
 
-	usart_init(&usart);
-	usart_stdio_init();
+	while (1) {
+		gpio_write(gpio_port_b, 5, gpio_state_high);
+		_delay_ms(100);
+
+		gpio_write(gpio_port_b, 5, gpio_state_low);
+		_delay_ms(100);
+	}
+
+	return 0;
 }

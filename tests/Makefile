@@ -97,6 +97,8 @@ test_mock_up.c           \
 export MCU_C_SOURCES =  \
 unity.c                 \
 debug.c                 \
+hal_usart.c             \
+hal_usart_extra.c       \
 
 # Compile .c files to object files.
 export HOST_COMPILE_OBJ = $(HOST_CC) $(HOST_C_FLAGS) -c

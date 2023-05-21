@@ -115,6 +115,6 @@ enum usart_result usart_transmit(struct usart_t *usart, uint8_t *data, uint16_t 
 enum usart_result usart_receive(struct usart_t *usart, uint8_t *data, uint16_t len);
 
 // Extras.
-enum usart_result usart_init_stdio();
+void usart_stdio_init();
 
 #endif // __HAL_USART_H
