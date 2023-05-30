@@ -55,19 +55,33 @@ void test_reset()
 	TEST_ASSERT_EQUAL(0x00, __atmega328p_registers[0xFE]);
 }
 
-void setUp()
+/**
+ * Tests if reset register function actually clears mock-up register with real
+ * register name access.
+ */
+void test_writing_registers_and_ressetting()
 {
+	UDR0 = 0xAF;
 
+	TEST_ASSERT_EQUAL(0xAF, UDR0);
+	TEST_ASSERT_EQUAL(0xAF, __atmega328p_registers[0xC6]); // UDR0 points
+	                                                       // to 0xC6
+	                                                       // address.
+
+	reset_registers();
+
+	TEST_ASSERT_EQUAL(0x00, UDR0);
+	TEST_ASSERT_EQUAL(0x00, __atmega328p_registers[0xC6]);
 }
 
-void tearDown()
-{
+void setUp() {}
 
-}
+void tearDown() {}
 
 int main()
 {
 	RUN_TEST(test_reset);
+	RUN_TEST(test_writing_registers_and_ressetting);
 
 	return UnityEnd();
 }
