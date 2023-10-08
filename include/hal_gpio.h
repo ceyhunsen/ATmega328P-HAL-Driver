@@ -1,7 +1,8 @@
 /**
  * @file
  * @author Ceyhun Şen
- * @brief Enumeration and function declarations for GPIO module.
+ * 
+ * Main header for ATMega328P HAL driver GPIO module.
  * */
 
 /*
@@ -34,7 +35,7 @@
 #include <stdint.h>
 
 /**
- * Return results for GPIO module.
+ * Module specific return results.
  */
 enum gpio_result {
 	gpio_success = 0,
@@ -42,37 +43,57 @@ enum gpio_result {
 };
 
 /**
- * Pin states for GPIO module.
- * */
-enum gpio_state {
+ * Port specifier of a GPIO pin.
+ */
+enum gpio_port {
+	gpio_port_b = 0,
+	gpio_port_c,
+	gpio_port_d
+};
+
+/**
+ * GPIO pin specifier.
+ * 
+ * @param port Target port.
+ * @param pin Target pin of the port
+ */
+struct gpio_pin {
+	enum gpio_port port;
+	uint8_t pin;
+};
+
+/**
+ * State of the current GPIO pin.
+ */
+enum gpio_pin_state {
 	gpio_state_low  = 0,
 	gpio_state_high = 1
 };
 
 /**
- * Direction options for GPIO.
- * */
-enum gpio_direction {
-	gpio_direction_output = 0,
-	gpio_direction_input_pull_up_off,
-	gpio_direction_input_pull_up_on
+ * Direction settings for GPIO pins.
+ */
+enum gpio_pin_direction {
+	gpio_direction_output,
+	gpio_direction_input
 };
 
 /**
- * Ports for GPIO.
- * */
-enum gpio_port {
-	gpio_port_b,
-	gpio_port_c,
-	gpio_port_d
+ * Configuration options for a GPIO pin.
+ * 
+ * @param direction Direction of the pin.
+ * @param pull_up Is pull-up enabled? 0 on disabled, 1 (or other values) on
+ * enabled.
+ */
+struct gpio_pin_configuration {
+	enum gpio_pin_direction direction;
+	uint8_t is_pull_up;
 };
 
-enum gpio_result gpio_set_direction(enum gpio_port port, uint8_t pin,
-                                    enum gpio_direction mode);
-enum gpio_result gpio_write(enum gpio_port port, uint8_t pin,
-                            enum gpio_state state);
-enum gpio_result gpio_toggle(enum gpio_port port, uint8_t pin);
-enum gpio_result gpio_read(enum gpio_port port, uint8_t pin,
-                               enum gpio_state *state);
+enum gpio_result gpio_configure(struct gpio_pin gpio,
+                                struct gpio_pin_configuration configuration);
+enum gpio_result gpio_write(struct gpio_pin gpio, enum gpio_pin_state state);
+enum gpio_result gpio_toggle(struct gpio_pin gpio);
+enum gpio_result gpio_read(struct gpio_pin gpio, enum gpio_pin_state *state);
 
 #endif // __HAL_GPIO_H
