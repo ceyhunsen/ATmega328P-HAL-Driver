@@ -1,0 +1,9 @@
+cmake_minimum_required(VERSION 3.11)
+
+# Create new example project.
+project(power_example)
+add_executable(power_example power.c)
+
+# Add ATmega328P HAL driver as subdirectory.
+add_subdirectory("${PROJECT_SOURCE_DIR}/../.." atmega328p_hal_build)
+target_link_libraries(power_example PRIVATE ATmega328P_HAL_Driver)
