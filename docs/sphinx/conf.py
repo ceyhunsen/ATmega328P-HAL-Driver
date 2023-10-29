@@ -3,7 +3,7 @@
 import subprocess
 
 project = "ATmega328P HAL Driver"
-copyright = "2022, Ceyhun Şen"
+copyright = "2023, Ceyhun Şen"
 author = "Ceyhun Şen"
 
 html_extra_path = ["../build/html"]

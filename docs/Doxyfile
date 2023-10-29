@@ -911,7 +911,7 @@ WARN_LOGFILE           =
 INPUT                  = ../src \
                          ../include \
                          ./README.md \
-                         ./development.md \
+                         ./usage.md \
                          ../tests/README.md \
                          ./gpio.md \
                          ./usart.md \
