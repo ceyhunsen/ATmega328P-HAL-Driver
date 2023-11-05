@@ -1,8 +1,9 @@
 /**
  * @file
  * @author Ceyhun Şen
- * @brief Main header file for ATmega328P HAL driver. This header file includes
- * all HAL functions.
+ *
+ * Main header file for ATmega328P HAL driver. This header file includes all HAL
+ * functions.
  * */
 
 /*
@@ -37,7 +38,7 @@
 extern "C" {
 #endif // __cplusplus
 
-#include "hal_gpio.h"
+#include "hal_power.h"
 
 // C++ compatibility.
 #ifdef __cplusplus

@@ -2,7 +2,7 @@
  * @file
  * @author Ceyhun Şen
  * 
- * @brief Power management and sleep modes module, main functionalities.
+ * @brief Power management and sleep modes module header file.
  * */
 
 /*
@@ -29,37 +29,39 @@
  * SOFTWARE.
  * */
 
-#include "hal_power.h"
-#include "hal_internals.h"
-#include <avr/io.h>
-#include <avr/sleep.h>
+#ifndef __HAL_POWER_H
+#define __HAL_POWER_H
+
+#include <stdint.h>
 
 /**
- * @brief Set sleep mode for ATmega328P.
- * @param mode Sleep mode to be set.
- */
-void power_set_sleep_mode(enum power_sleep_modes mode)
-{
-	// Assign new mode. Other bits of the register should be 0.
-	SMCR = mode << 1;
-
-	// Set sleep enable bit and call sleep instruction.
-	SET_BIT(SMCR, SE);
-	sleep_cpu();
-
-	// Clear sleep flag after sleep.
-	CLEAR_BIT(SMCR, SE);
-}
-
-/**
- * @brief Set specified module's power on or off.
- * @param module Module name.
- * @param state 1 (or any other positive number) for on, 0 for off.
+ * Sleep modes for ATmega328P. Value for every mode is the same as the bit
+ * number in target register.
  * */
-void power_set_module_power(enum power_modules module, uint8_t state)
-{
-	if (state)
-		SET_BIT(PRR, module);
-	else
-		CLEAR_BIT(PRR, module);
-}
+enum power_sleep_modes {
+	power_idle_mode                = 0,
+	power_adc_noise_reduction_mode = 1,
+	power_power_down_mode          = 2,
+	power_power_save_mode          = 3,
+	power_standby_mode             = 6,
+	power_external_standby_mode    = 7
+};
+
+/**
+ * Modules that have configurable power mode. Value for every module is the same
+ * as the bit number in target register.
+ * */
+enum power_modules {
+	power_adc     = 0,
+	power_usart0  = 1,
+	power_spi     = 2,
+	power_timer_1 = 3,
+	power_timer0  = 5,
+	power_timer_2 = 6,
+	power_twi     = 7
+};
+
+void power_set_sleep_mode(enum power_sleep_modes mode);
+void power_set_module_power(enum power_modules module, uint8_t state);
+
+#endif // __HAL_POWER_H
