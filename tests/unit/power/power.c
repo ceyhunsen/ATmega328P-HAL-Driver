@@ -141,6 +141,59 @@ void test_power_external_standby_mode()
 	TEST_ASSERT_EQUAL(0, SMCR & 0b1);
 }
 
+/**
+ * Test if modules are turned on/off when every other module is turned on. When
+ * a module is turned on, bit value should be 0 for respective bit.
+ */
+void test_module_power_single()
+{
+	for (enum power_modules i = 0; i < 8; i++) {
+		power_set_module_power(i, 1);
+		TEST_ASSERT_EQUAL(0, PRR);
+
+		power_set_module_power(i, 0);
+		TEST_ASSERT_EQUAL(1 << i, PRR);
+
+		reset_registers();
+	}
+}
+
+/**
+ * Test if modules are turned on/off without resetting registers. This will test
+ * if hal driver is overwriting other modules or not.
+ */
+void test_module_power_multi()
+{
+	uint8_t reg = 0;
+
+	// Start from beginning.
+	for (enum power_modules i = 0; i < 8; i++) {
+		power_set_module_power(i, 1);
+		TEST_ASSERT_EQUAL(0, PRR & (1 << i));
+
+		power_set_module_power(i, 0);
+		TEST_ASSERT_EQUAL(reg | (1 << i), PRR);
+
+		reg = PRR;
+	}
+
+	reg = 0;
+	reset_registers();
+
+	// Start from last.
+	for (enum power_modules i = 0; i < 8; i++) {
+		power_set_module_power(7 - i, 1);
+		TEST_ASSERT_EQUAL(0, PRR & (1 << (7 - i)));
+
+		power_set_module_power(7 - i, 0);
+		TEST_ASSERT_EQUAL(reg | (1 << (7 - i)), PRR);
+
+		reg = PRR;
+	}
+
+	// No random order testing.
+}
+
 int main()
 {
 	RUN_TEST(test_power_idle_mode);
@@ -149,6 +202,8 @@ int main()
 	RUN_TEST(test_power_power_save_mode);
 	RUN_TEST(test_power_standby_mode);
 	RUN_TEST(test_power_external_standby_mode);
+	RUN_TEST(test_module_power_single);
+	RUN_TEST(test_module_power_multi);
 
 	return UnityEnd();
 }

@@ -52,14 +52,15 @@ void power_set_sleep_mode(enum power_sleep_modes mode)
 }
 
 /**
- * @brief Set specified module's power on or off.
+ * @brief Set specified module's power on or off. If a module is turned off,
+ * it might need reinitialization (refer to data-sheet).
  * @param module Module name.
  * @param state 1 (or any other positive number) for on, 0 for off.
  * */
 void power_set_module_power(enum power_modules module, uint8_t state)
 {
 	if (state)
-		SET_BIT(PRR, module);
-	else
 		CLEAR_BIT(PRR, module);
+	else
+		SET_BIT(PRR, module);
 }
