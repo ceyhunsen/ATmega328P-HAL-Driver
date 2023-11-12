@@ -3,7 +3,7 @@
 ## Capabilities
 
 * Set various sleep modes
-* Set sleep modes for individual modules
+* Enable/disable individual peripherals
 
 ## Sleep Modes
 
@@ -13,4 +13,4 @@ sleep modes can be selected with `power_set_sleep_mode()` function.
 ## Module Enable/Disable
 
 Modules can be enabled or disabled indidually using `power_set_module_power()`
-function.
+function. Possible candidates are listed in `enum power_modules`.
