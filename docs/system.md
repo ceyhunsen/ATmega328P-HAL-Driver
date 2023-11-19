@@ -16,6 +16,9 @@ will accept watchdog mode and cycle count as arguments in a struct, called
 
 ## Reset Watchdog
 
+Watchdog counter can be resetted using `system_reset_watchdog()` function. This
+function will only call watchdog reset instruction, nothing more.
+
 ## Get MCU Reset Status
 
 ATmega328P can enter reset state with different causes. This causes are listed
