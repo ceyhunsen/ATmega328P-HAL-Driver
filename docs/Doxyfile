@@ -914,6 +914,7 @@ INPUT                  = ../src \
                          ./usage.md \
                          ../tests/README.md \
                          ./power.md \
+                         ./system.md \
                         #  ./gpio.md \
                         #  ./usart.md \
 
