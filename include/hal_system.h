@@ -83,10 +83,13 @@ struct system_watchdog_t {
  * @brief System reset causes.
  */
 enum system_reset_status {
-	system_power_on_reset = 0, ///< System reset caused by power on sequence.
-	system_external_reset = 1, ///< System reset caused by external source.
-	system_brownout_reset = 2, ///< System reset caused by brownout detector.
-	system_watchdog_reset = 3  ///< System reset caused by watchdog.
+	system_power_on_reset = 0b0001, ///< System reset caused by power on
+	                                ///< sequence.
+	system_external_reset = 0b0010, ///< System reset caused by external
+	                                ///< source.
+	system_brownout_reset = 0b0100, ///< System reset caused by brownout
+	                                ///< detector.
+	system_watchdog_reset = 0b1000  ///< System reset caused by watchdog.
 };
 
 void system_set_watchdog(struct system_watchdog_t config);
