@@ -10,6 +10,10 @@
 
 ## Configure Watchdog
 
+Watchdog can be configured using `system_set_watchdog()` function. This function
+will accept watchdog mode and cycle count as arguments in a struct, called
+`struct system_watchdog_t`.
+
 ## Reset Watchdog
 
 ## Get MCU Reset Status

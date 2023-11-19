@@ -29,6 +29,7 @@
  * */
 
 #include "hal_system.h"
+#include "hal_internals.h"
 #include "test_mock_up.h"
 #include "unity.h"
 #include <avr/io.h>
@@ -64,9 +65,48 @@ void test_reset_cause()
 	}
 }
 
+void test_set_modes()
+{
+	struct system_watchdog_t config;
+
+	config.mode = system_watchdog_disabled;
+	system_set_watchdog(config);
+	TEST_ASSERT_EQUAL(0, WDTCSR & BIT(WDIE));
+	TEST_ASSERT_EQUAL(0, WDTCSR & BIT(WDE));
+
+	config.mode = system_watchdog_interrupt_mode;
+	system_set_watchdog(config);
+	TEST_ASSERT_EQUAL(BIT(WDIE), WDTCSR & BIT(WDIE));
+	TEST_ASSERT_EQUAL(0, WDTCSR & BIT(WDE));
+
+	config.mode = system_watchdog_reset_mode;
+	system_set_watchdog(config);
+	TEST_ASSERT_EQUAL(0, WDTCSR & BIT(WDIE));
+	TEST_ASSERT_EQUAL(BIT(WDE), WDTCSR & BIT(WDE));
+
+	config.mode = system_watchdog_interrupt_and_reset_mode;
+	system_set_watchdog(config);
+	TEST_ASSERT_EQUAL(BIT(WDIE), WDTCSR & BIT(WDIE));
+	TEST_ASSERT_EQUAL(BIT(WDE), WDTCSR & BIT(WDE));
+}
+
+void test_set_cycles()
+{
+	uint8_t i;
+	struct system_watchdog_t config;
+
+	for (i = 0; i < 10; i++) {
+		config.cycles = system_watchdog_2k_cycles + i;
+		system_set_watchdog(config);
+		TEST_ASSERT_EQUAL(config.cycles, WDTCSR & 0b1111);
+	}
+}
+
 int main()
 {
 	RUN_TEST(test_reset_cause);
+	RUN_TEST(test_set_modes);
+	RUN_TEST(test_set_cycles);
 
 	return UnityEnd();
 }
