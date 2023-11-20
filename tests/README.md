@@ -27,11 +27,11 @@ files if that's the case.
 ### One By One
 
 All modules can be tested seperately.To run only one test, call `make` with it's
-path (including `/.` suffix). For example, to run `gpio` module's unit
+path (including `/.` suffix). For example, to run `io` module's unit
 tests:
 
 ```bash
-make unit/gpio/.
+make unit/io/.
 ```
 
 Unit and integration tests can be runned seperately too:

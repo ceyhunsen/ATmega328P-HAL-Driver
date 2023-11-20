@@ -2,7 +2,7 @@
  * @file
  * @author Ceyhun Şen
  * 
- * Standard GPIO operations.
+ * Standard I/O operations.
  * */
 
 /*
@@ -29,29 +29,29 @@
  * SOFTWARE.
  * */
 
-#include "hal_gpio.h"
+#include "hal_io.h"
 #include "hal_internals.h"
 #include <avr/io.h>
 
-static volatile uint8_t *get_ddr_pointer(enum gpio_port port);
-static volatile uint8_t *get_port_pointer(enum gpio_port port);
-static volatile uint8_t *get_pin_pointer(enum gpio_port port);
+static volatile uint8_t *get_ddr_pointer(enum io_port port);
+static volatile uint8_t *get_port_pointer(enum io_port port);
+static volatile uint8_t *get_pin_pointer(enum io_port port);
 
 /**
- * Configure a GPIO pin.
+ * Configure an I/O pin.
  * 
- * @param gpio GPIO pin to be configured.
+ * @param io I/O pin to be configured.
  * @param configuration How to configure selected pin.
  */
-enum gpio_result gpio_configure(struct gpio_pin gpio,
-                                struct gpio_pin_configuration configuration)
+enum io_result io_configure(struct io_pin io,
+                            struct io_pin_configuration configuration)
 {
 	// Get port pointers.
 	volatile uint8_t *ddr_pointer, *port_pointer;
 	uint8_t ddr_value, port_value;
 
-	ddr_pointer = get_ddr_pointer(gpio.port);
-	port_pointer = get_port_pointer(gpio.port);
+	ddr_pointer = get_ddr_pointer(io.port);
+	port_pointer = get_port_pointer(io.port);
 
 	// Read register values before doing a modification. Reading these
 	// values beforehand will help in case of an interruption from another
@@ -61,128 +61,128 @@ enum gpio_result gpio_configure(struct gpio_pin gpio,
 
 	// Set direction.
 	switch (configuration.direction) {
-	case gpio_direction_output:
+	case io_direction_output:
 		// Tri-state intermediate step.
-		if (!(ddr_value & BIT(gpio.pin)) &&
-			!(port_value & BIT(gpio.pin))) {
-			CLEAR_BIT(*port_pointer, gpio.pin);
+		if (!(ddr_value & BIT(io.pin)) &&
+			!(port_value & BIT(io.pin))) {
+			CLEAR_BIT(*port_pointer, io.pin);
 		}
 		// Input pull up intermediate step.
-		if (!(ddr_value & BIT(gpio.pin)) &&
-			(port_value & BIT(gpio.pin))) {
-			CLEAR_BIT(*port_pointer, gpio.pin);
+		if (!(ddr_value & BIT(io.pin)) &&
+			(port_value & BIT(io.pin))) {
+			CLEAR_BIT(*port_pointer, io.pin);
 		}
 
-		SET_BIT(*ddr_pointer, gpio.pin);
+		SET_BIT(*ddr_pointer, io.pin);
 
 		break;
 	default:
-	case gpio_direction_input:
+	case io_direction_input:
 		if (configuration.is_pull_up) {
 			// Output low intermediate step.
-			if ((ddr_value & BIT(gpio.pin)) &&
-			!(port_value & BIT(gpio.pin))) {
-				SET_BIT(*port_pointer, gpio.pin);
+			if ((ddr_value & BIT(io.pin)) &&
+			!(port_value & BIT(io.pin))) {
+				SET_BIT(*port_pointer, io.pin);
 			}
 
-			CLEAR_BIT(*ddr_pointer, gpio.pin);
-			SET_BIT(*port_pointer, gpio.pin);
+			CLEAR_BIT(*ddr_pointer, io.pin);
+			SET_BIT(*port_pointer, io.pin);
 		}
 		else {
 			// Output high intermediate step.
-			if ((ddr_value & BIT(gpio.pin)) &&
-				(port_value & BIT(gpio.pin))) {
-				SET_BIT(*ddr_pointer, gpio.pin);
-				CLEAR_BIT(*port_pointer, gpio.pin);
+			if ((ddr_value & BIT(io.pin)) &&
+				(port_value & BIT(io.pin))) {
+				SET_BIT(*ddr_pointer, io.pin);
+				CLEAR_BIT(*port_pointer, io.pin);
 			}
 
-			CLEAR_BIT(*ddr_pointer, gpio.pin);
-			CLEAR_BIT(*port_pointer, gpio.pin);
+			CLEAR_BIT(*ddr_pointer, io.pin);
+			CLEAR_BIT(*port_pointer, io.pin);
 		}
 	}
 
-	return gpio_success;
+	return io_success;
 }
 
 /**
- * Set pin state of given GPIO pin.
+ * Set pin state of given I/O pin.
  * 
- * @param gpio Target GPIO pin.
+ * @param io Target I/O pin.
  * @param state Pin state to be set.
  * */
-enum gpio_result gpio_write(struct gpio_pin gpio, enum gpio_pin_state state)
+enum io_result io_write(struct io_pin io, enum io_pin_state state)
 {
 	volatile uint8_t *port_pointer;
-	port_pointer = get_port_pointer(gpio.port);
+	port_pointer = get_port_pointer(io.port);
 
 	switch (state) {
-	case gpio_state_high:
-		SET_BIT(*port_pointer, gpio.pin);
+	case io_state_high:
+		SET_BIT(*port_pointer, io.pin);
 		break;
 	default:
-	case gpio_state_low:
-		CLEAR_BIT(*port_pointer, gpio.pin);
+	case io_state_low:
+		CLEAR_BIT(*port_pointer, io.pin);
 		break;
 	}
 
-	return gpio_success;
+	return io_success;
 }
 
 /**
  * Toggle state of the given pin.
  * 
- * @param gpio Target GPIO pin.
+ * @param io Target I/O pin.
  * */
-enum gpio_result gpio_toggle(struct gpio_pin gpio)
+enum io_result io_toggle(struct io_pin io)
 {
 	volatile uint8_t *pin_pointer;
 
-	pin_pointer = get_pin_pointer(gpio.port);
+	pin_pointer = get_pin_pointer(io.port);
 
-	SET_BIT(*pin_pointer, gpio.pin);
+	SET_BIT(*pin_pointer, io.pin);
 
-	return gpio_success;
+	return io_success;
 }
 
 /**
- * Read value of a GPIO pin.
+ * Read value of a I/O pin.
  * 
- * @param gpio Target GPIO pin.
+ * @param io Target I/O pin.
  * @param state Pointer that will hold read result.
  * */
-enum gpio_result gpio_read(struct gpio_pin gpio, enum gpio_pin_state *state)
+enum io_result io_read(struct io_pin io, enum io_pin_state *state)
 {
 	volatile uint8_t *pin_pointer;
-	pin_pointer = get_pin_pointer(gpio.port);
+	pin_pointer = get_pin_pointer(io.port);
 
 	uint8_t pin_value = *pin_pointer;
 
-	*state = (pin_value & BIT(gpio.pin))? gpio_state_high:
-	                                      gpio_state_low;
+	*state = (pin_value & BIT(io.pin))? io_state_high:
+	                                      io_state_low;
 
-	return gpio_success;
+	return io_success;
 }
 
 /**
  * @brief Get DDRx pointer.
  * 
- * @param port GPIO port.
+ * @param port I/O port.
  * @returns DDRx pointer
- * @see gpio_port
+ * @see io_port
  * */
-static volatile uint8_t *get_ddr_pointer(enum gpio_port port)
+static volatile uint8_t *get_ddr_pointer(enum io_port port)
 {
 	volatile uint8_t *p;
 
 	switch (port) {
 		default:
-		case gpio_port_b:
+		case io_port_b:
 			p = &DDRB;
 			break;
-		case gpio_port_c:
+		case io_port_c:
 			p = &DDRC;
 			break;
-		case gpio_port_d:
+		case io_port_d:
 			p = &DDRD;
 			break;
 	}
@@ -193,23 +193,23 @@ static volatile uint8_t *get_ddr_pointer(enum gpio_port port)
 /**
  * @brief Get PORTx pointer.
  * 
- * @param port GPIO port.
+ * @param port I/O port.
  * @returns PORTx pointer.
- * @see gpio_port
+ * @see io_port
  * */
-static volatile uint8_t *get_port_pointer(enum gpio_port port)
+static volatile uint8_t *get_port_pointer(enum io_port port)
 {
 	volatile uint8_t *p;
 
 	switch (port) {
 		default:
-		case gpio_port_b:
+		case io_port_b:
 			p = &PORTB;
 			break;
-		case gpio_port_c:
+		case io_port_c:
 			p = &PORTC;
 			break;
-		case gpio_port_d:
+		case io_port_d:
 			p = &PORTD;
 			break;
 	}
@@ -220,23 +220,23 @@ static volatile uint8_t *get_port_pointer(enum gpio_port port)
 /**
  * @brief Get PINx pointer.
  * 
- * @param port GPIO port.
+ * @param port I/O port.
  * @returns PINx pointer.
- * @see gpio_port
+ * @see io_port
  * */
-static volatile uint8_t *get_pin_pointer(enum gpio_port port)
+static volatile uint8_t *get_pin_pointer(enum io_port port)
 {
 	volatile uint8_t *p;
 
 	switch (port) {
 		default:
-		case gpio_port_b:
+		case io_port_b:
 			p = &PINB;
 			break;
-		case gpio_port_c:
+		case io_port_c:
 			p = &PINC;
 			break;
-		case gpio_port_d:
+		case io_port_d:
 			p = &PIND;
 			break;
 	}

@@ -915,7 +915,7 @@ INPUT                  = ../src \
                          ../tests/README.md \
                          ./power.md \
                          ./system.md \
-                        #  ./gpio.md \
+                         ./io.md \
                         #  ./usart.md \
 
 # This tag can be used to specify the character encoding of the source files

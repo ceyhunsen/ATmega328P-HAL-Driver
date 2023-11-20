@@ -37,13 +37,13 @@
 
 void test_toggle_b_single()
 {
-	enum gpio_result result;
+	enum io_result result;
 	uint8_t i;
 
 	for (i = 0; i < 8; i++) {
-		result = gpio_toggle(gpio_port_b, i);
+		result = io_toggle(io_port_b, i);
 
-		TEST_ASSERT_EQUAL(result, gpio_success);
+		TEST_ASSERT_EQUAL(result, io_success);
 		TEST_ASSERT_EQUAL(1 << i, PINB);
 
 		reset_registers();
@@ -52,31 +52,31 @@ void test_toggle_b_single()
 
 void test_toggle_b_multi()
 {
-	enum gpio_result result;
+	enum io_result result;
 	uint8_t i, register_value;
 
 	register_value = 0;
 
 	for (i = 0; i < 8; i++) {
-		result = gpio_toggle(gpio_port_b, i);
+		result = io_toggle(io_port_b, i);
 
 		// Every iteration, pin i should be set to ouput.
 		register_value |= 1 << i;
 
-		TEST_ASSERT_EQUAL(gpio_success, result);
+		TEST_ASSERT_EQUAL(io_success, result);
 		TEST_ASSERT_EQUAL(register_value, PINB);
 	}
 }
 
 void test_toggle_c_single()
 {
-	enum gpio_result result;
+	enum io_result result;
 	uint8_t i;
 
 	for (i = 0; i < 8; i++) {
-		result = gpio_toggle(gpio_port_c, i);
+		result = io_toggle(io_port_c, i);
 
-		TEST_ASSERT_EQUAL(result, gpio_success);
+		TEST_ASSERT_EQUAL(result, io_success);
 		TEST_ASSERT_EQUAL(1 << i, PINC);
 
 		reset_registers();
@@ -85,31 +85,31 @@ void test_toggle_c_single()
 
 void test_toggle_c_multi()
 {
-	enum gpio_result result;
+	enum io_result result;
 	uint8_t i, register_value;
 
 	register_value = 0;
 
 	for (i = 0; i < 8; i++) {
-		result = gpio_toggle(gpio_port_c, i);
+		result = io_toggle(io_port_c, i);
 
 		// Every iteration, pin i should be set to ouput.
 		register_value |= 1 << i;
 
-		TEST_ASSERT_EQUAL(gpio_success, result);
+		TEST_ASSERT_EQUAL(io_success, result);
 		TEST_ASSERT_EQUAL(register_value, PINC);
 	}
 }
 
 void test_toggle_d_single()
 {
-	enum gpio_result result;
+	enum io_result result;
 	uint8_t i;
 
 	for (i = 0; i < 8; i++) {
-		result = gpio_toggle(gpio_port_d, i);
+		result = io_toggle(io_port_d, i);
 
-		TEST_ASSERT_EQUAL(result, gpio_success);
+		TEST_ASSERT_EQUAL(result, io_success);
 		TEST_ASSERT_EQUAL(1 << i, PIND);
 
 		reset_registers();
@@ -118,18 +118,18 @@ void test_toggle_d_single()
 
 void test_toggle_d_multi()
 {
-	enum gpio_result result;
+	enum io_result result;
 	uint8_t i, register_value;
 
 	register_value = 0;
 
 	for (i = 0; i < 8; i++) {
-		result = gpio_toggle(gpio_port_d, i);
+		result = io_toggle(io_port_d, i);
 
 		// Every iteration, pin i should be set to ouput.
 		register_value |= 1 << i;
 
-		TEST_ASSERT_EQUAL(gpio_success, result);
+		TEST_ASSERT_EQUAL(io_success, result);
 		TEST_ASSERT_EQUAL(register_value, PIND);
 	}
 }
