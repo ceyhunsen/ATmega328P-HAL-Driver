@@ -2,7 +2,7 @@
  * @file
  * @author Ceyhun Şen
  * 
- * Main header for ATMega328P HAL driver GPIO module.
+ * Main header for I/O module.
  * */
 
 /*
