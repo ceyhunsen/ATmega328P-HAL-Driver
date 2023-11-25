@@ -1,7 +1,7 @@
 /**
  * @file
  * @author Ceyhun Şen
- * @brief Unit test header for GPIO module.
+ * @brief Unit tests for GPIO module.
  */
 
 /*
@@ -28,23 +28,34 @@
  * SOFTWARE.
  * */
 
-#ifndef __GPIO_H
-#define __GPIO_H
+#include "io.h"
+#include "unity.h"
 
-#include "test_mock_up.h"
+int main()
+{
+	RUN_TEST(test_direction_output_b_single);
+	RUN_TEST(test_direction_output_b_multi);
+	RUN_TEST(test_direction_output_c_single);
+	RUN_TEST(test_direction_output_c_multi);
+	RUN_TEST(test_direction_output_d_single);
+	RUN_TEST(test_direction_output_d_multi);
 
-void test_direction_output_b_single();
-void test_direction_output_b_multi();
-void test_direction_output_c_single();
-void test_direction_output_c_multi();
-void test_direction_output_d_single();
-void test_direction_output_d_multi();
+	RUN_TEST(test_toggle_b_single);
+	RUN_TEST(test_toggle_b_multi);
+	RUN_TEST(test_toggle_c_single);
+	RUN_TEST(test_toggle_c_multi);
+	RUN_TEST(test_toggle_d_single);
+	RUN_TEST(test_toggle_d_multi);
 
-void test_toggle_b_single();
-void test_toggle_b_multi();
-void test_toggle_c_single();
-void test_toggle_c_multi();
-void test_toggle_d_single();
-void test_toggle_d_multi();
+	return UnityEnd();
+}
 
-#endif // __GPIO_H
+void setUp()
+{
+	reset_registers();
+}
+
+void tearDown()
+{
+	reset_registers();
+}

@@ -28,8 +28,8 @@
  * SOFTWARE.
  * */
 
-#include "hal_gpio.h"
-#include "gpio.h"
+#include "hal_io.h"
+#include "io.h"
 #include "unity.h"
 #include <test_mock_up.h>
 #include <avr/io.h>

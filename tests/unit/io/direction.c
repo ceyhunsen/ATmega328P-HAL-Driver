@@ -28,8 +28,8 @@
  * SOFTWARE.
  * */
 
-#include "hal_gpio.h"
-#include "gpio.h"
+#include "hal_io.h"
+#include "io.h"
 #include "unity.h"
 #include <test_mock_up.h>
 #include <avr/io.h>
@@ -42,6 +42,8 @@
 void test_direction_output_b_single()
 {
 	enum io_result result;
+	struct io_pin io;
+	struct io_pin_configuration configuration;
 	uint8_t i;
 
 	for (i = 0; i < 8; i++) {

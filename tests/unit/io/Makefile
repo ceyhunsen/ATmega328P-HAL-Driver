@@ -25,8 +25,8 @@ TARGET = test.out
 
 # Append source files.
 HOST_C_SOURCES += \
-hal_gpio.c        \
-gpio.c            \
+hal_io.c          \
+io.c              \
 direction.c       \
 toggle.c          \
 write.c           \
