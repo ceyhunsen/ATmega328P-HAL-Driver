@@ -35,7 +35,8 @@
 #include <stdint.h>
 
 /**
- * Module specific return results.
+ * @enum io_result
+ * @brief Module specific return results.
  */
 enum io_result {
 	io_success = 0,
@@ -43,7 +44,8 @@ enum io_result {
 };
 
 /**
- * Port specifier of a I/O pin.
+ * @enum io_port
+ * @brief Port specifier of a I/O pin.
  */
 enum io_port {
 	io_port_b = 0,
@@ -63,7 +65,8 @@ struct io_pin {
 };
 
 /**
- * State of the current I/O pin.
+ * @enum io_pin_state
+ * @brief State of the current I/O pin.
  */
 enum io_pin_state {
 	io_state_low  = 0,
@@ -71,7 +74,8 @@ enum io_pin_state {
 };
 
 /**
- * Direction settings for I/O pins.
+ * @enum io_pin_direction
+ * @brief Direction settings for I/O pins.
  */
 enum io_pin_direction {
 	io_direction_output,
@@ -79,7 +83,7 @@ enum io_pin_direction {
 };
 
 /**
- * Configuration options for a I/O pin.
+ * Configuration options for an I/O pin.
  * 
  * @param direction Direction of the pin.
  * @param pull_up Is pull-up enabled? 0 on disabled, 1 (or other values) on
