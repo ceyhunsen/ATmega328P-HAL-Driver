@@ -35,3 +35,147 @@
 #include <avr/io.h>
 #include <stdint.h>
 
+void test_read_b_single()
+{
+	enum io_result result;
+	struct io_pin io_pin;
+	enum io_pin_state state;
+	uint8_t i;
+
+	for (i = 0; i < 8; i++) {
+		io_pin.port = io_port_b;
+		io_pin.pin = i;
+
+		result = io_read(io_pin, &state);
+		TEST_ASSERT_EQUAL(result, io_success);
+		TEST_ASSERT_EQUAL(io_state_low, state);
+
+		PINB = 1 << i;
+
+		result = io_read(io_pin, &state);
+		TEST_ASSERT_EQUAL(result, io_success);
+		TEST_ASSERT_EQUAL(io_state_high, state);
+
+		reset_registers();
+	}
+}
+
+void test_read_b_multi()
+{
+	enum io_result result;
+	struct io_pin io_pin;
+	enum io_pin_state state;
+	uint8_t i;
+
+	for (i = 0; i < 8; i++) {
+		io_pin.port = io_port_b;
+		io_pin.pin = i;
+
+		result = io_read(io_pin, &state);
+		TEST_ASSERT_EQUAL(result, io_success);
+		TEST_ASSERT_EQUAL(io_state_low, state);
+
+		PINB |= 1 << i;
+
+		result = io_read(io_pin, &state);
+		TEST_ASSERT_EQUAL(io_success, result);
+		TEST_ASSERT_EQUAL(io_state_high, state);
+	}
+}
+
+void test_read_c_single()
+{
+	enum io_result result;
+	struct io_pin io_pin;
+	enum io_pin_state state;
+	uint8_t i;
+
+	for (i = 0; i < 8; i++) {
+		io_pin.port = io_port_c;
+		io_pin.pin = i;
+
+		result = io_read(io_pin, &state);
+		TEST_ASSERT_EQUAL(result, io_success);
+		TEST_ASSERT_EQUAL(io_state_low, state);
+
+		PINC = 1 << i;
+
+		result = io_read(io_pin, &state);
+		TEST_ASSERT_EQUAL(result, io_success);
+		TEST_ASSERT_EQUAL(io_state_high, state);
+
+		reset_registers();
+	}
+}
+
+void test_read_c_multi()
+{
+	enum io_result result;
+	struct io_pin io_pin;
+	enum io_pin_state state;
+	uint8_t i;
+
+	for (i = 0; i < 8; i++) {
+		io_pin.port = io_port_c;
+		io_pin.pin = i;
+
+		result = io_read(io_pin, &state);
+		TEST_ASSERT_EQUAL(result, io_success);
+		TEST_ASSERT_EQUAL(io_state_low, state);
+
+		PINC |= 1 << i;
+
+		result = io_read(io_pin, &state);
+		TEST_ASSERT_EQUAL(io_success, result);
+		TEST_ASSERT_EQUAL(io_state_high, state);
+	}
+}
+
+void test_read_d_single()
+{
+	enum io_result result;
+	struct io_pin io_pin;
+	enum io_pin_state state;
+	uint8_t i;
+
+	for (i = 0; i < 8; i++) {
+		io_pin.port = io_port_d;
+		io_pin.pin = i;
+
+		result = io_read(io_pin, &state);
+		TEST_ASSERT_EQUAL(result, io_success);
+		TEST_ASSERT_EQUAL(io_state_low, state);
+
+		PIND = 1 << i;
+
+		result = io_read(io_pin, &state);
+		TEST_ASSERT_EQUAL(result, io_success);
+		TEST_ASSERT_EQUAL(io_state_high, state);
+
+		reset_registers();
+	}
+}
+
+void test_read_d_multi()
+{
+	enum io_result result;
+	struct io_pin io_pin;
+	enum io_pin_state state;
+	uint8_t i;
+
+	for (i = 0; i < 8; i++) {
+		io_pin.port = io_port_d;
+		io_pin.pin = i;
+
+		result = io_read(io_pin, &state);
+		TEST_ASSERT_EQUAL(result, io_success);
+		TEST_ASSERT_EQUAL(io_state_low, state);
+
+		PIND |= 1 << i;
+
+		result = io_read(io_pin, &state);
+		TEST_ASSERT_EQUAL(io_success, result);
+		TEST_ASSERT_EQUAL(io_state_high, state);
+	}
+}
+

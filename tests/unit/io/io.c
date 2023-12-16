@@ -30,6 +30,7 @@
 
 #include "io.h"
 #include "unity.h"
+#include <test_mock_up.h>
 
 int main()
 {
@@ -46,6 +47,13 @@ int main()
 	RUN_TEST(test_toggle_c_multi);
 	RUN_TEST(test_toggle_d_single);
 	RUN_TEST(test_toggle_d_multi);
+
+	RUN_TEST(test_read_b_single);
+	RUN_TEST(test_read_b_multi);
+	RUN_TEST(test_read_c_single);
+	RUN_TEST(test_read_c_multi);
+	RUN_TEST(test_read_d_single);
+	RUN_TEST(test_read_d_multi);
 
 	return UnityEnd();
 }

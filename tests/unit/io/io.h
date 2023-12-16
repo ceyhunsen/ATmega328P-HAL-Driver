@@ -45,4 +45,11 @@ void test_toggle_c_multi();
 void test_toggle_d_single();
 void test_toggle_d_multi();
 
+void test_read_b_single();
+void test_read_b_multi();
+void test_read_c_single();
+void test_read_c_multi();
+void test_read_d_single();
+void test_read_d_multi();
+
 #endif // __GPIO_H
