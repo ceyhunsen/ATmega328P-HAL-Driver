@@ -42,13 +42,15 @@
 void test_direction_output_b_single()
 {
 	enum io_result result;
-	struct io_pin io;
+	struct io_pin io_pin;
 	struct io_pin_configuration configuration;
 	uint8_t i;
 
 	for (i = 0; i < 8; i++) {
-		result = gpio_set_direction(io_port_b, i,
-		                            io_direction_output);
+		configuration.direction = io_direction_output;
+		io_pin.port = io_port_b;
+		io_pin.pin = i;
+		result = io_configure(io_pin, configuration);
 
 		TEST_ASSERT_EQUAL(result, io_success);
 		TEST_ASSERT_EQUAL(1 << i, DDRB);
@@ -64,13 +66,17 @@ void test_direction_output_b_single()
 void test_direction_output_b_multi()
 {
 	enum io_result result;
+	struct io_pin io_pin;
+	struct io_pin_configuration configuration;
 	uint8_t i, register_value;
 
 	register_value = 0;
 
 	for (i = 0; i < 8; i++) {
-		result = gpio_set_direction(io_port_b, i,
-		                            io_direction_output);
+		configuration.direction = io_direction_output;
+		io_pin.port = io_port_b;
+		io_pin.pin = i;
+		result = io_configure(io_pin, configuration);
 
 		// Every iteration, pin i should be set to ouput.
 		register_value |= 1 << i;
@@ -87,11 +93,15 @@ void test_direction_output_b_multi()
 void test_direction_output_c_single()
 {
 	enum io_result result;
+	struct io_pin io_pin;
+	struct io_pin_configuration configuration;
 	uint8_t i;
 
 	for (i = 0; i < 8; i++) {
-		result = gpio_set_direction(io_port_c, i,
-		                            io_direction_output);
+		configuration.direction = io_direction_output;
+		io_pin.port = io_port_c;
+		io_pin.pin = i;
+		result = io_configure(io_pin, configuration);
 
 		TEST_ASSERT_EQUAL(result, io_success);
 		TEST_ASSERT_EQUAL(1 << i, DDRC);
@@ -107,13 +117,17 @@ void test_direction_output_c_single()
 void test_direction_output_c_multi()
 {
 	enum io_result result;
+	struct io_pin io_pin;
+	struct io_pin_configuration configuration;
 	uint8_t i, register_value;
 
 	register_value = 0;
 
 	for (i = 0; i < 8; i++) {
-		result = gpio_set_direction(io_port_c, i,
-		                            io_direction_output);
+		configuration.direction = io_direction_output;
+		io_pin.port = io_port_c;
+		io_pin.pin = i;
+		result = io_configure(io_pin, configuration);
 
 		// Every iteration, pin i should be set to ouput.
 		register_value |= 1 << i;
@@ -130,11 +144,15 @@ void test_direction_output_c_multi()
 void test_direction_output_d_single()
 {
 	enum io_result result;
+	struct io_pin io_pin;
+	struct io_pin_configuration configuration;
 	uint8_t i;
 
 	for (i = 0; i < 8; i++) {
-		result = gpio_set_direction(io_port_d, i,
-		                            io_direction_output);
+		configuration.direction = io_direction_output;
+		io_pin.port = io_port_d;
+		io_pin.pin = i;
+		result = io_configure(io_pin, configuration);
 
 		TEST_ASSERT_EQUAL(result, io_success);
 		TEST_ASSERT_EQUAL(1 << i, DDRD);
@@ -150,13 +168,17 @@ void test_direction_output_d_single()
 void test_direction_output_d_multi()
 {
 	enum io_result result;
+	struct io_pin io_pin;
+	struct io_pin_configuration configuration;
 	uint8_t i, register_value;
 
 	register_value = 0;
 
 	for (i = 0; i < 8; i++) {
-		result = gpio_set_direction(io_port_d, i,
-		                            io_direction_output);
+		configuration.direction = io_direction_output;
+		io_pin.port = io_port_d;
+		io_pin.pin = i;
+		result = io_configure(io_pin, configuration);
 
 		// Every iteration, pin i should be set to ouput.
 		register_value |= 1 << i;

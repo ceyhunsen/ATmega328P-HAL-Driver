@@ -38,10 +38,13 @@
 void test_toggle_b_single()
 {
 	enum io_result result;
+	struct io_pin io_pin;
 	uint8_t i;
 
 	for (i = 0; i < 8; i++) {
-		result = io_toggle(io_port_b, i);
+		io_pin.port = io_port_b;
+		io_pin.pin = i;
+		result = io_toggle(io_pin);
 
 		TEST_ASSERT_EQUAL(result, io_success);
 		TEST_ASSERT_EQUAL(1 << i, PINB);
@@ -53,12 +56,15 @@ void test_toggle_b_single()
 void test_toggle_b_multi()
 {
 	enum io_result result;
+	struct io_pin io_pin;
 	uint8_t i, register_value;
 
 	register_value = 0;
 
 	for (i = 0; i < 8; i++) {
-		result = io_toggle(io_port_b, i);
+		io_pin.port = io_port_b;
+		io_pin.pin = i;
+		result = io_toggle(io_pin);
 
 		// Every iteration, pin i should be set to ouput.
 		register_value |= 1 << i;
@@ -71,10 +77,13 @@ void test_toggle_b_multi()
 void test_toggle_c_single()
 {
 	enum io_result result;
+	struct io_pin io_pin;
 	uint8_t i;
 
 	for (i = 0; i < 8; i++) {
-		result = io_toggle(io_port_c, i);
+		io_pin.port = io_port_c;
+		io_pin.pin = i;
+		result = io_toggle(io_pin);
 
 		TEST_ASSERT_EQUAL(result, io_success);
 		TEST_ASSERT_EQUAL(1 << i, PINC);
@@ -86,12 +95,15 @@ void test_toggle_c_single()
 void test_toggle_c_multi()
 {
 	enum io_result result;
+	struct io_pin io_pin;
 	uint8_t i, register_value;
 
 	register_value = 0;
 
 	for (i = 0; i < 8; i++) {
-		result = io_toggle(io_port_c, i);
+		io_pin.port = io_port_c;
+		io_pin.pin = i;
+		result = io_toggle(io_pin);
 
 		// Every iteration, pin i should be set to ouput.
 		register_value |= 1 << i;
@@ -104,10 +116,13 @@ void test_toggle_c_multi()
 void test_toggle_d_single()
 {
 	enum io_result result;
+	struct io_pin io_pin;
 	uint8_t i;
 
 	for (i = 0; i < 8; i++) {
-		result = io_toggle(io_port_d, i);
+		io_pin.port = io_port_d;
+		io_pin.pin = i;
+		result = io_toggle(io_pin);
 
 		TEST_ASSERT_EQUAL(result, io_success);
 		TEST_ASSERT_EQUAL(1 << i, PIND);
@@ -119,12 +134,15 @@ void test_toggle_d_single()
 void test_toggle_d_multi()
 {
 	enum io_result result;
+	struct io_pin io_pin;
 	uint8_t i, register_value;
 
 	register_value = 0;
 
 	for (i = 0; i < 8; i++) {
-		result = io_toggle(io_port_d, i);
+		io_pin.port = io_port_d;
+		io_pin.pin = i;
+		result = io_toggle(io_pin);
 
 		// Every iteration, pin i should be set to ouput.
 		register_value |= 1 << i;
