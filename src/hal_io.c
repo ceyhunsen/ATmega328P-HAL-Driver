@@ -174,18 +174,7 @@ static volatile uint8_t *get_ddr_pointer(enum io_port port)
 {
 	volatile uint8_t *p;
 
-	switch (port) {
-		default:
-		case io_port_b:
-			p = &DDRB;
-			break;
-		case io_port_c:
-			p = &DDRC;
-			break;
-		case io_port_d:
-			p = &DDRD;
-			break;
-	}
+	p = &DDRB + ((uint8_t)port * 3);
 
 	return p;
 }
@@ -201,18 +190,7 @@ static volatile uint8_t *get_port_pointer(enum io_port port)
 {
 	volatile uint8_t *p;
 
-	switch (port) {
-		default:
-		case io_port_b:
-			p = &PORTB;
-			break;
-		case io_port_c:
-			p = &PORTC;
-			break;
-		case io_port_d:
-			p = &PORTD;
-			break;
-	}
+	p = &PORTB + ((uint8_t)port * 3);
 
 	return p;
 }
@@ -228,18 +206,7 @@ static volatile uint8_t *get_pin_pointer(enum io_port port)
 {
 	volatile uint8_t *p;
 
-	switch (port) {
-		default:
-		case io_port_b:
-			p = &PINB;
-			break;
-		case io_port_c:
-			p = &PINC;
-			break;
-		case io_port_d:
-			p = &PIND;
-			break;
-	}
+	p = &PINB + ((uint8_t)port * 3);
 
 	return p;
 }
