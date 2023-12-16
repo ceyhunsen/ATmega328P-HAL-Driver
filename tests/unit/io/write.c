@@ -35,3 +35,161 @@
 #include <avr/io.h>
 #include <stdint.h>
 
+void test_write_b_single()
+{
+	enum io_result result;
+	struct io_pin io_pin;
+	enum io_pin_state state;
+	uint8_t i;
+
+	for (i = 0; i < 8; i++) {
+		io_pin.port = io_port_b;
+		io_pin.pin = i;
+
+		state = io_state_low;
+		result = io_write(io_pin, state);
+		TEST_ASSERT_EQUAL(result, io_success);
+		TEST_ASSERT_EQUAL(0 << i, PORTB);
+
+		state = io_state_high;
+		result = io_write(io_pin, state);
+		TEST_ASSERT_EQUAL(result, io_success);
+		TEST_ASSERT_EQUAL(1 << i, PORTB);
+
+		reset_registers();
+	}
+}
+
+void test_write_b_multi()
+{
+	enum io_result result;
+	struct io_pin io_pin;
+	enum io_pin_state state;
+	uint8_t i, register_value;
+
+	register_value = 0;
+
+	for (i = 0; i < 8; i++) {
+		io_pin.port = io_port_b;
+		io_pin.pin = i;
+
+		state = io_state_low;
+		result = io_write(io_pin, state);
+		TEST_ASSERT_EQUAL(result, io_success);
+		TEST_ASSERT_EQUAL(register_value, PORTB);
+
+		register_value |= 1 << i;
+
+		state = io_state_high;
+		result = io_write(io_pin, state);
+		TEST_ASSERT_EQUAL(result, io_success);
+		TEST_ASSERT_EQUAL(register_value, PORTB);
+		result = io_toggle(io_pin);
+	}
+}
+
+void test_write_c_single()
+{
+	enum io_result result;
+	struct io_pin io_pin;
+	enum io_pin_state state;
+	uint8_t i;
+
+	for (i = 0; i < 8; i++) {
+		io_pin.port = io_port_c;
+		io_pin.pin = i;
+
+		state = io_state_low;
+		result = io_write(io_pin, state);
+		TEST_ASSERT_EQUAL(result, io_success);
+		TEST_ASSERT_EQUAL(0 << i, PORTC);
+
+		state = io_state_high;
+		result = io_write(io_pin, state);
+		TEST_ASSERT_EQUAL(result, io_success);
+		TEST_ASSERT_EQUAL(1 << i, PORTC);
+
+		reset_registers();
+	}
+}
+
+void test_write_c_multi()
+{
+	enum io_result result;
+	struct io_pin io_pin;
+	enum io_pin_state state;
+	uint8_t i, register_value;
+
+	register_value = 0;
+
+	for (i = 0; i < 8; i++) {
+		io_pin.port = io_port_c;
+		io_pin.pin = i;
+
+		state = io_state_low;
+		result = io_write(io_pin, state);
+		TEST_ASSERT_EQUAL(result, io_success);
+		TEST_ASSERT_EQUAL(register_value, PORTC);
+
+		register_value |= 1 << i;
+
+		state = io_state_high;
+		result = io_write(io_pin, state);
+		TEST_ASSERT_EQUAL(result, io_success);
+		TEST_ASSERT_EQUAL(register_value, PORTC);
+		result = io_toggle(io_pin);
+	}
+}
+
+void test_write_d_single()
+{
+	enum io_result result;
+	struct io_pin io_pin;
+	enum io_pin_state state;
+	uint8_t i;
+
+	for (i = 0; i < 8; i++) {
+		io_pin.port = io_port_d;
+		io_pin.pin = i;
+
+		state = io_state_low;
+		result = io_write(io_pin, state);
+		TEST_ASSERT_EQUAL(result, io_success);
+		TEST_ASSERT_EQUAL(0 << i, PORTD);
+
+		state = io_state_high;
+		result = io_write(io_pin, state);
+		TEST_ASSERT_EQUAL(result, io_success);
+		TEST_ASSERT_EQUAL(1 << i, PORTD);
+
+		reset_registers();
+	}
+}
+
+void test_write_d_multi()
+{
+	enum io_result result;
+	struct io_pin io_pin;
+	enum io_pin_state state;
+	uint8_t i, register_value;
+
+	register_value = 0;
+
+	for (i = 0; i < 8; i++) {
+		io_pin.port = io_port_d;
+		io_pin.pin = i;
+
+		state = io_state_low;
+		result = io_write(io_pin, state);
+		TEST_ASSERT_EQUAL(result, io_success);
+		TEST_ASSERT_EQUAL(register_value, PORTD);
+
+		register_value |= 1 << i;
+
+		state = io_state_high;
+		result = io_write(io_pin, state);
+		TEST_ASSERT_EQUAL(result, io_success);
+		TEST_ASSERT_EQUAL(register_value, PORTD);
+		result = io_toggle(io_pin);
+	}
+}

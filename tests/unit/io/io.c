@@ -55,6 +55,13 @@ int main()
 	RUN_TEST(test_read_d_single);
 	RUN_TEST(test_read_d_multi);
 
+	RUN_TEST(test_write_b_single);
+	RUN_TEST(test_write_b_multi);
+	RUN_TEST(test_write_c_single);
+	RUN_TEST(test_write_c_multi);
+	RUN_TEST(test_write_d_single);
+	RUN_TEST(test_write_d_multi);
+
 	return UnityEnd();
 }
 

@@ -52,4 +52,11 @@ void test_read_c_multi();
 void test_read_d_single();
 void test_read_d_multi();
 
+void test_write_b_single();
+void test_write_b_multi();
+void test_write_c_single();
+void test_write_c_multi();
+void test_write_d_single();
+void test_write_d_multi();
+
 #endif // __GPIO_H
