@@ -4,7 +4,9 @@ build:
   os: ubuntu-22.04
   tools:
     python: "3.11"
+  jobs:
     post_build:
+      - mkdir -p $READTHEDOCS_OUTPUT/html/
       - cp -r docs/build/html $READTHEDOCS_OUTPUT/html
 
 sphinx:
