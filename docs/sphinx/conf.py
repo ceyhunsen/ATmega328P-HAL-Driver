@@ -9,4 +9,4 @@ author = "Ceyhun Şen"
 html_extra_path = ["../build/html"]
 html_path = ["../build/html"]
 
-subprocess.call("cd ..; doxygen Doxyfile", shell = True)
+subprocess.call("cd ..; doxygen Doxyfile; cp -r build/html $READTHEDOCS_OUTPUT/html", shell = True)
