@@ -6,7 +6,7 @@ build:
     python: "3.11"
   jobs:
     pre_build:
-      - doxygen
+      - cd docs; doxygen Doxyfile
     post_build:
       - mkdir -p $READTHEDOCS_OUTPUT/html/
       - cp -r docs/build/html $READTHEDOCS_OUTPUT/html
