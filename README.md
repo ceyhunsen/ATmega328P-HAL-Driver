@@ -6,10 +6,8 @@ interface for device peripherals while staying fast and small as possible.
 
 ## Documentation
 
-Documentation is available at
-[atmega328p-hal-driver.rtfd.io](http://atmega328p-hal-driver.rtfd.io/).
-Alternatively, documentation can be generated locally. In order to generate
-documentation, your system should have Doxygen installed.
+Documentation can be generated locally. In order to generate documentation, your
+system should have Doxygen installed.
 
 ```bash
 cd docs/
