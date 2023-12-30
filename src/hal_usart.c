@@ -233,11 +233,10 @@ end:
 
 /**
  * @brief Transmit data over USART.
- * @param usart USART struct.
  * @param data Data buffer that will be written to USART buffer.
  * @param len Data buffer length.
  * */
-enum usart_result usart_transmit(struct usart_t *usart, uint8_t *data, uint16_t len)
+enum usart_result usart_transmit(uint8_t *data, uint16_t len)
 {
 	for (uint16_t i = 0; i < len; i++) {
 		// Wait till' any ongoing transfer is complete.
@@ -252,11 +251,10 @@ enum usart_result usart_transmit(struct usart_t *usart, uint8_t *data, uint16_t 
 
 /**
  * @brief Receive data over USART.
- * @param usart USART struct.
  * @param data Data buffer that will hold read data from USART buffer.
  * @param len Data buffer length.
  * */
-enum usart_result usart_receive(struct usart_t *usart, uint8_t *data, uint16_t len)
+enum usart_result usart_receive(uint8_t *data, uint16_t len)
 {
 	for (uint16_t i = 0; i < len; i++) {
 		// Wait till' any ongoing transfer is complete.

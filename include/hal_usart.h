@@ -111,10 +111,10 @@ struct usart_t {
 
 // Core functions.
 enum usart_result usart_init(struct usart_t *usart);
-enum usart_result usart_transmit(struct usart_t *usart, uint8_t *data, uint16_t len);
-enum usart_result usart_receive(struct usart_t *usart, uint8_t *data, uint16_t len);
+enum usart_result usart_transmit(uint8_t *data, uint16_t len);
+enum usart_result usart_receive(uint8_t *data, uint16_t len);
 
-// Extras.
+// Extra functions.
 void usart_stdio_init();
 
 #endif // __HAL_USART_H
