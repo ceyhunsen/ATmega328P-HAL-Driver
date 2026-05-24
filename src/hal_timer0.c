@@ -109,7 +109,7 @@ enum hal_result_timer0
 hal_timer0_set_output_compare_mode(enum hal_timer0_output_compare_register reg,
                                    enum hal_timer0_output_compare_mode mode) {
     volatile uint8_t reg_val;
-    uint8_t reg1, reg0;
+    uint8_t bit1, bit0;
 
     struct hal_io_pin io = {.port = hal_io_port_d};
     struct hal_io_pin_configuration configuration = {
@@ -119,8 +119,8 @@ hal_timer0_set_output_compare_mode(enum hal_timer0_output_compare_register reg,
     // Set bits.
     switch (reg) {
     case hal_timer0_output_compare_register_a:
-        reg1 = COM0A1;
-        reg0 = COM0A0;
+        bit1 = COM0A1;
+        bit0 = COM0A0;
 
         io.pin = 6;
         if (hal_io_configure(io, configuration) != hal_result_io_ok) {
@@ -128,8 +128,8 @@ hal_timer0_set_output_compare_mode(enum hal_timer0_output_compare_register reg,
         };
         break;
     case hal_timer0_output_compare_register_b:
-        reg1 = COM0B1;
-        reg0 = COM0B0;
+        bit1 = COM0B1;
+        bit0 = COM0B0;
 
         io.pin = 5;
         if (hal_io_configure(io, configuration) != hal_result_io_ok) {
@@ -145,20 +145,20 @@ hal_timer0_set_output_compare_mode(enum hal_timer0_output_compare_register reg,
     reg_val = TCCR0A;
     switch (mode) {
     case hal_timer0_compare_output_mode_normal:
-        CLEAR_BIT(reg_val, reg1);
-        CLEAR_BIT(reg_val, reg0);
+        CLEAR_BIT(reg_val, bit1);
+        CLEAR_BIT(reg_val, bit0);
         break;
     case hal_timer0_compare_output_mode_toggle:
-        CLEAR_BIT(reg_val, reg1);
-        SET_BIT(reg_val, reg0);
+        CLEAR_BIT(reg_val, bit1);
+        SET_BIT(reg_val, bit0);
         break;
     case hal_timer0_compare_output_mode_clear:
-        SET_BIT(reg_val, reg1);
-        CLEAR_BIT(reg_val, reg0);
+        SET_BIT(reg_val, bit1);
+        CLEAR_BIT(reg_val, bit0);
         break;
     case hal_timer0_compare_output_mode_set:
-        SET_BIT(reg_val, reg1);
-        SET_BIT(reg_val, reg0);
+        SET_BIT(reg_val, bit1);
+        SET_BIT(reg_val, bit0);
         break;
 
     default:
@@ -172,6 +172,15 @@ hal_timer0_set_output_compare_mode(enum hal_timer0_output_compare_register reg,
 
 /**
  * @brief Set timer0's clock source
+ *
+ * ## PWM Frequency
+ *
+ * This prescaler can be used to set PWM frequency. Formula is the following:
+ *
+ * f_OCnxPWM = f_clk_I/O / (N * 256)
+ *
+ * For example, if f_clk_I/O is 16 MHz and \ref hal_timer0_prescaler_1 is used,
+ * frequency will end up being 62.5 KHz (16 MHz / 256).
  */
 enum hal_result_timer0
 hal_timer0_set_clock_source(enum hal_timer0_clock_source source) {
@@ -221,7 +230,6 @@ hal_timer0_set_clock_source(enum hal_timer0_clock_source source) {
 
     default:
         return hal_result_timer0_invalid_clock_source;
-        break;
     }
 
     TCCR0B = reg;
