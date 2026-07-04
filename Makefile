@@ -12,3 +12,8 @@ test:
 	cd build && cmake -D BUILD_TESTING=1 ..
 	cd build && cmake --build .
 	cd build && make test
+
+clean:
+	rm -rf build
+
+.PHONY: clean
