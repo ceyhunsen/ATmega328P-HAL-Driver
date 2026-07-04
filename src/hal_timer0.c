@@ -52,16 +52,24 @@ hal_timer0_set_operation_mode(enum hal_timer0_operation_modes mode) {
         CLEAR_BIT(tccr0a, WGM01);
         CLEAR_BIT(tccr0a, WGM00);
         break;
+
     case hal_timer0_mode_ctc:
         CLEAR_BIT(tccr0b, WGM02);
         SET_BIT(tccr0a, WGM01);
         CLEAR_BIT(tccr0a, WGM00);
         break;
+
     case hal_timer0_mode_fast_pwm:
         CLEAR_BIT(tccr0b, WGM02);
         SET_BIT(tccr0a, WGM01);
         SET_BIT(tccr0a, WGM00);
         break;
+    case hal_timer0_mode_fast_pwm_to_top:
+        SET_BIT(tccr0b, WGM02);
+        SET_BIT(tccr0a, WGM01);
+        SET_BIT(tccr0a, WGM00);
+        break;
+
     case hal_timer0_mode_phase_correct_pwm:
         CLEAR_BIT(tccr0b, WGM02);
         CLEAR_BIT(tccr0a, WGM01);
@@ -70,11 +78,6 @@ hal_timer0_set_operation_mode(enum hal_timer0_operation_modes mode) {
     case hal_timer0_mode_phase_correct_pwm_to_top:
         SET_BIT(tccr0b, WGM02);
         CLEAR_BIT(tccr0a, WGM01);
-        SET_BIT(tccr0a, WGM00);
-        break;
-    case hal_timer0_mode_fast_pwm_to_top:
-        SET_BIT(tccr0b, WGM02);
-        SET_BIT(tccr0a, WGM01);
         SET_BIT(tccr0a, WGM00);
         break;
 

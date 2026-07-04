@@ -57,10 +57,11 @@ enum hal_timer0_operation_modes {
     hal_timer0_mode_ctc = 2,                      ///< Counts to the OCR0A
     hal_timer0_mode_fast_pwm = 3,                 ///< High frequency PWM
     hal_timer0_mode_phase_correct_pwm_to_top = 5, ///< High resolution PWM with
-                                                  ///< custom top (see \ref
-                                                  ///< hal_timer0_set_top).
-    hal_timer0_mode_fast_pwm_to_top = 7, ///< High frequency PWM with custom top
-                                         ///< (see \ref hal_timer0_set_top).
+                                                  ///< custom top value (see
+                                                  ///< \ref hal_timer0_set_top).
+    hal_timer0_mode_fast_pwm_to_top =
+        7, ///< High frequency PWM with custom top value
+           ///< (see \ref hal_timer0_set_top).
 };
 
 /// @brief Possible clock sources of the timer0.
