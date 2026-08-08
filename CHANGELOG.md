@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Set top for Timer0
+- PWM modes for `hal_timer0_set_operation_mode`
 
 ### Changed
 
