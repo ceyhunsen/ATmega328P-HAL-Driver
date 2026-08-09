@@ -84,6 +84,7 @@ void hal_timer0_set_top(uint8_t val);
 
 enum hal_result_timer0
 hal_timer0_set_operation_mode(enum hal_timer0_operation_modes mode);
+enum hal_timer0_operation_modes hal_timer0_get_operation_mode();
 enum hal_result_timer0
 hal_timer0_set_output_compare_mode(enum hal_timer0_output_compare_register reg,
                                    enum hal_timer0_output_compare_mode mode);

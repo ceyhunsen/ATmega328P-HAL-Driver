@@ -47,36 +47,42 @@ void set_operation_mode() {
                       hal_result_timer0_ok);
     TEST_ASSERT_EQUAL(TCCR0A, 0);
     TEST_ASSERT_EQUAL(TCCR0B, 0);
+    TEST_ASSERT_EQUAL(mode, hal_timer0_get_operation_mode());
 
     mode = hal_timer0_mode_ctc;
     TEST_ASSERT_EQUAL(hal_timer0_set_operation_mode(mode),
                       hal_result_timer0_ok);
     TEST_ASSERT_EQUAL(TCCR0A, 0b10);
     TEST_ASSERT_EQUAL(TCCR0B, 0);
+    TEST_ASSERT_EQUAL(mode, hal_timer0_get_operation_mode());
 
     mode = hal_timer0_mode_fast_pwm;
     TEST_ASSERT_EQUAL(hal_timer0_set_operation_mode(mode),
                       hal_result_timer0_ok);
     TEST_ASSERT_EQUAL(TCCR0A, 0b11);
     TEST_ASSERT_EQUAL(TCCR0B, 0);
+    TEST_ASSERT_EQUAL(mode, hal_timer0_get_operation_mode());
 
     mode = hal_timer0_mode_phase_correct_pwm;
     TEST_ASSERT_EQUAL(hal_timer0_set_operation_mode(mode),
                       hal_result_timer0_ok);
     TEST_ASSERT_EQUAL(TCCR0A, 0b01);
     TEST_ASSERT_EQUAL(TCCR0B, 0);
+    TEST_ASSERT_EQUAL(mode, hal_timer0_get_operation_mode());
 
     mode = hal_timer0_mode_phase_correct_pwm_to_top;
     TEST_ASSERT_EQUAL(hal_timer0_set_operation_mode(mode),
                       hal_result_timer0_ok);
     TEST_ASSERT_EQUAL(TCCR0A, 0b01);
-    TEST_ASSERT_EQUAL(TCCR0B, 1 << WGM02);
+    TEST_ASSERT_EQUAL(TCCR0B, BIT(WGM02));
+    TEST_ASSERT_EQUAL(mode, hal_timer0_get_operation_mode());
 
     mode = hal_timer0_mode_fast_pwm_to_top;
     TEST_ASSERT_EQUAL(hal_timer0_set_operation_mode(mode),
                       hal_result_timer0_ok);
     TEST_ASSERT_EQUAL(TCCR0A, 0b11);
-    TEST_ASSERT_EQUAL(TCCR0B, 1 << WGM02);
+    TEST_ASSERT_EQUAL(TCCR0B, BIT(WGM02));
+    TEST_ASSERT_EQUAL(mode, hal_timer0_get_operation_mode());
 }
 
 /// @brief Try to change COM0A* bits and check if operation is successful or

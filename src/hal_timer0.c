@@ -92,6 +92,28 @@ hal_timer0_set_operation_mode(enum hal_timer0_operation_modes mode) {
 }
 
 /**
+ * @brief Get operation mode of the timer0.
+ *
+ * Reads related registers to determine current operation mode of the timer0
+ * module.
+ *
+ * @returns Operation mode.
+ */
+enum hal_timer0_operation_modes hal_timer0_get_operation_mode() {
+    uint8_t tccr0a, tccr0b;
+    enum hal_timer0_operation_modes op_mode;
+
+    tccr0a = TCCR0A & (BIT(WGM00) | BIT(WGM01));
+    tccr0b = TCCR0B & BIT(WGM02);
+
+    // WGM bit for the TCCR0B is not 2 but 3. Therefore, needs to be shifted 1
+    // to the left.
+    op_mode = tccr0a | (tccr0b >> 1);
+
+    return op_mode;
+}
+
+/**
  * @brief Set output compare pin behaviour.
  *
  * Behavior will change based on the compare output mode. Please refer to the
