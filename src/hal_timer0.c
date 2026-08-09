@@ -92,6 +92,28 @@ hal_timer0_set_operation_mode(enum hal_timer0_operation_modes mode) {
 }
 
 /**
+ * @brief Get operation mode of the timer0.
+ *
+ * Reads related registers to determine current operation mode of the timer0
+ * module.
+ *
+ * @returns Operation mode.
+ */
+enum hal_timer0_operation_modes hal_timer0_get_operation_mode() {
+    uint8_t tccr0a, tccr0b;
+    enum hal_timer0_operation_modes op_mode;
+
+    tccr0a = TCCR0A & (BIT(WGM00) | BIT(WGM01));
+    tccr0b = TCCR0B & BIT(WGM02);
+
+    // WGM bit for the TCCR0B is not 2 but 3. Therefore, needs to be shifted 1
+    // to the left.
+    op_mode = tccr0a | (tccr0b >> 1);
+
+    return op_mode;
+}
+
+/**
  * @brief Set output compare pin behaviour.
  *
  * Behavior will change based on the compare output mode. Please refer to the
@@ -169,6 +191,50 @@ hal_timer0_set_output_compare_mode(enum hal_timer0_output_compare_register reg,
     }
 
     TCCR0A = reg_val;
+
+    return hal_result_timer0_ok;
+}
+
+/**
+ * @brief Set force output compare mode.
+ *
+ * @param reg Output compare register to set.
+ * @param mode 0 to disable, non-zero to force enable.
+ *
+ * @returns Error if current mode or register is invalid, ok if everything is
+ * valid.
+ */
+enum hal_result_timer0 hal_timer0_set_force_output_compare_mode(
+    enum hal_timer0_output_compare_register reg, uint8_t mode) {
+    uint8_t bit;
+
+    // Check current operation mode and return error if it is one of PWM modes.
+    switch (hal_timer0_get_operation_mode()) {
+    case hal_timer0_mode_normal:
+    case hal_timer0_mode_ctc:
+        break;
+
+    default:
+        return hal_result_timer0_invalid_operation_mode;
+    }
+
+    switch (reg) {
+    case hal_timer0_output_compare_register_a:
+        bit = FOC0A;
+        break;
+    case hal_timer0_output_compare_register_b:
+        bit = FOC0B;
+        break;
+
+    default:
+        return hal_result_timer0_invalid_output_compare_register;
+    }
+
+    if (mode) {
+        SET_BIT(TCCR0B, bit);
+    } else {
+        CLEAR_BIT(TCCR0B, bit);
+    }
 
     return hal_result_timer0_ok;
 }

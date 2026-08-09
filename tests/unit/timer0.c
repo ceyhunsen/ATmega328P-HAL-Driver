@@ -47,36 +47,42 @@ void set_operation_mode() {
                       hal_result_timer0_ok);
     TEST_ASSERT_EQUAL(TCCR0A, 0);
     TEST_ASSERT_EQUAL(TCCR0B, 0);
+    TEST_ASSERT_EQUAL(mode, hal_timer0_get_operation_mode());
 
     mode = hal_timer0_mode_ctc;
     TEST_ASSERT_EQUAL(hal_timer0_set_operation_mode(mode),
                       hal_result_timer0_ok);
     TEST_ASSERT_EQUAL(TCCR0A, 0b10);
     TEST_ASSERT_EQUAL(TCCR0B, 0);
+    TEST_ASSERT_EQUAL(mode, hal_timer0_get_operation_mode());
 
     mode = hal_timer0_mode_fast_pwm;
     TEST_ASSERT_EQUAL(hal_timer0_set_operation_mode(mode),
                       hal_result_timer0_ok);
     TEST_ASSERT_EQUAL(TCCR0A, 0b11);
     TEST_ASSERT_EQUAL(TCCR0B, 0);
+    TEST_ASSERT_EQUAL(mode, hal_timer0_get_operation_mode());
 
     mode = hal_timer0_mode_phase_correct_pwm;
     TEST_ASSERT_EQUAL(hal_timer0_set_operation_mode(mode),
                       hal_result_timer0_ok);
     TEST_ASSERT_EQUAL(TCCR0A, 0b01);
     TEST_ASSERT_EQUAL(TCCR0B, 0);
+    TEST_ASSERT_EQUAL(mode, hal_timer0_get_operation_mode());
 
     mode = hal_timer0_mode_phase_correct_pwm_to_top;
     TEST_ASSERT_EQUAL(hal_timer0_set_operation_mode(mode),
                       hal_result_timer0_ok);
     TEST_ASSERT_EQUAL(TCCR0A, 0b01);
-    TEST_ASSERT_EQUAL(TCCR0B, 1 << WGM02);
+    TEST_ASSERT_EQUAL(TCCR0B, BIT(WGM02));
+    TEST_ASSERT_EQUAL(mode, hal_timer0_get_operation_mode());
 
     mode = hal_timer0_mode_fast_pwm_to_top;
     TEST_ASSERT_EQUAL(hal_timer0_set_operation_mode(mode),
                       hal_result_timer0_ok);
     TEST_ASSERT_EQUAL(TCCR0A, 0b11);
-    TEST_ASSERT_EQUAL(TCCR0B, 1 << WGM02);
+    TEST_ASSERT_EQUAL(TCCR0B, BIT(WGM02));
+    TEST_ASSERT_EQUAL(mode, hal_timer0_get_operation_mode());
 }
 
 /// @brief Try to change COM0A* bits and check if operation is successful or
@@ -154,6 +160,57 @@ void test_set_output_compare_register_wrong() {
                       hal_result_timer0_invalid_output_compare_register);
 }
 
+void test_set_force_output_compare_mode() {
+    enum hal_timer0_output_compare_register reg;
+    enum hal_timer0_operation_modes mode;
+    uint8_t expected;
+
+    for (reg = hal_timer0_output_compare_register_a;
+         reg <= hal_timer0_output_compare_register_b; reg++) {
+        for (mode = 0; mode <= 1; mode++) {
+            TEST_ASSERT_EQUAL(
+                hal_result_timer0_ok,
+                hal_timer0_set_force_output_compare_mode(reg, mode));
+
+            expected = mode << (7 - reg);
+            printf("Reg=%d, mode=%d, TCCR0B=%b, expected=%b\n", reg, mode,
+                   TCCR0B, expected);
+            TEST_ASSERT_EQUAL(expected, TCCR0B & BIT(7 - reg));
+        }
+    }
+}
+
+void test_set_force_output_compare_mode_invalid_mode() {
+    enum hal_timer0_output_compare_register reg;
+    enum hal_timer0_operation_modes mode;
+
+    reg = hal_timer0_output_compare_register_a;
+
+    mode = hal_timer0_mode_normal;
+    TEST_ASSERT_EQUAL(hal_result_timer0_ok,
+                      hal_timer0_set_force_output_compare_mode(reg, 0));
+    mode = hal_timer0_mode_ctc;
+    TEST_ASSERT_EQUAL(hal_result_timer0_ok,
+                      hal_timer0_set_force_output_compare_mode(reg, 0));
+
+    mode = hal_timer0_mode_phase_correct_pwm;
+    hal_timer0_set_operation_mode(mode);
+    TEST_ASSERT_EQUAL(hal_result_timer0_invalid_operation_mode,
+                      hal_timer0_set_force_output_compare_mode(reg, 0));
+    mode = hal_timer0_mode_fast_pwm;
+    hal_timer0_set_operation_mode(mode);
+    TEST_ASSERT_EQUAL(hal_result_timer0_invalid_operation_mode,
+                      hal_timer0_set_force_output_compare_mode(reg, 0));
+    mode = hal_timer0_mode_phase_correct_pwm_to_top;
+    hal_timer0_set_operation_mode(mode);
+    TEST_ASSERT_EQUAL(hal_result_timer0_invalid_operation_mode,
+                      hal_timer0_set_force_output_compare_mode(reg, 0));
+    mode = hal_timer0_mode_fast_pwm_to_top;
+    hal_timer0_set_operation_mode(mode);
+    TEST_ASSERT_EQUAL(hal_result_timer0_invalid_operation_mode,
+                      hal_timer0_set_force_output_compare_mode(reg, 0));
+}
+
 void test_set_clock_source_invalid() {
     enum hal_timer0_clock_source source;
 
@@ -203,6 +260,8 @@ int main() {
     RUN_TEST(set_operation_mode);
     RUN_TEST(test_set_output_compare_mode);
     RUN_TEST(test_set_output_compare_register_wrong);
+    RUN_TEST(test_set_force_output_compare_mode);
+    RUN_TEST(test_set_force_output_compare_mode_invalid_mode);
     RUN_TEST(test_set_clock_source_invalid);
     RUN_TEST(test_set_clock_source);
     RUN_TEST(test_set_top);
