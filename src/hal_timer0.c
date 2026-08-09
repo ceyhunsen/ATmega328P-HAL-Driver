@@ -198,21 +198,15 @@ hal_timer0_set_output_compare_mode(enum hal_timer0_output_compare_register reg,
 /**
  * @brief Set force output compare mode.
  *
+ * @param reg Output compare register to set.
+ * @param mode 0 to disable, non-zero to force enable.
+ *
  * @returns Error if current mode or register is invalid, ok if everything is
  * valid.
  */
 enum hal_result_timer0 hal_timer0_set_force_output_compare_mode(
     enum hal_timer0_output_compare_register reg, uint8_t mode) {
-
-    switch (reg) {
-    case hal_timer0_output_compare_register_a:
-        break;
-    case hal_timer0_output_compare_register_b:
-        break;
-
-    default:
-        return hal_result_timer0_invalid_output_compare_register;
-    }
+    uint8_t bit;
 
     // Check current operation mode and return error if it is one of PWM modes.
     switch (hal_timer0_get_operation_mode()) {
@@ -222,6 +216,24 @@ enum hal_result_timer0 hal_timer0_set_force_output_compare_mode(
 
     default:
         return hal_result_timer0_invalid_operation_mode;
+    }
+
+    switch (reg) {
+    case hal_timer0_output_compare_register_a:
+        bit = FOC0A;
+        break;
+    case hal_timer0_output_compare_register_b:
+        bit = FOC0B;
+        break;
+
+    default:
+        return hal_result_timer0_invalid_output_compare_register;
+    }
+
+    if (mode) {
+        SET_BIT(TCCR0B, bit);
+    } else {
+        CLEAR_BIT(TCCR0B, bit);
     }
 
     return hal_result_timer0_ok;

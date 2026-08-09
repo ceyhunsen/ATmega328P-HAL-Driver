@@ -160,6 +160,26 @@ void test_set_output_compare_register_wrong() {
                       hal_result_timer0_invalid_output_compare_register);
 }
 
+void test_set_force_output_compare_mode() {
+    enum hal_timer0_output_compare_register reg;
+    enum hal_timer0_operation_modes mode;
+    uint8_t expected;
+
+    for (reg = hal_timer0_output_compare_register_a;
+         reg <= hal_timer0_output_compare_register_b; reg++) {
+        for (mode = 0; mode <= 1; mode++) {
+            TEST_ASSERT_EQUAL(
+                hal_result_timer0_ok,
+                hal_timer0_set_force_output_compare_mode(reg, mode));
+
+            expected = mode << (7 - reg);
+            printf("Reg=%d, mode=%d, TCCR0B=%b, expected=%b\n", reg, mode,
+                   TCCR0B, expected);
+            TEST_ASSERT_EQUAL(expected, TCCR0B & BIT(7 - reg));
+        }
+    }
+}
+
 void test_set_force_output_compare_mode_invalid_mode() {
     enum hal_timer0_output_compare_register reg;
     enum hal_timer0_operation_modes mode;
@@ -240,6 +260,7 @@ int main() {
     RUN_TEST(set_operation_mode);
     RUN_TEST(test_set_output_compare_mode);
     RUN_TEST(test_set_output_compare_register_wrong);
+    RUN_TEST(test_set_force_output_compare_mode);
     RUN_TEST(test_set_force_output_compare_mode_invalid_mode);
     RUN_TEST(test_set_clock_source_invalid);
     RUN_TEST(test_set_clock_source);
