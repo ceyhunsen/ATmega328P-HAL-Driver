@@ -196,6 +196,38 @@ hal_timer0_set_output_compare_mode(enum hal_timer0_output_compare_register reg,
 }
 
 /**
+ * @brief Set force output compare mode.
+ *
+ * @returns Error if current mode or register is invalid, ok if everything is
+ * valid.
+ */
+enum hal_result_timer0 hal_timer0_set_force_output_compare_mode(
+    enum hal_timer0_output_compare_register reg, uint8_t mode) {
+
+    switch (reg) {
+    case hal_timer0_output_compare_register_a:
+        break;
+    case hal_timer0_output_compare_register_b:
+        break;
+
+    default:
+        return hal_result_timer0_invalid_output_compare_register;
+    }
+
+    // Check current operation mode and return error if it is one of PWM modes.
+    switch (hal_timer0_get_operation_mode()) {
+    case hal_timer0_mode_normal:
+    case hal_timer0_mode_ctc:
+        break;
+
+    default:
+        return hal_result_timer0_invalid_operation_mode;
+    }
+
+    return hal_result_timer0_ok;
+}
+
+/**
  * @brief Set timer0's clock source
  *
  * ## PWM Frequency
