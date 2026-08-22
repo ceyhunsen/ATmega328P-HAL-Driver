@@ -305,3 +305,30 @@ hal_timer0_set_clock_source(enum hal_timer0_clock_source source) {
 
     return hal_result_timer0_ok;
 }
+
+/**
+ * @brief Clears specified interrupt, manually
+ *
+ * @param interrupt Interrupt to clear
+ *
+ * @returns Error if interrupt is not valid, OK if it is valid
+ */
+enum hal_result_timer0
+hal_timer0_clear_interrupt(enum hal_timer0_interrupt interrupt) {
+    switch (interrupt) {
+    case hal_timer0_overflow:
+        SET_BIT(TIFR0, TOV0);
+        break;
+    case hal_timer0_output_compare_a:
+        SET_BIT(TIFR0, OCF0A);
+        break;
+    case hal_timer0_output_compare_b:
+        SET_BIT(TIFR0, OCF0B);
+        break;
+
+    default:
+        return hal_result_timer0_invalid_interrupt;
+    }
+
+    return hal_result_timer0_ok;
+}

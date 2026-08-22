@@ -255,6 +255,27 @@ void test_set_top() {
     TEST_ASSERT_EQUAL(OCR0A, val);
 }
 
+void test_clear_interrupt() {
+    enum hal_timer0_interrupt interrupt;
+
+    TEST_ASSERT_EQUAL(TIFR0, 0);
+
+    // Invalid interrupt.
+    interrupt = hal_timer0_output_compare_b + 1;
+    TEST_ASSERT_EQUAL(hal_result_timer0_invalid_interrupt,
+                      hal_timer0_clear_interrupt(interrupt));
+    TEST_ASSERT_EQUAL(TIFR0, 0);
+
+    for (interrupt = hal_timer0_overflow;
+         interrupt <= hal_timer0_output_compare_b; interrupt++) {
+        TEST_ASSERT_EQUAL(hal_result_timer0_ok,
+                          hal_timer0_clear_interrupt(interrupt));
+        TEST_ASSERT_EQUAL(TIFR0 & (1 << interrupt), (1 << interrupt));
+    }
+
+    TEST_ASSERT_EQUAL(TIFR0, 0b111);
+}
+
 int main() {
     RUN_TEST(basic_set_and_get_timer0_counter);
     RUN_TEST(set_operation_mode);
@@ -265,6 +286,7 @@ int main() {
     RUN_TEST(test_set_clock_source_invalid);
     RUN_TEST(test_set_clock_source);
     RUN_TEST(test_set_top);
+    RUN_TEST(test_clear_interrupt);
 
     return UnityEnd();
 }

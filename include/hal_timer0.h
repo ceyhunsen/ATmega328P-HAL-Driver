@@ -32,6 +32,8 @@ enum hal_result_timer0 {
                                                       ///< output
     hal_result_timer0_invalid_clock_source, ///< An invalid clock source is
                                             ///< specified
+    hal_result_timer0_invalid_interrupt,    ///< An invalid interrupt option is
+                                            ///< specified
 };
 
 /// @brief Two of the output compare registers, that are available to timer0.
@@ -78,6 +80,13 @@ enum hal_timer0_clock_source {
                                      ///< on rising edge.
 };
 
+/// @brief Interrupt options for the timer0.
+enum hal_timer0_interrupt {
+    hal_timer0_overflow = 0,         ///< Occurs when timer0 overflows
+    hal_timer0_output_compare_a = 1, ///< Occurs when compare match on OCR0A
+    hal_timer0_output_compare_b = 2  ///< Occurs when compare match on OCR0B
+};
+
 uint8_t hal_timer0_get_counter();
 void hal_timer0_set_counter(uint8_t val);
 void hal_timer0_set_top(uint8_t val);
@@ -94,3 +103,6 @@ enum hal_result_timer0 hal_timer0_set_force_output_compare_mode(
 
 enum hal_result_timer0
 hal_timer0_set_clock_source(enum hal_timer0_clock_source source);
+
+enum hal_result_timer0
+hal_timer0_clear_interrupt(enum hal_timer0_interrupt interrupt);
