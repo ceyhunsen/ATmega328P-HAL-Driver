@@ -343,7 +343,7 @@ hal_timer0_set_interrupt(enum hal_timer0_interrupt interrupt, uint8_t mode) {
 }
 
 /**
- * @brief Clears specified interrupt, manually
+ * @brief Clears specified interrupt flag
  *
  * @param interrupt Interrupt to clear
  *
@@ -351,20 +351,25 @@ hal_timer0_set_interrupt(enum hal_timer0_interrupt interrupt, uint8_t mode) {
  */
 enum hal_result_timer0
 hal_timer0_clear_interrupt(enum hal_timer0_interrupt interrupt) {
+    uint8_t bit;
+
+    // Determine which interrupt is specified.
     switch (interrupt) {
     case hal_timer0_overflow:
-        SET_BIT(TIFR0, TOV0);
+        bit = TOV0;
         break;
     case hal_timer0_output_compare_a:
-        SET_BIT(TIFR0, OCF0A);
+        bit = OCF0A;
         break;
     case hal_timer0_output_compare_b:
-        SET_BIT(TIFR0, OCF0B);
+        bit = OCF0B;
         break;
 
     default:
         return hal_result_timer0_invalid_interrupt;
     }
+
+    SET_BIT(TIFR0, bit);
 
     return hal_result_timer0_ok;
 }
