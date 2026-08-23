@@ -105,4 +105,6 @@ enum hal_result_timer0
 hal_timer0_set_clock_source(enum hal_timer0_clock_source source);
 
 enum hal_result_timer0
+hal_timer0_set_interrupt(enum hal_timer0_interrupt interrupt, uint8_t mode);
+enum hal_result_timer0
 hal_timer0_clear_interrupt(enum hal_timer0_interrupt interrupt);
