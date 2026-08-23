@@ -305,3 +305,71 @@ hal_timer0_set_clock_source(enum hal_timer0_clock_source source) {
 
     return hal_result_timer0_ok;
 }
+
+/**
+ * @brief Sets specified interrupt enabled or disabled
+ *
+ * @param interrupt Interrupt to clear
+ * @param mode Non-zero to enable, zero to disable
+ *
+ * @returns Error if interrupt is not valid, OK if it is valid
+ */
+enum hal_result_timer0
+hal_timer0_set_interrupt(enum hal_timer0_interrupt interrupt, uint8_t mode) {
+    uint8_t bit;
+
+    switch (interrupt) {
+    case hal_timer0_overflow:
+        bit = TOV0;
+        break;
+    case hal_timer0_output_compare_a:
+        bit = OCF0A;
+        break;
+    case hal_timer0_output_compare_b:
+        bit = OCF0B;
+        break;
+
+    default:
+        return hal_result_timer0_invalid_interrupt;
+    }
+
+    if (mode) {
+        SET_BIT(TIMSK0, bit);
+    } else {
+        CLEAR_BIT(TIMSK0, bit);
+    }
+
+    return hal_result_timer0_ok;
+}
+
+/**
+ * @brief Clears specified interrupt flag
+ *
+ * @param interrupt Interrupt to clear
+ *
+ * @returns Error if interrupt is not valid, OK if it is valid
+ */
+enum hal_result_timer0
+hal_timer0_clear_interrupt(enum hal_timer0_interrupt interrupt) {
+    uint8_t bit;
+
+    // Determine which interrupt is specified.
+    switch (interrupt) {
+    case hal_timer0_overflow:
+        bit = TOV0;
+        break;
+    case hal_timer0_output_compare_a:
+        bit = OCF0A;
+        break;
+    case hal_timer0_output_compare_b:
+        bit = OCF0B;
+        break;
+
+    default:
+        return hal_result_timer0_invalid_interrupt;
+    }
+
+    SET_BIT(TIFR0, bit);
+
+    return hal_result_timer0_ok;
+}

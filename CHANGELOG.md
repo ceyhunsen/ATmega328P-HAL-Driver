@@ -6,6 +6,13 @@ also be mirrored to the Github releases page.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.5.4] - 2026-08-23
+
+### Added
+
+- Interrupt setter for Timer0
+- Interrupt flag clear for Timer0
+
 ## [0.5.3] - 2026-08-09
 
 ### Added
@@ -132,7 +139,8 @@ branch.
   - TWI
   - ADC
 
-[unreleased]: https://github.com/ceyhunsen/ATmega328P-HAL-Driver/compare/v0.5.3...HEAD
+[unreleased]: https://github.com/ceyhunsen/ATmega328P-HAL-Driver/compare/v0.5.4...HEAD
+[0.5.4]: https://github.com/ceyhunsen/ATmega328P-HAL-Driver/compare/v0.5.3...v0.5.4
 [0.5.3]: https://github.com/ceyhunsen/ATmega328P-HAL-Driver/compare/v0.5.2...v0.5.3
 [0.5.2]: https://github.com/ceyhunsen/ATmega328P-HAL-Driver/compare/v0.5.1...v0.5.2
 [0.5.1]: https://github.com/ceyhunsen/ATmega328P-HAL-Driver/compare/v0.5.0...v0.5.1
